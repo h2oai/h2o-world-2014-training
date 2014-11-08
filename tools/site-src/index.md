@@ -2,3 +2,4 @@
 
 # Deep Learning
  * [Anomaly detection](deeplearning/anomaly/anomaly.R.html)
+ * [Higgs particle](deeplearning/higgs/higgs.R.html)

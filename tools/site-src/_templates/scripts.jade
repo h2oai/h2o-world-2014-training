@@ -1,0 +1,32 @@
+script(type='text/javascript', src='/assets/vendor/jquery-1.11.1.min.js')
+script(type='text/javascript', src='/assets/vendor/modernizr.min.js')
+
+<!--[if lte IE 8]>
+script(type='text/javascript', src='/assets/vendor/selectivizr.min.js')
+<![endif]-->
+
+script(type='text/javascript', src='/assets/vendor/bootstrap/js/bootstrap.min.js')
+
+script(type='text/javascript').
+  Modernizr.load([
+    {
+      test: (Modernizr.touch),
+      yep: ['/assets/vendor/fastclick.min.js'],
+      complete: function() {
+        if (Modernizr.touch) {
+          $('body').append("<script type=\"text/javascript\">$(function() { FastClick.attach(document.body); });<\/script>");
+        }
+      }
+    }
+  ]);
+
+<!--[if lte IE 9]>
+script(type='text/javascript', src='/assets/vendor/jquery.html5support.min.js')
+script(type='text/javascript').
+  $(document).ready(function() { $.placeholder(); });
+<![endif]-->
+
+
+script(type='text/javascript', src='/assets/vendor/imagesloaded.pkgd.js')
+script(type='text/javascript', src='/assets/vendor/jquery.touchwipe.min.js')
+

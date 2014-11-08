@@ -1,0 +1,40 @@
+meta(charset="UTF-8")
+meta(name='viewport', content='width=device-width, initial-scale=1.0')
+- var pageTitle = page.title
+title!= '0xdata' + (pageTitle ? ' - ' + pageTitle : '')
+meta(name='description', content='0xdata, makers of H2O - The Open Source In-Memory Prediction Engine for Big Data Science')
+link(rel='publisher', href='https://plus.google.com/109486779212435464374/')
+meta(property='og:title', content='0xdata, makers of H2O - The Open Source In-Memory Prediction Engine for Big Data Science')
+meta(property='og:type', content='article')
+meta(property='og:image', content='http://0xdata.com/assets/images/h2o.png')
+meta(property='og:url', content='http://0xdata.com')
+meta(property='og:description', content='H2O makes Hadoop do Math! H2O scales statistics, machine learning and math over Big Data.  H2O keeps familiar interfaces like R, Excel & JSON so that big data enthusiasts and experts can explore, munge, model and score data sets using a range of simple to advanced algorithms.')
+link(rel='shortcut icon', href='/img/favicon.ico')
+link(rel='stylesheet', type='text/css', href='/assets/vendor/bootstrap/css/bootstrap.min.css', media='screen')
+link(rel='stylesheet', type='text/css', href='/assets/styles/icomoon.css', media='screen')
+link(rel='stylesheet', type='text/css', href='/assets/styles/font-awesome.min.css', media='screen')
+link(rel='stylesheet', type='text/css', href='/assets/styles/screen.css', media='screen')
+link(rel='stylesheet', type='text/css', href='/assets/styles/github.css', media='screen')
+
+
+//- Remove this TypeKit is used 
+//link(rel='stylesheet', type='text/css', href='/assets/styles/futura-mock.css', media='screen')
+//- /end Remove this TypeKit is used 
+
+<!-- TypeKit
+script(type='text/javascript' src='//use.typekit.net/wcb1ppg.js')
+script(type='text/javascript').
+  try{Typekit.load();}catch(e){}
+/end TypeKit -->
+
+<!--[if lte IE 8]>
+script(type='text/javascript').
+  (function() {
+    var html5elements = "address|article|aside|audio|canvas|command|datalist|details|dialog|figure|figcaption|footer|header|hgroup|keygen|mark|main|meter|menu|nav|progress|ruby|section|time|video".split('|');
+    for(var i = 0; i < html5elements.length; i++) {
+      document.createElement(html5elements[i]);
+    }
+  })();
+script(type='text/javascript', src='/assets/vendor/respond.min.js')
+<![endif]-->
+

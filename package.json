@@ -1,0 +1,39 @@
+{
+  "name": "0xdata.com",
+  "version": "0.0.0",
+  "description": "0xdata Public Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0xdata/0xdata.com.git"
+  },
+  "keywords": [
+    "0xdata.com",
+    "website"
+  ],
+  "author": "Prithvi Prabhu <prithvi@0xdata.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0xdata/0xdata.com/issues"
+  },
+  "homepage": "https://github.com/0xdata/0xdata.com",
+  "devDependencies": {
+    "highlight.js": "~8.2.0"
+  },
+  "dependencies": {
+    "escape-html": "~1.0.1",
+    "twit": "~1.1.18",
+    "coffee-script": "~1.7.1",
+    "jade": "~1.5.0",
+    "js-yaml": "~3.1.0",
+    "marked": "~0.3.2",
+    "fs-extra": "~0.10.0",
+    "connect": "~3.1.0",
+    "serve-static": "~1.5.0",
+    "dateformat": "~1.0.8-1.2.3",
+    "underscore": "~1.6.0"
+  }
+}

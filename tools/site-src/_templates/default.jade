@@ -1,0 +1,20 @@
+<!--[if IE 8]><html id="ie8" lang="en"><![endif]-->
+<!--[if IE 9]><html id="ie9" lang="en"><![endif]-->
+<!--[if !IE]><!-->
+html(lang="en")
+  <!--<![endif]-->
+  head
+    include head.jade
+
+  body.single
+    main.content
+      include header.jade
+
+      .container(class='path-#{page.path[0]}')
+        if page.title
+          h1= page.title
+        != page.content
+      
+    include footer.jade
+    include scripts.jade
+

@@ -1,7 +1,7 @@
-h2o-training
+H<sub>2</sub>O Training
 ============
 
-training material
+## Follow tutorials
 
 
 ## Build a site

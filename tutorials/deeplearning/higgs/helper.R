@@ -51,7 +51,6 @@ h2o.selectModel <- function(x) {
     train_auc = as.numeric(x[[1]]@model$auc),
     validation_auc = as.numeric(x[[5]]),
     important_feat = x[[6]],
-    #response = x[[3]],
     tuning_time_s = as.numeric(as.character(x[[4]])))
 }
 
@@ -61,7 +60,6 @@ h2o.leaderBoard <- function(models, test_hex, response) {
   model.list$validation_auc <- as.numeric(as.character(model.list$validation_auc))
   
   #### sort the models by AUC from worst to best
-#  models.sort.by.auc <- model.list[with(model.list, order(response, validation_auc)),-1]
   models.sort.by.auc <- model.list[with(model.list, order(validation_auc)),-1]
   models.sort.by.auc <- models.sort.by.auc[rev(rownames(models.sort.by.auc)),]
 

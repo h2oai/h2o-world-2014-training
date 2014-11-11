@@ -1,9 +1,9 @@
 # Higgs Particle Discovery with H2O Deep Learning
 
-######This tutorial shows how H2O can be used to classify particle detector events into Higgs bosons vs background noise.
+######This tutorial shows how H2O can be used to classify particle detector events into Higgs bosons vs background noise. It is both valid R and markdown code.
 #####![](images/higgs.png)
 ### HIGGS dataset and Deep Learning
-######We use the [UCI HIGGS](https://archive.ics.uci.edu/ml/datasets/HIGGS/) dataset with 11 million events and 28 features (21 low-level features and 7 humanly created non-linear derived features). In this tutorial, we show that (only) Deep Learning can automatically generate these high-level features on its own and reach highest accuracies from just the low-level features alone, outperforming traditional classifiers. Deep Learning also won the [Higgs Kaggle challenge](https://www.kaggle.com/c/higgs-boson/forums/t/10425/code-release).
+######We use (a subset of) the [UCI HIGGS](https://archive.ics.uci.edu/ml/datasets/HIGGS/) dataset with 11 million events and 28 features (21 low-level features and 7 humanly created non-linear derived features). In this tutorial, we show that (only) Deep Learning can automatically generate these or similar high-level features on its own and reach highest accuracies from just the low-level features alone, outperforming traditional classifiers. This is in accordance with a recently published Nature paper on using [Deep Learning for Higgs particle detection](http://www.slideshare.net/0xdata/how-to-win-data-science-competitions-with-deep-learning/33). Remarkably, Deep Learning also won the [Higgs Kaggle challenge](https://www.kaggle.com/c/higgs-boson/forums/t/10425/code-release) on the full set of features.
 
 
 
@@ -35,10 +35,14 @@
     low_level_predictors = c(2:22)
     low_and_high_level_predictors = c(2:29)
 
-### Establishing the baseline performance reference
-######To get a feel for the performance of different classifiers on this dataset, we train a variety of different H2O models (Generalized Linear Model, Random Forest, Gradient Boosted Machines and DeepLearning). We use grid-search for hyper-parameter tuning with N-fold cross-validation. We do this twice: once using just the low-level features, and once using both low- and high-level features. A few helper functions allow us to write simple code here and get a lot done quickly. The code below trains 30 models and presents a leaderboard of the best cross-validated models.
+### Establishing the baseline performance reference with several H2O classifiers
+######To get a feel for the performance of different classifiers on this dataset, we build a variety of different H2O models (Generalized Linear Model, Random Forest, Gradient Boosted Machines and DeepLearning). We would like to use grid-search for hyper-parameter tuning with N-fold cross-validation, and we want to do this twice: once using just the low-level features, and once using both low- and high-level features.
 
-    source("helper.R") #provides h2o.fit and h2o.leaderBoard functions
+######First, we source a few helper functions that allow us to quickly compare a multitude of binomial classification models, in particular the h2o.fit() and h2o.leaderBoard() functions.  Note that these specific functions require variable importances and N-fold cross-validation to be enabled.
+
+    source("helper.R") 
+
+######The code below trains 60 models (2 loops, 5 classifiers with 2 grid search models each, each resulting in 1 full training and 2 cross-validation models). A leaderboard scoring the best models per h2o.fit() function is displayed.
 
     best_model <- list()
     for (preds in list(low_level_predictors, low_and_high_level_predictors)) {
@@ -62,35 +66,130 @@
     
 ###### The output contains a leaderboard for the models using low-level features only:
     
-                           model_type       train_auc validation_auc         important_feat tuning_time_s
-    DeepLearning_b66c683b5 h2o.deeplearning 0.6893312      0.7129937        C7,C8,C2,C3,C11     23.248843
-    GBM_8dc7e2d1e9af4134ce h2o.gbm          0.6809625      0.6967311        C2,C7,C11,C5,C3     21.851729
-    DRF_bdf39041d97bd27952 h2o.randomForest 0.6628614      0.6747544       C7,C10,C2,C11,C5     27.094487
-    SpeeDRF_9f8d7b12e71cdc h2o.randomForest 0.6560579      0.6669454       C7,C10,C11,C2,C5     25.451095
-    GLMModel__9e1f194a999f h2o.glm          0.5878547      0.6018250 Intercept,C5,C7,C2,C14      1.421268
+######![](images/low-level.png)    
 
 ###### The leaderboard and AUC values change when using both low- and high-level features:
-    
-                           model_type       train_auc validation_auc      important_feat tuning_time_s
-    GBM_843035f744a4c7176b h2o.gbm          0.7934576      0.8025840  C27,C29,C28,C26,C7     30.110100
-    DeepLearning_8c0278d12 h2o.deeplearning 0.7785513      0.8008010 C27,C28,C24,C29,C26     26.387754
-    DRF_858682a5760320ccac h2o.randomForest 0.7765047      0.7826946  C27,C29,C28,C24,C7     36.408610
-    SpeeDRF_83e1d6903bdeef h2o.randomForest 0.7700895      0.7760240  C27,C29,C28,C24,C7     40.042133
-    GLMModel__9888b66c3f9d h2o.glm          0.6817290      0.6949037  C29,C28,C27,C24,C7      1.401122
+  
+######![](images/high-level.png)
 
-###### Clearly, the high-level features add a lot of predictive power. On this sample dataset and with simple models across the board, Deep Learning seems to have an edge over tree-based methods when using low-level features only, indicating that it is able to create useful high-level features on its own in a short amount of time.
+###### Clearly, the high-level features add a lot of predictive power, but what if they are not easily available? On this sampled dataset and with simple models, Deep Learning seems to have an edge over the other methods when using low-level features only, indicating that it is able to create useful high-level features on its own.
 
 ###### *Note:* Every run of DeepLearning results in different results since we use [Hogwild!](http://www.eecs.berkeley.edu/~brecht/papers/hogwildTR.pdf) parallelization with intentional race conditions between threads.  To get reproducible results at the expense of speed for small datasets, set reproducible=T and specify a seed.
 
 ### Build an improved Deep Learning model on the low-level features alone
-###### This time, we build a "reasonable" Deep Learning model on the train/validation splits directly (without parameter tuning, grid search or N-fold cross-validation):
-    h2o.deeplearning(x=low_level_predictors, y=response, activation="RectifierWithDropout", data=train_hex, validation=valid_hex,
-                     input_dropout_ratio=0, hidden_dropout_ratios=c(0.2,0.1,0), l1=1e-5, l2=1e-5, epochs=20, hidden=c(200,200,200))
-
-###### With a better Deep Learning model, we achieve train/validation AUCs of 0.76/0.72, a nice boost over the simple models above.
-AUC =  0.7683884 (on train) 
-
-AUC =  0.7254769 (on validation)     
+###### With slightly modified parameters, it is possible to build an even better Deep Learning model. We add dropout/L1/L2 regularization and increase the number of neurons and the number of hidden layers. Note that we don't use input layer dropout, as there are only 21 features, all of which are assumed to be present and important for particle detection. We also reduce the amount of dropout for derived features. Note that the importance of regularization typically goes down with increasing dataset sizes, as overfitting is less an issue when the model is small compared to the data.
     
-######Please note that this tutorial was on a small subsample (<1%) of the original dataset, and results are not comparable. Previous results by H2O Deep Learning on the full dataset (training on 10M rows, validation on 500k rows, testing on 500k rows) agree with a recently published Nature paper on using [Deep Learning for Higgs particle detection](http://www.slideshare.net/0xdata/how-to-win-data-science-competitions-with-deep-learning/33), where 5-layer H2O Deep Learning models have achieved test set AUC values of 0.869. We would love to hear about your best models!
+    h2o.deeplearning(x=low_level_predictors, y=response, activation="RectifierWithDropout", data=train_hex, 
+                     validation=valid_hex, input_dropout_ratio=0, hidden_dropout_ratios=c(0.2,0.1,0.1,0),
+                     l1=1e-5, l2=1e-5, epochs=20, hidden=c(200,200,200,200))
+   
+###### With this computationally slightly more expensive Deep Learning model, we achieve training/validation AUCs of around 0.78/0.72, a nice boost over the simple models above.
+    
+#####`AUC =  0.7830957 (on train)`
+#####`AUC =  0.7245833 (on validation)`    
+
+###Voila!
+#####We were able to show that H2O Deep Learning can create great models where automatic non-linear derived feature generation is required.
+
+######Please note that this tutorial was on a small subsample (<1%) of the original dataset, and results do not trivially extend to the full dataset. Previous results by H2O Deep Learning on the full dataset (training on 10M rows, validation on 500k rows, testing on 500k rows) agree with a recently published Nature paper on using [Deep Learning for Higgs particle detection](http://www.slideshare.net/0xdata/how-to-win-data-science-competitions-with-deep-learning/33), where 5-layer H2O Deep Learning models have achieved a test set AUC value of 0.869. We would love to hear about your best models!
+
 #### More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).
+
+### Appendix: Helper code
+#####For those interested, here's the helper code to facilitate model comparison from R:
+
+    TOP_FEATURES = 5
+    
+    h2o.get_auc <- function(model, data, response) {
+      pred <- h2o.predict(model, data)[,3]
+      perf <- h2o.performance(pred, data[,response])
+      perf@model$auc
+    }
+    
+    h2o.varimp <- function(algo, model) {
+      if (identical(algo, h2o.glm)) {
+        varimp <- paste(names(sort(abs(model@model$coefficients), TRUE))[1:TOP_FEATURES], collapse = ",", sep = ",")
+      } else if (identical(algo, h2o.randomForest) || identical(algo, h2o.deeplearning)) {
+        varimp <- paste(names(sort(model@model$varimp[1,], TRUE))[1:TOP_FEATURES], collapse = ",", sep = ",")
+      } else if (identical(algo, h2o.gbm)) {
+        varimp <- paste(rownames(model@model$varimp)[1:TOP_FEATURES], collapse = ",", sep = ",")
+      }
+      varimp
+    }
+    
+    h2o.validate <- function(t0, model, modeltype, validation, response, varimp) {
+      elapsed_seconds <- as.numeric(Sys.time()) - as.numeric(t0)
+      modelkey <- model@key
+      type <- modeltype
+      auc <- h2o.get_auc(model, validation, response)
+      result <- list(list(model, modeltype, response, elapsed_seconds, auc, varimp))
+      names(result) <- model@key
+      return(result)
+    }
+    
+    h2o.fit <- function(algo, data, args) {
+      t0 <- Sys.time()
+      predictors <- data$x
+      response <- data$y
+      train <- data$train
+      valid <- data$valid
+      nfolds <- data$nfolds
+      if (nfolds >= 0) {
+        model <- do.call(algo, modifyList(list(x=predictors, y=response, data=train, nfolds=nfolds), args))
+      } else {
+        model <- do.call(algo, modifyList(list(x=predictors, y=response, data=train), args))
+      }
+      if (.hasSlot(model,"sumtable")) {
+        model <- model@model[[1]]
+      }
+      return(h2o.validate(t0, model, as.character(substitute(algo)), valid, response, h2o.varimp(algo, model)))
+    }
+    
+    h2o.selectModel <- function(x) {
+      c(model_key = x[[1]]@key,
+        model_type = x[[2]],
+        train_auc = as.numeric(x[[1]]@model$auc),
+        validation_auc = as.numeric(x[[5]]),
+        important_feat = x[[6]],
+        tuning_time_s = as.numeric(as.character(x[[4]])))
+    }
+    
+    h2o.leaderBoard <- function(models, test_hex, response) {
+      model.list <- as.data.frame(t(as.data.frame(lapply(models, h2o.selectModel))))
+      model.list$train_auc <- as.numeric(as.character(model.list$train_auc))
+      model.list$validation_auc <- as.numeric(as.character(model.list$validation_auc))
+      
+      #### sort the models by AUC from worst to best
+      models.sort.by.auc <- model.list[with(model.list, order(validation_auc)),-1]
+      models.sort.by.auc <- models.sort.by.auc[rev(rownames(models.sort.by.auc)),]
+    
+      #### convert the `auc` and `tuning_time` columns into numerics
+      models.sort.by.auc$train_auc       <- as.numeric(as.character(models.sort.by.auc$train_auc))
+      models.sort.by.auc$validation_auc  <- as.numeric(as.character(models.sort.by.auc$validation_auc))
+      models.sort.by.auc$tuning_time_s   <- as.numeric(as.character(models.sort.by.auc$tuning_time_s))
+      
+      #### display the frame
+      print(models.sort.by.auc)
+      
+      #### score the best model on the test data
+      best_model <- h2o.getModel(h2oServer, rownames(models.sort.by.auc)[1])
+      preds <- h2o.predict(best_model, test_hex)
+      test_auc <- h2o.get_auc(best_model, test_hex, response)
+      
+      cat(paste(" -------------------------------\n",
+                "Best Model Performance On Final Testing Data:", "\n",
+                "AUC = ", round(test_auc,6), "\n",
+                "--------------------------------\n"))
+      
+      cat(paste(" =---------Summary------------=\n",
+                "Best model type: ", models.sort.by.auc[1,]$model_type, "\n",
+                "Best model AUC on test: ", round(test_auc,6), "\n",
+                "Top", TOP_FEATURES, "important features: ", models.sort.by.auc[1,]$important_feat, "\n",
+                "Model training time (incl. tuning, grid search): ", round(models.sort.by.auc[1,]$tuning_time_s,6), "seconds \n",
+                "Training data rows: ", nrow(train_hex), "\n",
+                "Training data cols: ", ncol(train_hex), "\n",
+                "Validation data rows: ", nrow(valid_hex), "\n",
+                "=----------------------------=\n"))
+      best_model
+    }
+

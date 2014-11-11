@@ -1,6 +1,6 @@
 # Anomaly Detection on MNIST with H2O Deep Learning
 
-######This tutorial shows how a Deep Learning [Auto-Encoder](http://en.wikipedia.org/wiki/Autoencoder) model can be used to find outliers in a dataset. We use the well-known [MNIST](http://yann.lecun.com/exdb/mnist/) dataset of hand-written digits, where each row contains the 28^2=784 raw gray-scale pixel values from 0 to 255 of the digitized digits (0 to 9). 
+######This tutorial shows how a Deep Learning [Auto-Encoder](http://en.wikipedia.org/wiki/Autoencoder) model can be used to find outliers in a dataset. It is both valid R and markdown code. We use the well-known [MNIST](http://yann.lecun.com/exdb/mnist/) dataset of hand-written digits, where each row contains the 28^2=784 raw gray-scale pixel values from 0 to 255 of the digitized digits (0 to 9). 
 
 ### Start H2O and load the MNIST data
 
@@ -58,39 +58,37 @@
 ######Let's plot the 25 digits with lowest reconstruction error. First we plot the reconstruction, then the original scanned images.
     
     plotDigits(test_recon, test_rec_error, c(1:25))
-
-#####![](images/good_recon.png)
-
     plotDigits(test_hex,   test_rec_error, c(1:25))
-    
-#####![](images/good_orig.png)
+
+#####![](images/good_both.png)
+######Clearly, a well-written digit 1 appears in both the training and testing set, and is easy to reconstruct by the autoencoder with minimal reconstruction error. Nothing is as easy as a straight line.
 
 ####The bad
-######Now the same for the 25 digits with median reconstruction error.
-    
+######Now let's look at the 25 digits with median reconstruction error.
+   
     plotDigits(test_recon, test_rec_error, c(4988:5012))
-
-#####![](images/bad_recon.png)
-
     plotDigits(test_hex,   test_rec_error, c(4988:5012))
-    
-#####![](images/bad_orig.png)
+
+#####![](images/bad_both.png)
+######These test set digits look "normal" - it is plausible that they resemble digits from the training data to a large extent, but they do have some particularities that cause some reconstruction error.
 
 ####The ugly
 ######And here are the biggest outliers - The 25 digits with highest reconstruction error!
 
     plotDigits(test_recon, test_rec_error, c(9976:10000))
-
-#####![](images/ugly_recon.png)
-
     plotDigits(test_hex,   test_rec_error, c(9976:10000))
 
-#####![](images/ugly_orig.png)
+#####![](images/ugly_both.png)
+######Now here are some pretty ugly digits that are plausibly not commonly found in the training data - some are even hard to classify by humans.
 
 ###Voila!
+#####We were able to find outliers with H2O Deep Learning Auto-Encoder models. We would love to hear your usecase for Anomaly detection.
 
 ######*Note:* Every run of DeepLearning results in different results since we use [Hogwild!](http://www.eecs.berkeley.edu/~brecht/papers/hogwildTR.pdf) parallelization with intentional race conditions between threads.  To get reproducible results at the expense of speed for small datasets, set reproducible=T and specify a seed.
 
+#### More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).
+
+### Appendix: Helper code
 ######For those interested, here's the helper code to visualize the digits. Inspired by [r-bloggers](http://www.r-bloggers.com/the-essence-of-a-handwritten-digit/).
 
 	 plotDigit <- function(mydata, rec_error) {
@@ -112,5 +110,3 @@
        my_data <- as.matrix(as.data.frame(data[row_idx,]))
        plotDigit(my_data, my_rec_error)
     }
-
-#### More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).

@@ -21,7 +21,6 @@
         train_hex <- h2o.assign(data_hex[random < .8,], "train_hex")
         valid_hex <- h2o.assign(data_hex[random >= .8 & random < .9,], "valid_hex")
         test_hex  <- h2o.assign(data_hex[random >= .9,], "test_hex")
-        h2o.rm(h2oServer, grep(pattern = "Last.value", x = h2o.ls(h2oServer)$Key, value = TRUE))
      }
     
 ######Yada
@@ -35,6 +34,18 @@
 
     source("helper.R")
 
+    freeMem <- function() {
+        h2o.rm(h2oServer, grep(pattern = "Last.value", x = h2o.ls(h2oServer)$Key, value = TRUE))
+    }
+    append <- function(data_hex, col) {
+      data_hex <- h2o.assign(cbind(data_hex, col), "data_hex")
+      data_hex
+    }
+    
+######Yada
+    glmparams <- list(family="binomial", variable_importances=T, lambda=1e-5, higher_accuracy=T, use_all_factor_levels=T, alpha=0.5)
+    gbmparams <- list(importance=TRUE)
+    
     runModel <- function(data_hex) {
       splitData(data_hex)
       train_hex <- h2o.getFrame(h2oServer, "train_hex")
@@ -45,41 +56,44 @@
       best_model <- list()
       data = list(x=predictors, y=response, train=train_hex, valid=valid_hex, nfolds=5) #helper object
       models <- c(
-        h2o.fit(h2o.glm, data, list(family="binomial", variable_importances=T, lambda=1e-5, use_all_factor_levels=T)),
-        h2o.fit(h2o.gbm, data, list(importance=TRUE))
+        h2o.fit(h2o.glm, data, glmparams),
+        h2o.fit(h2o.gbm, data, gbmparams)
       )
       best_model <- list(best_model, h2o.leaderBoard(models, test_hex, response))
-      h2o.rm(h2oServer, grep(pattern = "Last.value", x = h2o.ls(h2oServer)$Key, value = TRUE))
+      freeMem()
     }
+
     
     runModel(data_hex)
-
+    
 ####2. Turn integer columns into categoricals
 ######Age
  
-    data_hex$age <- as.factor(data_hex$age)
+    data_hex <- append(data_hex, as.factor(data_hex$age))
+    colnames(data_hex)
     summary(data_hex)
     runModel(data_hex)
 
-######Capital-gain/loss
- 
-    data_hex$'capital-gain' <- as.factor(data_hex$'capital-gain')
-    data_hex$'capital-loss' <- as.factor(data_hex$'capital-loss')
+######Same for capital-gain/loss and work hours per week
+    data_hex <- append(data_hex, as.factor(data_hex$'hours-per-week'))
+    data_hex <- append(data_hex, as.factor(data_hex$'capital-gain'))
+    data_hex <- append(data_hex, as.factor(data_hex$'capital-loss'))
+    colnames(data_hex)
     summary(data_hex)
     runModel(data_hex)
       
-######Hours per week
- 
-    data_hex$'hours-per-week' <- as.factor(data_hex$'hours-per-week')
-    summary(data_hex)
-    runModel(data_hex)
 
-####3. Interactions between categoricals
+
+####3. Add pair-wise interactions between selected factors
 ######Yada
  
-    factor_interactions <- h2o.interaction(data_hex, factors = c("sex","income","race","relationship","occupation"), pairwise = TRUE, max_factors = 100, min_occurrence = 1)
-    
-    data_hex <- cbind(data_hex, factor_interactions)
+    factor_interactions <- h2o.interaction(data_hex, factors = c("education","workclass","occupation"), pairwise = TRUE, max_factors = 1000, min_occurrence = 1)
+    data_hex <- append(data_hex, factor_interactions)
     colnames(data_hex)
     summary(data_hex)
+    runModel(data_hex)
+    
+######Update model parameters to better use of all factor levels
+    glmparams <- list(family="binomial", variable_importances=F, lambda=1e-6, higher_accuracy=T, use_all_factor_levels=T, alpha=1)
+    gbmparams <- list(importance=T, n.tree=20)
     runModel(data_hex)

@@ -2,7 +2,7 @@
 
 ######This tutorial shows how a Deep Learning [Auto-Encoder](http://en.wikipedia.org/wiki/Autoencoder) model can be used to find outliers in a dataset. We use the well-known [MNIST](http://yann.lecun.com/exdb/mnist/) dataset of hand-written digits, where each row contains the 28^2=784 raw gray-scale pixel values from 0 to 255 of the digitized digits (0 to 9). 
 
-### START H2O and load the MNIST data
+### Start H2O and load the MNIST data
 
 ######Initialize the H2O server and import the MNIST training/testing datasets.
 
@@ -89,7 +89,7 @@
 
 ###Voila!
 
-######Note that every run of DeepLearning results in different results since we use [Hogwild!](http://www.eecs.berkeley.edu/~brecht/papers/hogwildTR.pdf) parallelization with intentional race conditions between threads.  To get reproducible results, set reproducible=T and specify a seed.
+######*Note:* Every run of DeepLearning results in different results since we use [Hogwild!](http://www.eecs.berkeley.edu/~brecht/papers/hogwildTR.pdf) parallelization with intentional race conditions between threads.  To get reproducible results at the expense of speed for small datasets, set reproducible=T and specify a seed.
 
 ######For those interested, here's the helper code to visualize the digits. Inspired by [r-bloggers](http://www.r-bloggers.com/the-essence-of-a-handwritten-digit/).
 
@@ -113,3 +113,4 @@
        plotDigit(my_data, my_rec_error)
     }
 
+#### More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).

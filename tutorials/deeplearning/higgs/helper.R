@@ -51,8 +51,8 @@ h2o.selectModel <- function(x) {
     train_auc = as.numeric(x[[1]]@model$auc),
     validation_auc = as.numeric(x[[5]]),
     important_feat = x[[6]],
-    response = x[[3]],
-    train_time_s = as.numeric(as.character(x[[4]])))
+    #response = x[[3]],
+    tuning_time_s = as.numeric(as.character(x[[4]])))
 }
 
 h2o.leaderBoard <- function(models, test_hex, response) {
@@ -61,13 +61,14 @@ h2o.leaderBoard <- function(models, test_hex, response) {
   model.list$validation_auc <- as.numeric(as.character(model.list$validation_auc))
   
   #### sort the models by AUC from worst to best
-  models.sort.by.auc <- model.list[with(model.list, order(response, validation_auc)),-1]
+#  models.sort.by.auc <- model.list[with(model.list, order(response, validation_auc)),-1]
+  models.sort.by.auc <- model.list[with(model.list, order(validation_auc)),-1]
   models.sort.by.auc <- models.sort.by.auc[rev(rownames(models.sort.by.auc)),]
-  
-  #### convert the `auc` and `train_time` columns into numerics
+
+  #### convert the `auc` and `tuning_time` columns into numerics
   models.sort.by.auc$train_auc       <- as.numeric(as.character(models.sort.by.auc$train_auc))
   models.sort.by.auc$validation_auc  <- as.numeric(as.character(models.sort.by.auc$validation_auc))
-  models.sort.by.auc$train_time      <- as.numeric(as.character(models.sort.by.auc$train_time))
+  models.sort.by.auc$tuning_time_s   <- as.numeric(as.character(models.sort.by.auc$tuning_time_s))
   
   #### display the frame
   print(models.sort.by.auc)
@@ -79,16 +80,17 @@ h2o.leaderBoard <- function(models, test_hex, response) {
   
   cat(paste(" -------------------------------\n",
             "Best Model Performance On Final Testing Data:", "\n",
-            "AUC = ", test_auc, "\n",
+            "AUC = ", round(test_auc,6), "\n",
             "--------------------------------\n"))
   
   cat(paste(" =---------Summary------------=\n",
             "Best model type: ", models.sort.by.auc[1,]$model_type, "\n",
-            "Best model auc on test: ", test_auc, "\n",
+            "Best model AUC on test: ", round(test_auc,6), "\n",
             "Top", TOP_FEATURES, "important features: ", models.sort.by.auc[1,]$important_feat, "\n",
-            "Model training time: ", models.sort.by.auc[1,]$train_time_s, "\n",
+            "Model training time (incl. tuning, grid search): ", round(models.sort.by.auc[1,]$tuning_time_s,6), "seconds \n",
             "Training data rows: ", nrow(train_hex), "\n",
             "Training data cols: ", ncol(train_hex), "\n",
             "Validation data rows: ", nrow(valid_hex), "\n",
             "=----------------------------=\n"))
+  best_model
 }

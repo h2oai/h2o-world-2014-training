@@ -31,4 +31,7 @@ build/site-src:
 mrproper: clean
 	rm -rf node_modules/
 
+install: build
+	cp -r build/site/* /usr/share/doc/HTML
+
 .PHONY: build run clean test push build/site-src

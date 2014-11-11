@@ -1,6 +1,6 @@
 # Feature Engineering on the Adult dataset
 
-######This tutorial shows feature engineering on the [Adult dataset](https://archive.ics.uci.edu/ml/datasets/Adult). 
+######This tutorial shows feature engineering on the [Adult dataset](https://archive.ics.uci.edu/ml/datasets/Adult). This file is both valid R and markdown code.
 
 ### Start H2O and load the Adult data
 
@@ -95,5 +95,5 @@
     
 ######Update model parameters to better use of all factor levels
     glmparams <- list(family="binomial", variable_importances=F, lambda=1e-6, higher_accuracy=T, use_all_factor_levels=T, alpha=1)
-    gbmparams <- list(importance=T, n.tree=20)
+    gbmparams <- list(importance=T)
     runModel(data_hex)

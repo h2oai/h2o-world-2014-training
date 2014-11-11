@@ -15,15 +15,6 @@ clean:
 node_modules: package.json
 	npm install
 
-test:
-	s3cmd sync --dry-run --delete-removed --acl-public --exclude-from s3.exclude build/site s3://0xdata.com/
-
-stage:
-	s3cmd sync --delete-removed --acl-public --exclude-from s3.exclude build/site s3://stage.0xdata.com/
-
-push:
-	s3cmd sync --delete-removed --acl-public --exclude-from s3.exclude build/site s3://0xdata.com/
-
 build/site-src: 
 	rsync -rupE tools/site-src build/
 	rsync -rupE tutorials/ build/site-src/
@@ -31,7 +22,8 @@ build/site-src:
 mrproper: clean
 	rm -rf node_modules/
 
-install: build
-	cp -r build/site/* /usr/share/doc/HTML
+install:
+	rm -rf /opt/h2o-training
+	cp -r build/site/ /opt/h2o-training
 
 .PHONY: build run clean test push build/site-src

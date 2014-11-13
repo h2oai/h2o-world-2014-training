@@ -44,7 +44,7 @@
 
 ######First, we source a few [helper functions](../binaryClassificationHelper.R.html) that allow us to quickly compare a multitude of binomial classification models, in particular the h2o.fit() and h2o.leaderBoard() functions.  Note that these specific functions require variable importances and N-fold cross-validation to be enabled.
 
-    setwd("~/h2o-training/tutorials/advanced/binaryClassificationHelper.R.md")
+    source("~/h2o-training/tutorials/advanced/binaryClassificationHelper.R.md")
 
 ######The code below trains 60 models (2 loops, 5 classifiers with 2 grid search models each, each resulting in 1 full training and 2 cross-validation models). A leaderboard scoring the best models per h2o.fit() function is displayed.
 
@@ -71,23 +71,23 @@
     
 ###### The output contains a leaderboard for the models using low-level features only:
     
-                            model_type       train_auc validation_auc   important_feat tuning_time_s
-    DeepLearning_9a2dd3a846 h2o.deeplearning 0.6909744      0.7060038  C7,C2,C8,C11,C3      23.94024
-    GBM_a20e9d91d1ab33b6400 h2o.gbm          0.6820483      0.6989960  C2,C7,C5,C11,C8      24.87261
-    DRF_96a06bc768bcc85babd h2o.randomForest 0.6600548      0.6757778 C7,C10,C2,C5,C11      26.90430
-    SpeeDRF_b21561bc8cba724 h2o.randomForest 0.6556743      0.6671028 C7,C10,C2,C11,C5      25.85618
-    GLMModel__9f0b3b5ff7c0e h2o.glm          0.5907724      0.5893810 C5,C7,C14,C2,C10       1.51739
+    #                         model_type       train_auc validation_auc   important_feat tuning_time_s
+    # DeepLearning_9a2dd3a846 h2o.deeplearning 0.6909744      0.7060038  C7,C2,C8,C11,C3      23.94024
+    # GBM_a20e9d91d1ab33b6400 h2o.gbm          0.6820483      0.6989960  C2,C7,C5,C11,C8      24.87261
+    # DRF_96a06bc768bcc85babd h2o.randomForest 0.6600548      0.6757778 C7,C10,C2,C5,C11      26.90430
+    # SpeeDRF_b21561bc8cba724 h2o.randomForest 0.6556743      0.6671028 C7,C10,C2,C11,C5      25.85618
+    # GLMModel__9f0b3b5ff7c0e h2o.glm          0.5907724      0.5893810 C5,C7,C14,C2,C10       1.51739
 
 ###### Note that training AUCs are based on cross-validation.
 
 ###### The leaderboard and AUC values change when using both low- and high-level features:
   
-                           model_type       train_auc validation_auc      important_feat tuning_time_s
-    GBM_9647e233fef8390613 h2o.gbm          0.7924853      0.8011630  C27,C29,C28,C26,C7     33.057591
-    DeepLearning_adeba5781 h2o.deeplearning 0.7828873      0.7925650 C27,C28,C24,C29,C26     27.162411
-    DRF_a57b6a8a88bdb50195 h2o.randomForest 0.7741214      0.7827786  C27,C29,C28,C24,C7     30.392976
-    SpeeDRF_a0122d9098768e h2o.randomForest 0.7724537      0.7754862  C27,C29,C28,C7,C24     35.074110
-    GLMModel__8f8f369d5f19 h2o.glm          0.6827518      0.6764049  C29,C28,C27,C7,C24      1.414389
+    #                        model_type       train_auc validation_auc      important_feat tuning_time_s
+    # GBM_9647e233fef8390613 h2o.gbm          0.7924853      0.8011630  C27,C29,C28,C26,C7     33.057591
+    # DeepLearning_adeba5781 h2o.deeplearning 0.7828873      0.7925650 C27,C28,C24,C29,C26     27.162411
+    # DRF_a57b6a8a88bdb50195 h2o.randomForest 0.7741214      0.7827786  C27,C29,C28,C24,C7     30.392976
+    # SpeeDRF_a0122d9098768e h2o.randomForest 0.7724537      0.7754862  C27,C29,C28,C7,C24     35.074110
+    # GLMModel__8f8f369d5f19 h2o.glm          0.6827518      0.6764049  C29,C28,C27,C7,C24      1.414389
 
 ###### Clearly, the high-level features add a lot of predictive power, but what if they are not easily available? On this sampled dataset and with simple models, Deep Learning seems to have an edge over the other methods when using low-level features only, indicating that it is able to create useful high-level features on its own.
 

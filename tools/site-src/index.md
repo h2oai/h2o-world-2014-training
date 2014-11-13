@@ -24,7 +24,7 @@
 ### 3.5 Advanced Topics
  * [Arno - Deep Learning](deeplearning/deeplearning.R.html)
  * [Arno - Multi-model parameter tuning for Higgs dataset](advanced/higgs/higgs.R.html)
- * [Arno - Categorical feature engineering for Adult dataset](advanced/adult/adult.R.html)
+ * [Arno - Categorical feature engineering for Adult dataset](advanced/features/features.R.html)
  * [Arno - Other useful tools](advanced/tools/tools.R.html)
 
 ### 3.6 Yan: Marketing Algorithms and Use-Cases

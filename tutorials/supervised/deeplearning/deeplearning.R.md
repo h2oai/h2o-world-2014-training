@@ -71,14 +71,13 @@
     dlmodel_restart_again <- h2o.deeplearning(x=c(1:784), y=785, data=train_hex, validation=test_hex,
                                 checkpoint = dlmodel_loaded, epochs=2)
 
-######To get world-class results, run the following command on your cluster (takes a few hours)
+###World-class results on MNIST
+######To reproduce best-of-class results on MNIST (test set error of less than 0.9%), run the following command on your cluster (takes a few hours):
 
-    model <- h2o.deeplearning(x = c(1:784), y = 785, 
-                              data = train_hex, validation = test_hex,
-                              activation = "RectifierWithDropout",
-                              train_samples_per_iteration = 1000000,
-                              hidden = c(1024,1024,2048), l1 = 1e-5,
-                              input_dropout_ratio = 0.2, epochs = 2000)
+    model <- h2o.deeplearning(x = c(1:784), y = 785, data = train_hex, validation = test_hex,
+                              activation = "RectifierWithDropout", hidden = c(1024,1024,2048),
+                              epochs = 2000, l1 = 1e-5, input_dropout_ratio = 0.2,
+                              train_samples_per_iteration = 1000000, classification_stop = -1)
                               
 ###Regression
 ######If the response column is numeric and non-integer, regression is enabled by default.  For integer response columns, as in this case, you have to specify `classification=FALSE` to force regression.  In that case, there will be only 1 output neuron, and the loss function and error metric will automatically switch to the MSE (mean square error).

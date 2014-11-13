@@ -20,12 +20,12 @@
 ### 3.4 Unsupervised Learning
  * [Arno/Spencer - K-Means clustering](unsupervised/clustering/clustering.R.html)
  * [Arno - Dimensionality Reduction on MNIST](unsupervised/dimreduction/dimreduction.R.html)
- * [Arno - Anomaly detection with H2O Deep Learning](unsupervised/anomaly/anomaly.R.html)
+ * [Arno - Anomaly detection on MNIST with H2O Deep Learning](unsupervised/anomaly/anomaly.R.html)
 
 ### 3.5 Advanced Topics
  * [Arno - Multi-model parameter tuning for Higgs dataset](advanced/higgs/higgs.R.html)
  * [Arno - Categorical feature engineering for Adult dataset](advanced/adult/adult.R.html)
- * [Arno - Useful tools](advanced/tools/tools.R.html)
+ * [Arno - Other useful tools](advanced/tools/tools.R.html)
 
 ### 3.6 Yan: Marketing Algorithms and Use-Cases
 

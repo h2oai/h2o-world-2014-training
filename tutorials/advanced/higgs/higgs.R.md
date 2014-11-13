@@ -44,8 +44,7 @@
 
 ######First, we source a few [helper functions](../binaryClassificationHelper.R.html) that allow us to quickly compare a multitude of binomial classification models, in particular the h2o.fit() and h2o.leaderBoard() functions.  Note that these specific functions require variable importances and N-fold cross-validation to be enabled.
 
-    setwd("~/h2o-training/tutorials/advanced/higgs")
-    source("../binaryClassificationHelper.R.md") 
+    setwd("~/h2o-training/tutorials/advanced/binaryClassificationHelper.R.md")
 
 ######The code below trains 60 models (2 loops, 5 classifiers with 2 grid search models each, each resulting in 1 full training and 2 cross-validation models). A leaderboard scoring the best models per h2o.fit() function is displayed.
 
@@ -101,14 +100,11 @@
                      validation=valid_hex, input_dropout_ratio=0, hidden_dropout_ratios=c(0.2,0.1,0.1,0),
                      l1=1e-5, l2=1e-5, epochs=20, hidden=c(200,200,200,200))
    
-###### With this computationally slightly more expensive Deep Learning model, we achieve training/validation AUCs of around 0.78/0.72, a nice boost over the simple models above.
-    
-#####`AUC =  0.7830957 (on train)`
-#####`AUC =  0.7245833 (on validation)`    
+###### With this computationally slightly more expensive Deep Learning model, we achieve a nice boost over the simple models above: `AUC =  0.7245833 (on validation)`    
 
 ###Voila!
 #####We were able to show that H2O Deep Learning can create great models where automatic non-linear derived feature generation is required.
 
-######Please note that this tutorial was on a small subsample (<1%) of the original dataset, and results do not trivially extend to the full dataset. Previous results by H2O Deep Learning on the full dataset (training on 10M rows, validation on 500k rows, testing on 500k rows) agree with a recently published Nature paper on using [Deep Learning for Higgs particle detection](http://www.slideshare.net/0xdata/how-to-win-data-science-competitions-with-deep-learning/33), where 5-layer H2O Deep Learning models have achieved a test set AUC value of 0.869. We would love to hear about your best models!
+#####Please note that this tutorial was on a small subsample (<1%) of the original dataset, and results do not trivially extend to the full dataset. Previous results by H2O Deep Learning on the full dataset (training on 10M rows, validation on 500k rows, testing on 500k rows) agree with a recently published Nature paper on using [Deep Learning for Higgs particle detection](http://www.slideshare.net/0xdata/how-to-win-data-science-competitions-with-deep-learning/33), where 5-layer H2O Deep Learning models have achieved a test set AUC value of 0.869. We would love to hear about your best models!
 
 #### More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).

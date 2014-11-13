@@ -22,12 +22,10 @@
     summary(data_hex$income)
     response = "income"
 
+######First, we source a few [helper functions](../binaryClassificationHelper.R.html) that allow us to quickly compare a multitude of binomial classification models, in particular the h2o.fit() and h2o.leaderBoard() functions.  Note that these specific functions require variable importances and N-fold cross-validation to be enabled.
 
-####First, we source some helper code that allows us to compare models.
-    
     setwd("~/h2o-training/tutorials/advanced/adult")
     source("../binaryClassificationHelper.R.md") 
-
     
 ###### We then add this simple helper function to split a frame into train/valid/test pieces, train a GLM and a GBM model with 2-fold cross-validation and obtaining the best model after printing a leaderbaord. For more accurate
 

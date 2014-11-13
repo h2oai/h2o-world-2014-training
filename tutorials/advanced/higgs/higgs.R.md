@@ -20,6 +20,10 @@
     homedir <- paste0(path.expand("~"),"/Higgs/") #modify if needed
     TRAIN = "higgs.100k.csv.gz"
     data_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TRAIN), header = F, sep = ',', key = 'data_hex')
+    
+###### For small datasets, it can help to rebalance the dataset into more chunks to keep all cores busy
+
+    data_hex <- h2o.rebalance(data_hex, chunks=64, key='data_hex.rebalanced')
 
 ###### Prepare train/validation/test splits: We split the dataset randomly into 3 pieces. Grid search for hyperparameter tuning and model selection will be done on the training and validation sets, and final model testing is done on the test set. We also assign the resulting frames to meaningful names in the H2O key-value store for later use, and clean up all temporaries at the end.
 
@@ -38,15 +42,15 @@
 ### Establishing the baseline performance reference with several H2O classifiers
 ######To get a feel for the performance of different classifiers on this dataset, we build a variety of different H2O models (Generalized Linear Model, Random Forest, Gradient Boosted Machines and DeepLearning). We would like to use grid-search for hyper-parameter tuning with N-fold cross-validation, and we want to do this twice: once using just the low-level features, and once using both low- and high-level features.
 
-######First, we source a few helper functions that allow us to quickly compare a multitude of binomial classification models, in particular the h2o.fit() and h2o.leaderBoard() functions.  Note that these specific functions require variable importances and N-fold cross-validation to be enabled.
+######First, we source a few [helper functions](../binaryClassificationHelper.R.html) that allow us to quickly compare a multitude of binomial classification models, in particular the h2o.fit() and h2o.leaderBoard() functions.  Note that these specific functions require variable importances and N-fold cross-validation to be enabled.
 
+    setwd("~/h2o-training/tutorials/advanced/higgs")
     source("../binaryClassificationHelper.R.md") 
 
 ######The code below trains 60 models (2 loops, 5 classifiers with 2 grid search models each, each resulting in 1 full training and 2 cross-validation models). A leaderboard scoring the best models per h2o.fit() function is displayed.
 
     N_FOLDS=2
     
-    best_model <- list()
     for (preds in list(low_level_predictors, low_and_high_level_predictors)) {
       data = list(x=preds, y=response, train=train_hex, valid=valid_hex, nfolds=N_FOLDS)
       
@@ -62,17 +66,29 @@
         h2o.fit(h2o.deeplearning, data, 
                 list(variable_importances=T, l1=c(1e-5), epochs=10, hidden=list(c(20,20,20), c(100,100))))
       )
-      best_model <- list(best_model, h2o.leaderBoard(models, test_hex, response))
+      best_model <- h2o.leaderBoard(models, test_hex, response)
       h2o.rm(h2oServer, grep(pattern = "Last.value", x = h2o.ls(h2oServer)$Key, value = TRUE))
     }
     
 ###### The output contains a leaderboard for the models using low-level features only:
     
-######![](images/low-level.png)    
+                            model_type       train_auc validation_auc   important_feat tuning_time_s
+    DeepLearning_9a2dd3a846 h2o.deeplearning 0.6909744      0.7060038  C7,C2,C8,C11,C3      23.94024
+    GBM_a20e9d91d1ab33b6400 h2o.gbm          0.6820483      0.6989960  C2,C7,C5,C11,C8      24.87261
+    DRF_96a06bc768bcc85babd h2o.randomForest 0.6600548      0.6757778 C7,C10,C2,C5,C11      26.90430
+    SpeeDRF_b21561bc8cba724 h2o.randomForest 0.6556743      0.6671028 C7,C10,C2,C11,C5      25.85618
+    GLMModel__9f0b3b5ff7c0e h2o.glm          0.5907724      0.5893810 C5,C7,C14,C2,C10       1.51739
+
+###### Note that training AUCs are based on cross-validation.
 
 ###### The leaderboard and AUC values change when using both low- and high-level features:
   
-######![](images/high-level.png)
+                           model_type       train_auc validation_auc      important_feat tuning_time_s
+    GBM_9647e233fef8390613 h2o.gbm          0.7924853      0.8011630  C27,C29,C28,C26,C7     33.057591
+    DeepLearning_adeba5781 h2o.deeplearning 0.7828873      0.7925650 C27,C28,C24,C29,C26     27.162411
+    DRF_a57b6a8a88bdb50195 h2o.randomForest 0.7741214      0.7827786  C27,C29,C28,C24,C7     30.392976
+    SpeeDRF_a0122d9098768e h2o.randomForest 0.7724537      0.7754862  C27,C29,C28,C7,C24     35.074110
+    GLMModel__8f8f369d5f19 h2o.glm          0.6827518      0.6764049  C29,C28,C27,C7,C24      1.414389
 
 ###### Clearly, the high-level features add a lot of predictive power, but what if they are not easily available? On this sampled dataset and with simple models, Deep Learning seems to have an edge over the other methods when using low-level features only, indicating that it is able to create useful high-level features on its own.
 
@@ -96,6 +112,3 @@
 ######Please note that this tutorial was on a small subsample (<1%) of the original dataset, and results do not trivially extend to the full dataset. Previous results by H2O Deep Learning on the full dataset (training on 10M rows, validation on 500k rows, testing on 500k rows) agree with a recently published Nature paper on using [Deep Learning for Higgs particle detection](http://www.slideshare.net/0xdata/how-to-win-data-science-competitions-with-deep-learning/33), where 5-layer H2O Deep Learning models have achieved a test set AUC value of 0.869. We would love to hear about your best models!
 
 #### More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).
-
-### Appendix: Helper code
-#####For those interested, here's a link to the [helper code](../binaryClassificationHelper.R.html) to facilitate model comparison from R.

@@ -54,12 +54,12 @@
     summary(test_features_deep)
 
 ####3. Visualize the *good*, the *bad* and the *ugly*
-######We will need a helper function for plotting handwritten digits (adapted from http://www.r-bloggers.com/the-essence-of-a-handwritten-digit/)
+######We will need a helper function for plotting handwritten digits (adapted from http://www.r-bloggers.com/the-essence-of-a-handwritten-digit/). Don't worry if you don't follow this code...
 
     plotDigit <- function(mydata, rec_error) {
       len<-nrow(mydata)
       N<-ceiling(sqrt(len))
-      par(mfrow=c(N,N),pty='s',mar=c(1,1,1,1),xaxt='n',yaxt='n')
+      op <- par(mfrow=c(N,N),pty='s',mar=c(1,1,1,1),xaxt='n',yaxt='n')
       for (i in 1:nrow(mydata)) {
         colors<-c('white','black')
         cus_col<-colorRampPalette(colors=colors)
@@ -67,6 +67,7 @@
         z<-z[,28:1]
         image(1:28,1:28,z,main=paste0("rec_error: ", round(rec_error[i],4)),col=cus_col(256))
       }
+      on.exit(par(op))
     }
     
     plotDigits <- function(data, rec_error, rows) {

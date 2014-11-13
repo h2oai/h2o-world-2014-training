@@ -24,14 +24,14 @@
     train_hex <- train_hex[,-resp]
     test_hex <- test_hex[,-resp]
 
-###### Let's look at the principal components of the MNIST data
+###### Let's compute at the principal components of the MNIST data, and plot the standard deviations of the principal components (i.e., the square roots of the eigenvalues of the covariance/correlation matrix).
 
     pca_model <- h2o.prcomp(train_hex)
     plot(pca_model@model$sdev)
 
 #####![](images/mnist_pca_sdev.png)
     
-###### To reduce the dimensionality of MNIST into its 50 principal components, we use the h2o.predict() function with an extra argument `num_pc`:
+###### To reduce the dimensionality of MNIST to its 50 principal components, we use the h2o.predict() function with an extra argument `num_pc`:
 
     test_features_pca <- h2o.predict(pca_model, test_hex, num_pc=50)
     summary(test_features_pca)

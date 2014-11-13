@@ -80,6 +80,12 @@
 ######Let's look at the test set points with low/median/high reconstruction errors. We will now visualize the original test set points and their reconstructions obtained by propagating them through the narrow neural net.
   
     test_recon <- h2o.predict(ae_model, test_hex)
+    
+######Since the reconstructions are in the standardized space
+
+    for (col in 1:ncol(data_reconstr)) {
+      data_reconstr[,col] <- h2o.exec(h2oServer, expr=test_recon[,col] - min(test_recon[,col]))
+    }
   
 ####The good
 ######Let's plot the 25 digits with lowest reconstruction error. First we plot the reconstruction, then the original scanned images.

@@ -7,13 +7,11 @@
 ######Initialize the H2O server and import the MNIST training/testing datasets.
 
     library(h2o)
-    h2oServer <- h2o.init()
+    h2oServer <- h2o.init(nthreads=-1)
     homedir <- paste0(path.expand("~"),"/h2o/") #modify if needed
-    TRAIN = "smalldata/mnist/train.csv.gz"
-    TEST = "smalldata/mnist/test.csv.gz"
-    train_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TRAIN), header = F, sep = ',', key = 'train.hex')
-    test_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TEST), header = F, sep = ',', key = 'test.hex')
- 
+    DATA = "smalldata/mnist/train.csv.gz"
+    data_hex <- h2o.importFile(h2oServer, path = paste0(homedir,DATA), header = F, sep = ',', key = 'train.hex')
+    
 ######The data consists of 784 (=28^2) pixel values per row, with (gray-scale) values from 0 to 255. The last column is the response (a label in 0,1,2,...,9).
  
     predictors = c(1:784)
@@ -21,18 +19,39 @@
 
 ######We do unsupervised training, so we can drop the response column.
 
-    train_hex <- train_hex[,-resp]
-    test_hex <- test_hex[,-resp]
+    data_hex <- data_hex[,-resp]
+
+### PCA - Principle Components Analysis
 
 ###### Let's compute at the principal components of the MNIST data, and plot the standard deviations of the principal components (i.e., the square roots of the eigenvalues of the covariance/correlation matrix).
 
-    pca_model <- h2o.prcomp(train_hex)
+    pca_model <- h2o.prcomp(data_hex)
     plot(pca_model@model$sdev)
 
 #####![](images/mnist_pca_sdev.png)
     
 ###### To reduce the dimensionality of MNIST to its 50 principal components, we use the h2o.predict() function with an extra argument `num_pc`:
 
-    test_features_pca <- h2o.predict(pca_model, test_hex, num_pc=50)
-    summary(test_features_pca)
+    features_pca <- h2o.predict(pca_model, data_hex, num_pc=50)
+    summary(features_pca)
+   
+### Deep Learning Autoencoder
+
+    ae_model <- h2o.deeplearning(x=predictors,
+                                y=42, #ignored (pick any non-constant predictor)
+                                data_hex,
+                                activation="Tanh",
+                                autoencoder=T,
+                                hidden=c(100,50,100),
+                                epochs=1,
+                                ignore_const_cols = F)
     
+###### We can now convert the data with the autoencoder model to 50-dimensional space (second hidden layer)
+
+    features_ae <- h2o.deepfeatures(data_hex, ae_model, layer=2)
+    summary(features_ae)
+
+###### To get the full reconstruction from the output layer of the autoencoder, use h2o.predict() as follows
+
+    data_reconstr <- h2o.predict(ae_model, data_hex)
+    summary(data_reconstr)

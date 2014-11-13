@@ -28,6 +28,7 @@
 ######We train a Deep Learning Auto-Encoder to learn a compressed (low-dimensional) non-linear representation of the dataset, hence learning the intrinsic structure of the training dataset. The auto-encoder model is then used to transform all test set images to their reconstructed images, by passing through the lower-dimensional neural network. We then find outliers in a test dataset by comparing the reconstruction of each scanned digit with its original pixel values. The idea is that a high reconstruction error of a digit indicates that the test set point doesn't conform to the structure of the training data and can hence be called an outlier.
 
 ####1. Learn what's *normal* from the training data
+
 ######Train unsupervised Deep Learning autoencoder model on the training dataset. For simplicity, we train a model with 1 hidden layer of 50 Tanh neurons (should be less than 784 for it to compress), and train for 1 epoch (one pass over the data). We explicitly include constant columns (all white background) for the visualization to be easier.
 
     ae_model <- h2o.deeplearning(x=predictors,
@@ -43,8 +44,14 @@
 ####2. Find outliers in the test data
 ######The Anomaly app computes the per-row reconstruction error for the test data set. It passes it through the autoencoder model (built on the training data) and computes mean square error (MSE) for each row in the test set.
  
-      test_rec_error <- as.data.frame(h2o.anomaly(test_hex, ae_model))
-  
+    test_rec_error <- as.data.frame(h2o.anomaly(test_hex, ae_model))
+      
+
+######In case you wanted to see the lower-dimensional features created by the auto-encoder deep learning model, here's a way to extract them for a given dataset. This a non-linear dimensionality reduction, similar to PCA, but the values are capped by the activation function (in this case, they range from -1...1)
+
+    test_features_deep <- h2o.deepfeatures(test_hex, ae_model, layer=1)
+    summary(test_features_deep)
+
 ####3. Visualize the *good*, the *bad* and the *ugly*
 ######We will need a helper function for plotting handwritten digits (adapted from http://www.r-bloggers.com/the-essence-of-a-handwritten-digit/)
  

@@ -40,13 +40,15 @@
 
 ######First, we source a few helper functions that allow us to quickly compare a multitude of binomial classification models, in particular the h2o.fit() and h2o.leaderBoard() functions.  Note that these specific functions require variable importances and N-fold cross-validation to be enabled.
 
-    source("helper.R") 
+    source("../helper.R") 
 
 ######The code below trains 60 models (2 loops, 5 classifiers with 2 grid search models each, each resulting in 1 full training and 2 cross-validation models). A leaderboard scoring the best models per h2o.fit() function is displayed.
 
+    N_FOLDS=2
+    
     best_model <- list()
     for (preds in list(low_level_predictors, low_and_high_level_predictors)) {
-      data = list(x=preds, y=response, train=train_hex, valid=valid_hex, nfolds=2) #helper object
+      data = list(x=preds, y=response, train=train_hex, valid=valid_hex, nfolds=N_FOLDS)
       
       models <- c(
         h2o.fit(h2o.glm, data, 

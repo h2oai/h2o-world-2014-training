@@ -7,7 +7,7 @@
 ######Initialize the H2O server and import the MNIST training/testing datasets.
 
     library(h2o)
-    h2oServer <- h2o.init()
+    h2oServer <- h2o.init(nthreads=-1)
     homedir <- paste0(path.expand("~"),"/h2o/") #modify if needed
     TRAIN = "smalldata/mnist/train.csv.gz"
     TEST = "smalldata/mnist/test.csv.gz"
@@ -29,7 +29,7 @@
 
 ####1. Learn what's *normal* from the training data
 
-######Train unsupervised Deep Learning autoencoder model on the training dataset. For simplicity, we train a model with 1 hidden layer of 50 Tanh neurons to create 50 non-linear features with which to reconstruct the original dataset.  We saw in the Dimensionality Reduction tutorial that 50 is a reasonable choice. For simplicity, we train the auto-encoder for only 1 epoch (one pass over the data). We explicitly include constant columns (all white background) for the visualization to be easier.
+######Train unsupervised Deep Learning autoencoder model on the training dataset. For simplicity, we train a model with 1 hidden layer of 50 Tanh neurons to create 50 non-linear features with which to reconstruct the original dataset.  We learned from the Dimensionality Reduction tutorial that 50 is a reasonable choice. For simplicity, we train the auto-encoder for only 1 epoch (one pass over the data). We explicitly include constant columns (all white background) for the visualization to be easier.
 
     ae_model <- h2o.deeplearning(x=predictors,
                                y=42, #response (ignored - pick any non-constant column)
@@ -80,13 +80,8 @@
 ######Let's look at the test set points with low/median/high reconstruction errors. We will now visualize the original test set points and their reconstructions obtained by propagating them through the narrow neural net.
   
     test_recon <- h2o.predict(ae_model, test_hex)
-    
-######Since the reconstructions are in the standardized space
+    summary(test_recon)
 
-    for (col in 1:ncol(data_reconstr)) {
-      data_reconstr[,col] <- h2o.exec(h2oServer, expr=test_recon[,col] - min(test_recon[,col]))
-    }
-  
 ####The good
 ######Let's plot the 25 digits with lowest reconstruction error. First we plot the reconstruction, then the original scanned images.
     

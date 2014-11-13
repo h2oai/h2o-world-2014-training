@@ -29,7 +29,7 @@
 
 ####1. Learn what's *normal* from the training data
 
-######Train unsupervised Deep Learning autoencoder model on the training dataset. For simplicity, we train a model with 1 hidden layer of 50 Tanh neurons (should be less than 784 for it to compress), and train for 1 epoch (one pass over the data). We explicitly include constant columns (all white background) for the visualization to be easier.
+######Train unsupervised Deep Learning autoencoder model on the training dataset. For simplicity, we train a model with 1 hidden layer of 50 Tanh neurons to create 50 non-linear features with which to reconstruct the original dataset.  We saw in the Dimensionality Reduction tutorial that 50 is a reasonable choice. For simplicity, we train the auto-encoder for only 1 epoch (one pass over the data). We explicitly include constant columns (all white background) for the visualization to be easier.
 
     ae_model <- h2o.deeplearning(x=predictors,
                                y=42, #response (ignored - pick any non-constant column)
@@ -39,6 +39,7 @@
                                hidden=c(50),
                                ignore_const_cols=F,
                                epochs=1)
+                               
 ######Note that the response column is ignored (it is only required because of a shared DeepLearning code framework).
   
 ####2. Find outliers in the test data
@@ -54,9 +55,27 @@
 
 ####3. Visualize the *good*, the *bad* and the *ugly*
 ######We will need a helper function for plotting handwritten digits (adapted from http://www.r-bloggers.com/the-essence-of-a-handwritten-digit/)
- 
-    source("helper.R")
-  
+
+    plotDigit <- function(mydata, rec_error) {
+      len<-nrow(mydata)
+      N<-ceiling(sqrt(len))
+      par(mfrow=c(N,N),pty='s',mar=c(1,1,1,1),xaxt='n',yaxt='n')
+      for (i in 1:nrow(mydata)) {
+        colors<-c('white','black')
+        cus_col<-colorRampPalette(colors=colors)
+        z<-array(mydata[i,],dim=c(28,28))
+        z<-z[,28:1]
+        image(1:28,1:28,z,main=paste0("rec_error: ", round(rec_error[i],4)),col=cus_col(256))
+      }
+    }
+    
+    plotDigits <- function(data, rec_error, rows) {
+      row_idx <- order(rec_error[,1],decreasing=F)[rows]
+      my_rec_error <- rec_error[row_idx,]
+      my_data <- as.matrix(as.data.frame(data[row_idx,]))
+      plotDigit(my_data, my_rec_error)
+    }
+      
 ######Let's look at the test set points with low/median/high reconstruction errors. We will now visualize the original test set points and their reconstructions obtained by propagating them through the narrow neural net.
   
     test_recon <- h2o.predict(ae_model, test_hex)
@@ -94,26 +113,3 @@
 ######*Note:* Every run of DeepLearning results in different results since we use [Hogwild!](http://www.eecs.berkeley.edu/~brecht/papers/hogwildTR.pdf) parallelization with intentional race conditions between threads.  To get reproducible results at the expense of speed for small datasets, set reproducible=T and specify a seed.
 
 #### More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).
-
-### Appendix: Helper code
-######For those interested, here's the helper code to visualize the digits. Inspired by [r-bloggers](http://www.r-bloggers.com/the-essence-of-a-handwritten-digit/).
-
-	 plotDigit <- function(mydata, rec_error) {
-	   len<-nrow(mydata)
-	   N<-ceiling(sqrt(len))
-	   par(mfrow=c(N,N),pty='s',mar=c(1,1,1,1),xaxt='n',yaxt='n')
-        for (i in 1:nrow(mydata)) {
-        colors<-c('white','black')
-        cus_col<-colorRampPalette(colors=colors)
-        z<-array(mydata[i,],dim=c(28,28))
-        z<-z[,28:1]
-        image(1:28,1:28,z,main=paste0("rec_error: ", round(rec_error[i],4)),col=cus_col(256))
-      }
-    }
-
-    plotDigits <- function(data, rec_error, rows) {
-       row_idx <- order(rec_error[,1],decreasing=F)[rows]
-       my_rec_error <- rec_error[row_idx,]
-       my_data <- as.matrix(as.data.frame(data[row_idx,]))
-       plotDigit(my_data, my_rec_error)
-    }

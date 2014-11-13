@@ -1,32 +1,31 @@
-# H<sub>2</sub>O World Training
+# H2O World Training
 
 
-## 1. Sri: Introduction into H<sub>2</sub>
+## 1. Sri: Introduction to H2O
 
-## 2. Tom: H<sub>2</sub>O in Big Data environments
+## 2. Tom: H2O in Big Data environments
 
 ## 3. Hands-On
 
-### 3.1 H<sub>2</sub>O with web UI
+### 3.1 H2O with Web UI
 
-### 3.2 H<sub>2</sub>O in R
+### 3.2 H2O in R
 
-### 3.3 Supervised Learning - regressiong and classificaiton
+### 3.3 Supervised Learning - Regression and Classification
  * [Patrick - GLM](glm/glm.R.html)
  * [Patrick - Random Forest](randomforest/randomforest.R.html)
  * [Patrick - GBM](gbm/gbm.R.html)
  * [Arno - Deep Learning](deeplearning/deeplearning.R.html)
 
 ### 3.4 Unsupervised Learning
- * [? - K-Means clustering](clustering/clustering.R.html)
- * [? - Principal Components Analysis](pca/pca.R.html)
- * [Arno - Anomaly detection with Deep Learning on MNIST dataset](deeplearning/anomaly/anomaly.R.html)
+ * [Arno/Spencer - K-Means clustering](unsupervised/clustering/clustering.R.html)
+ * [Arno - Dimensionality Reduction on MNIST](unsupervised/dimreduction/dimreduction.R.html)
+ * [Arno - Anomaly detection with H2O Deep Learning](unsupervised/anomaly/anomaly.R.html)
 
-### 3.5 Advanced Topics - Deep Learning et al.
+### 3.5 Advanced Topics
  * [Arno - Multi-model parameter tuning for Higgs dataset](advanced/higgs/higgs.R.html)
  * [Arno - Categorical feature engineering for Adult dataset](advanced/adult/adult.R.html)
  * [Arno - Useful tools](advanced/tools/tools.R.html)
-
 
 ### 3.6 Yan: Marketing Algorithms and Use-Cases
 

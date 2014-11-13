@@ -7,7 +7,7 @@
 ######Initialize the H2O server and import the Adult dataset.
 
     library(h2o)
-    h2oServer <- h2o.init()
+    h2oServer <- h2o.init(nthreads=-1)
     homedir <- paste0(path.expand("~"),"/h2o/") #modify if needed
     TRAIN = "smalldata/adult.gz"
     data_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TRAIN), header = F, sep = ' ', key = 'data_hex')
@@ -117,4 +117,4 @@
     
     glmparams <- list(family="binomial", variable_importances=F, lambda=1e-5, alpha=c(0.01,0.25,0.5,0.75,0.99), higher_accuracy=T, use_all_factor_levels=T)
     gbmparams <- list(importance=T, n.tree=2, balance.classes=T)
-    h2o.trainModels(data_hex)
+    best_model <- h2o.trainModels(data_hex)

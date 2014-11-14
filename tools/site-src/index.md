@@ -56,11 +56,13 @@
 ### 4.2 Spencer/Tom[DEMO]: Real-time prediction with H2O and Storm
  - needs screencast
 
-### 3.9 Michal: Sparkling water - H2O + Spark
+## 5. Cliff: Hackers station
 
-## 4. Cliff: Hackers station
+### Start developing with H<sub>2</sub>O
 
-## 
- * link to 0xdata FAQ (include it on 
+### Start with Sparkling Water
+  * [Sparkling Water Tutorial](devel/sparkling_water/sparkling_water.md)
 
-
+## 6. Troubleshooting
+ * link to 0xdata FAQ (include it here)
+ 

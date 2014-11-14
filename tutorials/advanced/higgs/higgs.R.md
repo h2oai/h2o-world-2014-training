@@ -17,7 +17,7 @@
 
 ###### Import the data: For simplicity, we use a reduced dataset containing the first 100k rows.
 
-    homedir <- paste0(path.expand("~"),"/Higgs/") #modify if needed
+    homedir <- "/data/h2o-training/higgs/"
     TRAIN = "higgs.100k.csv.gz"
     data_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TRAIN), header = F, sep = ',', key = 'data_hex')
     

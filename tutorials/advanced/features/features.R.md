@@ -8,8 +8,8 @@
 
     library(h2o)
     h2oServer <- h2o.init(nthreads=-1)
-    homedir <- paste0(path.expand("~"),"/h2o/") #modify if needed
-    TRAIN = "smalldata/adult.gz"
+    homedir <- "/data/h2o-training/adult/"
+    TRAIN = "adult.gz"
     data_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TRAIN), header = F, sep = ' ', key = 'data_hex')
 
 ######We manually assign column names since they are missing in the original file.

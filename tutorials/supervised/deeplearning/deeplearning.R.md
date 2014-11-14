@@ -8,9 +8,9 @@
 
     library(h2o)
     h2oServer <- h2o.init(nthreads=-1)
-    homedir <- paste0(path.expand("~"),"/h2o/") #modify if needed
-    TRAIN = "smalldata/mnist/train.csv.gz"
-    TEST = "smalldata/mnist/test.csv.gz"
+    homedir <- "/data/h2o-training/mnist/"
+    TRAIN = "train.csv.gz"
+    TEST = "test.csv.gz"
     train_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TRAIN), header = F, sep = ',', key = 'train.hex')
     test_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TEST), header = F, sep = ',', key = 'test.hex')
  

@@ -8,8 +8,8 @@
 
     library(h2o)
     h2oServer <- h2o.init(nthreads=-1)
-    homedir <- paste0(path.expand("~"),"/h2o/") #modify if needed
-    DATA = "smalldata/mnist/train.csv.gz"
+    homedir <- "/data/h2o-training/mnist/"
+    DATA = "train.csv.gz"
     data_hex <- h2o.importFile(h2oServer, path = paste0(homedir,DATA), header = F, sep = ',', key = 'train.hex')
     
 ######The data consists of 784 (=28^2) pixel values per row, with (gray-scale) values from 0 to 255. The last column is the response (a label in 0,1,2,...,9).

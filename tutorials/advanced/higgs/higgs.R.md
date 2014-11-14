@@ -57,39 +57,39 @@
         h2o.fit(h2o.glm, data, 
                 list(family="binomial", variable_importances=T, lambda=c(1e-5,1e-4), use_all_factor_levels=T)),
         h2o.fit(h2o.randomForest, data, 
-                list(type="fast", importance=TRUE, ntree=c(20), depth=c(10,15))),
+                list(type="fast", importance=TRUE, ntree=c(5), depth=c(5,10))),
         h2o.fit(h2o.randomForest, data, 
-                list(type="BigData", importance=TRUE, ntree=c(20), depth=c(10,15))),
+                list(type="BigData", importance=TRUE, ntree=c(5), depth=c(5,10))),
         h2o.fit(h2o.gbm, data, 
-                list(importance=TRUE, n.tree=c(50), interaction.depth=c(5,10))),
+                list(importance=TRUE, n.tree=c(10), interaction.depth=c(2,5))),
         h2o.fit(h2o.deeplearning, data, 
-                list(variable_importances=T, l1=c(1e-5), epochs=10, hidden=list(c(20,20,20), c(100,100))))
+                list(variable_importances=T, l1=c(1e-5), epochs=1, hidden=list(c(10,10,10), c(100,100))))
       )
       best_model <- h2o.leaderBoard(models, test_hex, response)
       h2o.rm(h2oServer, grep(pattern = "Last.value", x = h2o.ls(h2oServer)$Key, value = TRUE))
     }
     
-###### The output contains a leaderboard for the models using low-level features only:
+###### The output contains a leaderboard (based on validation AUC) for the models using low-level features only:
     
-    #                         model_type       train_auc validation_auc   important_feat tuning_time_s
-    # DeepLearning_9a2dd3a846 h2o.deeplearning 0.6909744      0.7060038  C7,C2,C8,C11,C3      23.94024
-    # GBM_a20e9d91d1ab33b6400 h2o.gbm          0.6820483      0.6989960  C2,C7,C5,C11,C8      24.87261
-    # DRF_96a06bc768bcc85babd h2o.randomForest 0.6600548      0.6757778 C7,C10,C2,C5,C11      26.90430
-    # SpeeDRF_b21561bc8cba724 h2o.randomForest 0.6556743      0.6671028 C7,C10,C2,C11,C5      25.85618
-    # GLMModel__9f0b3b5ff7c0e h2o.glm          0.5907724      0.5893810 C5,C7,C14,C2,C10       1.51739
+    #                                        model_type train_auc validation_auc    important_feat tuning_time_s
+    #    DeepLearning_ba44837829dc8d1e h2o.deeplearning 0.6102486      0.6661170  C7,C3,C10,C11,C2      5.604354
+    #    GBM_8aad39d45442ed2418646fac4 h2o.gbm          0.6393795      0.6483558  C7,C2,C5,C10,C11      3.379146
+    #    DRF_b64f1aca48cfa9532f78408df h2o.randomForest 0.6358507      0.6439986  C7,C10,C2,C5,C11      4.423504
+    #    SpeeDRF_a40eda3fe25b1271b6be8 h2o.randomForest 0.5977397      0.6000200 C11,C7,C5,C10,C14      3.381785
+    #    GLMModel__9f5855ebfcb804a1664 h2o.glm          0.5907724      0.5893810  C5,C7,C14,C2,C10      1.422024
 
 ###### Note that training AUCs are based on cross-validation.
 
 ###### The leaderboard and AUC values change when using both low- and high-level features:
   
-    #                        model_type       train_auc validation_auc      important_feat tuning_time_s
-    # GBM_9647e233fef8390613 h2o.gbm          0.7924853      0.8011630  C27,C29,C28,C26,C7     33.057591
-    # DeepLearning_adeba5781 h2o.deeplearning 0.7828873      0.7925650 C27,C28,C24,C29,C26     27.162411
-    # DRF_a57b6a8a88bdb50195 h2o.randomForest 0.7741214      0.7827786  C27,C29,C28,C24,C7     30.392976
-    # SpeeDRF_a0122d9098768e h2o.randomForest 0.7724537      0.7754862  C27,C29,C28,C7,C24     35.074110
-    # GLMModel__8f8f369d5f19 h2o.glm          0.6827518      0.6764049  C29,C28,C27,C7,C24      1.414389
+    #                                       model_type train_auc validation_auc     important_feat tuning_time_s
+    #    DeepLearning_a7cb0d0cc6f6fb8 h2o.deeplearning 0.7280887      0.7586982 C27,C29,C28,C24,C7      6.663959
+    #    GBM_bc87169c331b22e37339c643 h2o.gbm          0.7552951      0.7545594 C27,C29,C28,C7,C24      4.437348
+    #    DRF_b3572d5d088a043addcb3684 h2o.randomForest 0.7467827      0.7534905 C27,C29,C28,C24,C7      6.636395
+    #    SpeeDRF_ba048cb60c3aad567b17 h2o.randomForest 0.7274115      0.7301433 C27,C28,C29,C7,C24      5.516673
+    #    GLMModel__b59d95ace34a2979da h2o.glm          0.6827518      0.6764049 C29,C28,C27,C7,C24      1.523096
 
-###### Clearly, the high-level features add a lot of predictive power, but what if they are not easily available? On this sampled dataset and with simple models, Deep Learning seems to have an edge over the other methods when using low-level features only, indicating that it is able to create useful high-level features on its own.
+###### Clearly, the high-level features add a lot of predictive power, but what if they are not easily available? On this sampled dataset and with simple models, when using low-level features only, Deep Learning seems to have an edge over the other methods indicating that it is able to create useful high-level features on its own.
 
 ###### *Note:* Every run of DeepLearning results in different results since we use [Hogwild!](http://www.eecs.berkeley.edu/~brecht/papers/hogwildTR.pdf) parallelization with intentional race conditions between threads.  To get reproducible results at the expense of speed for small datasets, set reproducible=T and specify a seed.
 

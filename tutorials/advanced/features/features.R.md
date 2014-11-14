@@ -80,7 +80,7 @@
     summary(data_hex)
     best_model <- h2o.trainModels(data_hex)
 
-###### GLM clearly benefitted from this. We see that ages 18,19 and 20 are among the most important predictors for income and we get the following validation AUC values: `GLM: 0.9066634 GBM: 0.9009924`
+###### GLM clearly benefited from this. We see that ages 18,19 and 20 are among the most important predictors for income and we get the following validation AUC values: `GLM: 0.9066634 GBM: 0.9009924`
 
 ###### For fun, let's look at the largest positively and negatively correlated coefficients:
     head(sort(best_model@model$normalized_coefficients,decreasing=T),5)

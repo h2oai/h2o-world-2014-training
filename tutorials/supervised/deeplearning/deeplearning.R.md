@@ -38,7 +38,7 @@
 ######Most parameters in Deep Learning are "grid-able":
 
     grid_search <- h2o.deeplearning(x = c(1:784), y=785, data=train_hex, validation=test_hex, epochs=0.1,
-                                    activation=c("Tanh", "Rectifier"), l1=c(0,1e-5), l2=c(0,1e-5))
+                                    activation=c("Tanh", "Rectifier"), l1=c(0,1e-5))
                                 
 ######Let's see which parameters "won":
 
@@ -48,13 +48,12 @@
     best_params <- best_model@model$params
     best_params$activation
     best_params$l1
-    best_params$l2
     
 ###Checkpointing
-######Let's continue training the best model, for 2 more epochs
+######Let's continue training the best model, for 2 more epochs. Note that since many parameters such as `epochs, l1, l2, max_w2, score_interval, train_samples_per_iteration, target_ratio_comm_to_comp, score_duty_cycle, classification_stop, regression_stop, variable_importances, force_load_balance` can be modified between checkpoint restarts, it is best to specify as many parameters as possible explicitly.
 
     dlmodel_restart <- h2o.deeplearning(x=c(1:784), y=785, data=train_hex, validation=test_hex,
-                                checkpoint = best_model, epochs=2)
+                                checkpoint = best_model, l1=best_params$l1, epochs=0.5)
 
     dlmodel_restart@model$valid_class_error
 
@@ -69,7 +68,7 @@
 ######Of course, you can continue training this model as well (with the same `x`, `y`, `data`, `validation`)
 
     dlmodel_restart_again <- h2o.deeplearning(x=c(1:784), y=785, data=train_hex, validation=test_hex,
-                                checkpoint = dlmodel_loaded, epochs=2)
+                                checkpoint = dlmodel_loaded, l1=best_params$l1, epochs=0.5)
 
 ###World-class results on MNIST
 ######To get test set errors of less than 1% on MNIST, run the following command on your cluster (takes a few hours):
@@ -78,12 +77,14 @@
                               activation = "RectifierWithDropout", hidden = c(1024,1024,2048),
                               epochs = 1000, l1 = 1e-5, input_dropout_ratio = 0.2,
                               train_samples_per_iteration = -1, classification_stop = -1)
-                              
+
+######Note: results are not 100% reproducible and depend on the number of nodes, cores, etc. Sometimes, it helps to run the initial convergence with more train_samples_per_iteration (automatic values of -2 or -1 are good choices), and then continue from a checkpoint with a smaller number (automatic value of 0 or a number less than the total number of training rows are good choices here).
+
 ###Regression
 ######If the response column is numeric and non-integer, regression is enabled by default.  For integer response columns, as in this case, you have to specify `classification=FALSE` to force regression.  In that case, there will be only 1 output neuron, and the loss function and error metric will automatically switch to the MSE (mean square error).
 
     regression_model <- h2o.deeplearning(x = c(1:784), y=785, data=train_hex, validation=test_hex, epochs=1, 
-                                         classification=F)
+                                         classification=FALSE)
 
 ######Let's look at the model summary, and the training and validation set MSE values:
 
@@ -96,18 +97,11 @@
 ###Important Tips & Tricks
 
 #### Override with best model
-
-#### Dropout - when to use
-
-#### Adaptive learning rate - defaults ok (try epsilon/rho grid search)
+######By default, `override_with_best_model` is set to TRUE and the model returned at the end of model building (after specified number of epochs or after reaching the specified limits of convergence) is the model that has the best training set error, or, if a validation set is provided, the lowest validation set error.
 
 #### train_samples_per_iteration
 
-#### score_validation_samples - reduce
-
-#### balance_classes
-
-####Variable Importances
+#### score_validation_samples
 
 #### Lift
 

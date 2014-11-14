@@ -80,7 +80,7 @@
 
 ###### Note that training AUCs are based on cross-validation.
 
-###### The leaderboard and AUC values change when using both low- and high-level features:
+###### When using both low- and high-level features, the AUC values go up across the board:
   
     #                                       model_type train_auc validation_auc     important_feat tuning_time_s
     #    DeepLearning_a7cb0d0cc6f6fb8 h2o.deeplearning 0.7280887      0.7586982 C27,C29,C28,C24,C7      6.663959
@@ -89,7 +89,7 @@
     #    SpeeDRF_ba048cb60c3aad567b17 h2o.randomForest 0.7274115      0.7301433 C27,C28,C29,C7,C24      5.516673
     #    GLMModel__b59d95ace34a2979da h2o.glm          0.6827518      0.6764049 C29,C28,C27,C7,C24      1.523096
 
-###### Clearly, the high-level features add a lot of predictive power, but what if they are not easily available? On this sampled dataset and with simple models, when using low-level features only, Deep Learning seems to have an edge over the other methods indicating that it is able to create useful high-level features on its own.
+###### Clearly, the high-level features add a lot of predictive power, but what if they are not easily available? On this sampled dataset and with simple models from low-level features alone, Deep Learning seems to have an edge over the other methods indicating that it is able to create useful high-level features on its own.
 
 ###### *Note:* Every run of DeepLearning results in different results since we use [Hogwild!](http://www.eecs.berkeley.edu/~brecht/papers/hogwildTR.pdf) parallelization with intentional race conditions between threads.  To get reproducible results at the expense of speed for small datasets, set reproducible=T and specify a seed.
 
@@ -103,8 +103,9 @@
 ###### With this computationally slightly more expensive Deep Learning model, we achieve a nice boost over the simple models above: `AUC =  0.7245833 (on validation)`    
 
 ###Voila!
-#####We were able to show that H2O Deep Learning can create great models where automatic non-linear derived feature generation is required.
+#####We applied multi-model grid search with N-fold cross-valiation on the real-world Higgs dataset, and demonstrated the power of H2O Deep Learning in automatically cerating non-linear derived features for highest predictive accuracy!
 
-#####Please note that this tutorial was on a small subsample (<1%) of the original dataset, and results do not trivially extend to the full dataset. Previous results by H2O Deep Learning on the full dataset (training on 10M rows, validation on 500k rows, testing on 500k rows) agree with a recently published Nature paper on using [Deep Learning for Higgs particle detection](http://www.slideshare.net/0xdata/how-to-win-data-science-competitions-with-deep-learning/33), where 5-layer H2O Deep Learning models have achieved a test set AUC value of 0.869. We would love to hear about your best models!
+####Extension to the full dataset
+#####Please note that this tutorial was on a small subsample (<1%) of the [UCI HIGGS dataset](https://archive.ics.uci.edu/ml/datasets/HIGGS/), and results do not trivially transfer from small samples to the full dataset. Previous results by H2O Deep Learning on the full dataset (training on 10M rows, validation on 500k rows, testing on 500k rows) agree with a recently published Nature paper on using [Deep Learning for Higgs particle detection](http://www.slideshare.net/0xdata/how-to-win-data-science-competitions-with-deep-learning/33), where 5-layer H2O Deep Learning models have achieved a test set AUC value of 0.869. We would love to hear about your best models or even ensembles!
 
 #### More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).

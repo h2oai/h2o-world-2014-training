@@ -155,6 +155,19 @@
 
     log_wagp_glm_best <- log_wagp_glm_grid@model[[5L]]@models[[10L]]
 
+### Fit a gaussian regression with a log link function
+
+    wagp_glm_grid <- h2o.glm(x = c("RELP_SCHL", addpredset), y = "WAGP",
+                             data = adult_2013_train,
+                             key  = "log_wagp_glm_grid",
+                             family = "gaussian",
+                             link   = "log",
+                             lambda_search = TRUE,
+                             nlambda = 10,
+                             return_all_lambda = TRUE,
+                             alpha = c(0, 0.25, 0.5, 0.75, 1))
+    wagp_glm_grid
+
 ### Fit a gradient boosting machine regression model
 
     log_wagp_gbm_grid <- h2o.gbm(x = c("RELP", "SCHL", addpredset),

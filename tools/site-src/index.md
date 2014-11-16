@@ -1,4 +1,4 @@
-# H2O World Training
+# H<sub>2</sub>O World Training
 
 ## 0. Michal: VM Setup 
  - needs a document (paper)

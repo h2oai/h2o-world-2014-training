@@ -14,7 +14,7 @@ This tutorial shows how to create a [Storm](https://storm.apache.org/) topology 
 
 In this tutorial, we explore a combined modeling and streaming workflow as seen in the picture below:
 
-![](h2o_storm.png)
+![](images/h2o_storm.png)
 
 We produce a GBM model by running H2O and emitting a Java POJO used for scoring.  The POJO is very lightweight and does not depend on any other libraries, not even H2O.  As such, the POJO is perfect for embedding into third-party environments, like a Storm bolt.
 
@@ -356,14 +356,14 @@ Once storm is built, open up your favorite IDE to start building the h2o streami
 To import the storm project into your IntelliJ please follow these screenshots:
 
 Click on "Import Project" and find the storm repo. Select storm and click "OK"  
-![](ij_1.png)
+![](images/ij_1.png)
 
 Import the project from extrenal model using Maven, click "Next"  
-![](ij_2.png)
+![](images/ij_2.png)
 
 
 Ensure that "Import Maven projects automatically" check box is clicked (it's off by default), click "Next"  
-![](ij_3.png)
+![](images/ij_3.png)
 
 That's it! Now click through the remaining prompts (Next -> Next -> Finish).
 
@@ -373,7 +373,7 @@ Once inside the project, open up *examples/storm-starter/test/jvm/storm.starter*
 
 The topology we've prepared has one spout [TestH2ODataSpout]() and [two bolts]() (a "Score Bolt" and a "Classifier Bolt"). Please copy the pre-built bolts and spout into the *test* directory in IntelliJ. Your project should now look like this:
 
-![](ij_4.png)
+![](images/ij_4.png)
 
 
 ## 6.  Copying the generated POJO files into a Storm bolt build environment
@@ -383,16 +383,16 @@ We are now ready to import the H2O pieces into the IntelliJ project. We'll need 
 To import the *h2o-model.jar* into your IntelliJ project, please follow these screenshots:
 
 File > Project Structure…  
-![](ij_6.png)
+![](images/ij_6.png)
 
 Click the "+" to add a new dependency  
-![](ij_7.png)
+![](images/ij_7.png)
 
 Click on Jars or directories…  
-![](ij_8.png)
+![](images/ij_8.png)
 
 Find the h2o-model.jar that we previously downloaded with the R script in [section 4](#RPOJO)
-![](ij_9.png)
+![](images/ij_9.png)
 
 Click "OK"", then "Apply", then "OK".
 
@@ -400,7 +400,7 @@ You now have the h2o-model.jar as a depencny in your project.
 
 We now copy over the POJO from [section 4](#RPOJO) into our storm project. Your project directory should look like this:
 
-![](ij_10.png)
+![](images/ij_10.png)
 
 In order to use the GBMPojo class, we add a bolt to our H2OStormStarter wich has the following code:
 
@@ -441,10 +441,10 @@ In order to use the GBMPojo class, we add a bolt to our H2OStormStarter wich has
 
 Finally, we can run the topology by right-clicking on H2OStormStarter and running. Here's a screen shot of what that looks like:
 
-![](ij_11.png)
+![](images/ij_11.png)
 
 ## 8.  Watching predictions in real-time
-![](cats_n_dogs.png)
+![](images/cats_n_dogs.png)
 
 
 ## References

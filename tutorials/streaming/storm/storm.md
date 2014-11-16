@@ -86,7 +86,7 @@ Let's take a look at a small piece of the training_data.csv file for a moment.  
 `$ head training_data.csv`  
 
 ```
-"Label","NumberOfLegs","CoatColor","HairLength","TailLength","EnjoysPlay","StairsOutWindow","HoursSpentNapping","RespondsToCommands","EasilyFrightened","Age", "Noise1", "Noise2", "Noise3", "Noise4", "Noise5"
+"Label","Has4Legs","CoatColor","HairLength","TailLength","EnjoysPlay","StairsOutWindow","HoursSpentNapping","RespondsToCommands","EasilyFrightened","Age", "Noise1", "Noise2", "Noise3", "Noise4", "Noise5"
 dog,1,White,0,3,1,0,2,1,1,8,0.207813357003033,0.369364158017561,0.857980248518288,0.609498742735013,0.099459623452276
 dog,1,Brown,0,2,1,1,3,1,1,10,0.652755315881222,0.123430503997952,0.63592501427047,0.945240517612547,0.752638266654685
 dog,1,Spotted,0,8,1,1,2,1,1,19,0.120261456118897,0.875902567990124,0.748564072418958,0.94046531803906,0.831317493226379
@@ -348,7 +348,7 @@ The DOMAINS array contains information about the level names of categorical colu
 ## 7.  Running a Storm topology with your model deployed
 
 ## 8.  Watching predictions in real-time
-
+![](cats_n_dogs.png)
 
 
 ## References

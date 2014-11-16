@@ -58,10 +58,12 @@
 
 ## 5. Cliff: Hackers station
 
+### Contribute to H<sub>2</sub>
+
 ### Start developing with H<sub>2</sub>O
 
 ### Start with Sparkling Water
-  * [Sparkling Water Tutorial](devel/sparkling_water/sparkling_water.md)
+  * [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 6. Troubleshooting
  * link to 0xdata FAQ (include it here)

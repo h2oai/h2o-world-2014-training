@@ -165,6 +165,7 @@
   
     mean((h2o.predict(regression_model, train_hex)-train_hex[,785])^2)
     mean((h2o.predict(regression_model, test_hex)-test_hex[,785])^2)
+    h2o.mse(h2o.predict(regression_model, test_hex), test_hex[,785])
 
 ###### The difference in the training MSEs is because only a subset of the training set was used for scoring during model building (10k rows), see section "Scoring on Training/Validation Sets During Training" below.
 
@@ -182,7 +183,7 @@
 ###### The N individual cross-validation models can be accessed as well:
 
     dlmodel@xval
-    for (i in 1:5) print(dlmodel@xval[[i]]@model$valid_class_error)
+    sapply(dlmodel@xval, function(x) (x@model$valid_class_error))
 
 #####Cross-Validation is especially useful for hyperparameter optimizations such as grid searches.
 
@@ -226,7 +227,7 @@
 ######This parameter is explained in Section 2.2.4 of the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S), and becomes important in multi-node operation.
 
 ####Categorical Data
-######For categorical data, the factor levels are automatically one-hot encoded (horizontalized), so the input neuron layer can grow substantially for datasets with high factor counts. In these cases, it might make sense to reduce the number of hidden neurons in the first hidden layer, such that millions of factor levels can be handled. In the limit of 1 neuron in the first hidden layer, the resulting model is similar to logistic regression with stochastic gradient descent, except that for classification problems, there's still a softmax output layer, and that the activation function is not necessarily a sigmoid (`Tanh`). If you are interested in variable importances, it is recommended to turn on `use_all_factor_levels`, otherwise the  factor level with the highest count is omitted ("cat","dog","mouse" can be )
+######For categorical data, a feature with K factor levels is automatically one-hot encoded (horizontalized) into K-1 input neurons. Hence, the input neuron layer can grow substantially for datasets with high factor counts. In these cases, it might make sense to reduce the number of hidden neurons in the first hidden layer, such that large numbers of factor levels can be handled. In the limit of 1 neuron in the first hidden layer, the resulting model is similar to logistic regression with stochastic gradient descent, except that for classification problems, there's still a softmax output layer, and that the activation function is not necessarily a sigmoid (`Tanh`). If variable importances are computed, it is recommended to turn on `use_all_factor_levels` (K input neurons for K levels). The experimental option `max_categorical_features` uses feature hashing to reduce the number of input neurons via the hash trick at the expense of hash collisions and reduced accuracy.
 
 ####Missing Values
 ######H2O Deep Learning automatically does mean imputation for missing values during training (leaving the input layer activation at 0 after standardizing the values). For testing, missing test set values are also treated the same way by default. See the `h2o.impute` function to do your own mean imputation.

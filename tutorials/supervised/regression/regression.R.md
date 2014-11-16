@@ -37,7 +37,7 @@
 
 ### Load the h2o R package and start an local H2O cluster
 
-###### We will begin this tutorial by starting a local H2O cluster using up to 1 GB of Java heap storage and as much compute as the operating system will allow.
+###### We will begin this tutorial by starting a local H2O cluster using the default heap size and as much compute as the operating system will allow.
 
     library(h2o)
     h2oServer <- h2o.init(nthreads = -1)

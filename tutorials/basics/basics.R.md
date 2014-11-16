@@ -4,7 +4,7 @@
 
 ### Load the h2o R package and start an local H2O cluster
 
-###### Connection to an H2O cloud is established through the `h2o.init` function from the `h2o` package. For the purposes of this training exercise, we will use a local H2O cluster running on the default port of `54321`. We will also use the default cluster memory size of 1 GB and set `nthreads = -1` to make all the CPUs available to the H2O cluster.
+###### Connection to an H2O cloud is established through the `h2o.init` function from the `h2o` package. For the purposes of this training exercise, we will use a local H2O cluster running on the default port of `54321`. We will also use the default cluster memory size and set `nthreads = -1` to make all the CPUs available to the H2O cluster.
 
     library(h2o)
     h2oServer <- h2o.init(nthreads = -1)

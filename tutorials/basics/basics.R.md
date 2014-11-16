@@ -11,7 +11,7 @@
 
 ### Load data into the key-value store in the H2O cluster
 
-###### This example uses a 10% sample of the Person-Level 1% 2013 Public Use Microdata Sample (PUMS) from United States Census Bureau, making it a Person-Level 0.1% 2013 PUMS. We will use the `h2o.importFile` function to read the data into the H2O key-value store.
+###### This tutorial uses a 10% sample of the Person-Level 1% 2013 Public Use Microdata Sample (PUMS) from United States Census Bureau, making it a Person-Level 0.1% 2013 PUMS. We will use the `h2o.importFile` function to read the data into the H2O key-value store.
 
     datadir <- "/data"
     pumsdir <- file.path(datadir, "h2o-training", "pums2013")

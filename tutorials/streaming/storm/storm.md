@@ -383,7 +383,7 @@ We are now ready to import the H2O pieces into the IntelliJ project. We'll need 
 To import the *h2o-model.jar* into your IntelliJ project, please follow these screenshots:
 
 File > Project Structure…  
-![](iJ_6.png)
+![](ij_6.png)
 
 Click the "+" to add a new dependency  
 ![](ij_7.png)

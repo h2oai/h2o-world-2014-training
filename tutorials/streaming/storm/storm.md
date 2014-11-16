@@ -39,6 +39,8 @@ This tutorial walks you through the following sequence:
 `$ git clone https://github.com/apache/storm.git`  
 `$ git clone https://github.com/0xdata/h2o-training.git`  
 
+* *NOTE*: Building storm (c.f. [Section 5](#BuildStorm)) requires [Maven](http://maven.apache.org/). You can install Maven (version 3.x) by following the [Maven installation instructions](http://maven.apache.org/download.cgi).
+
 Navigate to the directory for this tutorial inside the h2o-training repository:
 
 `$ cd h2o-training/tutorials/streaming/storm`  
@@ -107,6 +109,7 @@ The remaining columns are all input features (i.e. the "x" columns) we use to pr
 
 ## 4.  Using R to build a gbm model in H2O and export it as a Java POJO
 
+<a name="RPOJO"></a>
 ###  4.1.  Build and export the model
 
 The example.R script builds the model and exports the Java POJO to the generated_model temporary directory.  Run example.R as follows:
@@ -340,12 +343,105 @@ preds[2] contains the probability that the observation is ColInfo_15.VALUES[1]
 
 The DOMAINS array contains information about the level names of categorical columns.  Note that Label (the column we are predicting) is the last entry in the DOMAINS array.
 
+<a name="BuildStorm"></a>
+## 5.  Building Storm and the bolt for the model
 
-## 5.  Copying the generated POJO files into a Storm bolt build environment
+### 5.1 Build storm and import into IntelliJ
+To build storm navigate to the cloned repo and install via Maven:
 
-## 6.  Building Storm and the bolt for the model
+`$ cd storm && mvn clean install -DskipTests=true`  
+
+Once storm is built, open up your favorite IDE to start building the h2o streaming topology. In this tutorial, we will be using [IntelliJ](https://www.jetbrains.com/idea/).
+
+To import the storm project into your IntelliJ please follow these screenshots:
+
+Click on "Import Project" and find the storm repo. Select storm and click "OK"  
+![](iJ_1.png)
+
+Import the project from extrenal model using Maven, click "Next"  
+![](iJ_2.png)
+
+
+Ensure that "Import Maven projects automatically" check box is clicked (it's off by default), click "Next"  
+![](iJ_3.png)
+
+That's it! Now click through the remaining prompts (Next -> Next -> Finish).
+
+Once inside the project, open up *examples/storm-starter/test/jvm/storm.starter*. Yes, we'll be working out of the test directory.
+
+### 5.2  Build the topology
+
+The topology we've prepared has one spout [TestH2ODataSpout]() and [two bolts]() (a "Score Bolt" and a "Classifier Bolt"). Please copy the pre-built bolts and spout into the *test* directory in IntelliJ. Your project should now look like this:
+
+![](ij_4.png)
+
+
+## 6.  Copying the generated POJO files into a Storm bolt build environment
+
+We are now ready to import the H2O pieces into the IntelliJ project. We'll need to add the *h2o-model.jar* and the scoring POJO.
+
+To import the *h2o-model.jar* into your IntelliJ project, please follow these screenshots:
+
+File > Project Structure…  
+![](iJ_6.png)
+
+Click the "+" to add a new dependency  
+![](iJ_7.png)
+
+Click on Jars or directories…  
+![](iJ_8.png)
+
+Find the h2o-model.jar that we previously downloaded with the R script in [section 4](#RPOJO)
+![](iJ_9.png)
+
+Click "OK"", then "Apply", then "OK".
+
+You now have the h2o-model.jar as a depencny in your project.
+
+We now copy over the POJO from [section 4](#RPOJO) into our storm project. Your project directory should look like this:
+
+![](ij_10.png)
+
+In order to use the GBMPojo class, we add a bolt to our H2OStormStarter wich has the following code:
+
+
+```
+@Override public void execute(Tuple tuple) {
+      GBMPojo p = new GBMPojo();  // instantiate a new GBMPojo object
+
+      // get the input tuple as a String[]
+      ArrayList<String> vals_string = new ArrayList<String>();
+      for (Object v : tuple.getValues()) vals_string.add((String)v);
+      String[] raw_data = vals_string.toArray(new String[vals_string.size()]);
+
+      // the score pojo requires a single double[] of input.
+      // We handle all of the categorical mapping ourselves
+      double data[] = new double[raw_data.length-2];         //drop the Label and ID
+
+      String[] colnames = GBMPojo.NAMES;
+
+      // if the column is a factor column, then look up the value, otherwise put the double
+      for (int i = 2; i < raw_data.length; ++i) {
+        data[i-2] = p.getDomainValues(colnames[i]) == null
+                ? Double.valueOf(raw_data[i])
+                : p.mapEnum(p.getColIdx(colnames[i]), raw_data[i]);
+      }
+
+      // get the predictions
+      float[] preds = new float[GBMPojo.NCLASSES+1]);
+      p.predict(data, preds);
+
+      // emit the results: observation ID, expected label, probability of observation being 'dog'
+      _collector.emit(tuple, new Values(raw_data[0], raw_data[1], preds[1])); 
+      _collector.ack(tuple);
+    }
+```
 
 ## 7.  Running a Storm topology with your model deployed
+
+Finally, we can run the topology by right-clicking on H2OStormStarter and running. Here's a screen shot of what that looks like:
+
+![](ij_11.png)
 
 ## 8.  Watching predictions in real-time
 ![](cats_n_dogs.png)

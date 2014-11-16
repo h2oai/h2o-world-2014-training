@@ -154,7 +154,7 @@ bin/sparkling-shell
   ```
   
 13. Generate a R-code to show residuals graph:
-  ```R
+  ```scala
   println(s"""
   #
   # R script for residual plot

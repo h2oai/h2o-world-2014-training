@@ -8,7 +8,7 @@ h1, h2, h3, h4, h5, h6,
 
 body.single {
     background-color: #696969;
-    padding: 60px;
+    padding: 30px;
 }
 
 body > img {
@@ -289,8 +289,16 @@ html.canvas.svg:not(.touch) #Wave-background {
 
 .content {
     padding-bottom: 65px;
-    background-color: #FFFFFF;
+    background-color: #FEFEFE;
+    width: 1024px;
+
 }
+
+.content h5, h6 {
+  font-size: 14px;
+  line-height: 20px;
+}
+
 .content-header {
     position: relative;
     margin-bottom: 50px;
@@ -343,6 +351,11 @@ html.canvas.svg:not(.touch) #Wave-background {
 
     font-size: 66px;
     line-height: 1.6em;
+}
+
+.content blockquote {
+  font-size: 14px;
+  color: #888;
 }
 @media screen and (max-width: 767px) {
     .content {

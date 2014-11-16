@@ -356,14 +356,14 @@ Once storm is built, open up your favorite IDE to start building the h2o streami
 To import the storm project into your IntelliJ please follow these screenshots:
 
 Click on "Import Project" and find the storm repo. Select storm and click "OK"  
-![](iJ_1.png)
+![](ij_1.png)
 
 Import the project from extrenal model using Maven, click "Next"  
-![](iJ_2.png)
+![](ij_2.png)
 
 
 Ensure that "Import Maven projects automatically" check box is clicked (it's off by default), click "Next"  
-![](iJ_3.png)
+![](ij_3.png)
 
 That's it! Now click through the remaining prompts (Next -> Next -> Finish).
 
@@ -386,13 +386,13 @@ File > Project Structure…
 ![](iJ_6.png)
 
 Click the "+" to add a new dependency  
-![](iJ_7.png)
+![](ij_7.png)
 
 Click on Jars or directories…  
-![](iJ_8.png)
+![](ij_8.png)
 
 Find the h2o-model.jar that we previously downloaded with the R script in [section 4](#RPOJO)
-![](iJ_9.png)
+![](ij_9.png)
 
 Click "OK"", then "Apply", then "OK".
 

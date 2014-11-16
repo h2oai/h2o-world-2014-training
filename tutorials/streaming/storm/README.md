@@ -5,7 +5,7 @@ This tutorial shows how to create a [Storm](https://storm.apache.org/) topology 
 
 ## Where to find the latest version of this tutorial
 
-* <https://github.com/0xdata/h2o-training/tree/master/tutorials/streaming/storm/storm.md>
+* <https://github.com/0xdata/h2o-training/tree/master/tutorials/streaming/storm/README.md>
 
 
 ## 1.  What this tutorial covers

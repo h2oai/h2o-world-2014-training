@@ -1,6 +1,10 @@
 # Classification using Generalized Linear Models, Gradient Boosting Machines, and Random Forests in H2O
 
+###### This tutorial demonstrates classification modeling in H2O using generalized linear models (GLM), gradient boosting machines (GBM), and random forests. It requires an installation of the h2o R package and its dependencies.
+
 ### Load the h2o R package and start an local H2O cluster
+
+###### We will begin this tutorial by starting a local H2O cluster using up to 1 GB of Java heap storage and as much compute as the operating system will allow.
 
     library(h2o)
     h2oServer <- h2o.init(nthreads = -1)
@@ -15,6 +19,8 @@
 
 ### Load the training and testing data into the H2O key-value store
 
+###### This tutorial uses a 0.1% sample of the Person-Level 2013 Public Use Microdata Sample (PUMS) from United States Census Bureau with 75% of that sample being designated to the training data set and 25% to the test data set. This data set is intended to be an update to the [UCI Adult Data Set](https://archive.ics.uci.edu/ml/datasets/Adult).
+
     datadir <- "/data"
     pumsdir <- file.path(datadir, "h2o-training", "pums2013")
     trainfile <- "adult_2013_train.csv.gz"
@@ -28,10 +34,15 @@
     dim(adult_2013_train)
     dim(adult_2013_test)
 
-### Coerce integer columns to factor columns
+###### For the purposes of validation, we will create a single column data set containing only the target variable `TOP2_WAGP` from the test data set.
 
-    facset <- c("COW", "SCHL", "MAR", "INDP", "RELP", "RAC1P", "SEX", "POBP")
-    for (j in facset) {
+    actual_top2_wagp <- h2o.assign(adult_2013_test[, "TOP2_WAGP"],
+                                   key = "actual_top2_wagp")
+    rmLastValues()
+
+###### Also for our data set we have 8 columns that use integer codes to represent categorical levels so we will coerce them to factor after the data read.
+
+    for (j in c("COW", "SCHL", "MAR", "INDP", "RELP", "RAC1P", "SEX", "POBP")) {
       adult_2013_train[[j]] <- as.factor(adult_2013_train[[j]])
       adult_2013_test[[j]]  <- as.factor(adult_2013_test[[j]])
     }
@@ -39,15 +50,14 @@
 
 ### Fit a basic logistic regression model
 
-    top2_wagp_glm_relp <- h2o.glm(x = "relp", y = "TOP2_WAGP",
+    top2_wagp_glm_relp <- h2o.glm(x = "RELP", y = "TOP2_WAGP",
                                   data = adult_2013_train,
                                   key  = "top2_wagp_glm_relp",
                                   family = "binomial",
                                   lambda = 0)
     top2_wagp_glm_relp
 
-    actual_top2_wagp <- h2o.assign(adult_2013_test[, "TOP2_WAGP"],
-                                   key = "actual_top2_wagp")
+### Generate performance metrics from a single model
 
     pred_top2_wagp_glm_relp <- h2o.predict(top2_wagp_glm_relp, adult_2013_test)
     pred_top2_wagp_glm_relp
@@ -62,14 +72,19 @@
     plot(f1_top2_wagp_glm_relp, type = "cutoffs", col = "blue")
     plot(f1_top2_wagp_glm_relp, type = "roc", col = "blue", typ = "b")
 
-    slotNames(f1_top2_wagp_glm_relp)
+    getClassDef("H2OPerfModel")
     class(f1_top2_wagp_glm_relp@model)
     names(f1_top2_wagp_glm_relp@model)
 
     class_top2_wagp_glm_relp <-
       pred_top2_wagp_glm_relp[, 3L] > f1_top2_wagp_glm_relp@model$best_cutoff
+
+### Generate a confusion matrix from a single model
+
     h2o.confusionMatrix(class_top2_wagp_glm_relp, actual_top2_wagp)
     h2o.gains(actual_top2_wagp, class_top2_wagp_glm_relp)
+
+### Remove temporary objects from R and the H2O cluster
 
     rm(pred_top2_wagp_glm_relp,
        prob_top2_wagp_glm_relp,
@@ -78,8 +93,14 @@
 
 ### Fit an elastic net regression model across a grid of parameter settings
 
+###### Now that we are familiar with H2O model fitting in R, we can fit more sophisticated models involving a larger set of predictors.
+
     addpredset <- c("COW", "MAR", "INDP", "RAC1P", "SEX", "POBP", "AGEP",
                     "WKHP", "LOG_CAPGAIN", "LOG_CAPLOSS")
+
+###### In the context of elastic net regularization, we need to search the parameter space defined by the mixing parameter `alpha` and the shrinkage parameter `lambda`. To aide us in this search H2O can produce a grid of models for all combinations of a discrete set of parameters.
+
+###### We will use different methods for specifying the `alpha` and `lambda` values as they are dependent upon one another. For the `alpha` parameter, we will specify five values ranging from 0 (ridge) to 1 (lasso) by increments of 0.25. For `lambda`, we will turn on an automated `lambda` search by setting `lambda = TRUE` and specify the number of `lambda` values to 10 by setting `nlambda = 10`.
 
     top2_wagp_glm_grid <- h2o.glm(x = c("RELP_SCHL", addpredset),
                                   y = "TOP2_WAGP",
@@ -90,14 +111,19 @@
                                   nlambda = 10,
                                   return_all_lambda = TRUE,
                                   alpha = c(0, 0.25, 0.5, 0.75, 1))
+
+###### We now have an object of class `H2OGLMGrid` that contains a list of `H2OGLMModelList` objects for each of the models fit on the grid.
+
     class(top2_wagp_glm_grid)
-    slotNames(top2_wagp_glm_grid)
+    getClassDef("H2OGLMGrid")
 
     class(top2_wagp_glm_grid@model[[1L]])
-    slotNames(top2_wagp_glm_grid@model[[1L]])
+    getClassDef("H2OGLMModelList")
 
     length(top2_wagp_glm_grid@model[[1L]]@models)
     class(top2_wagp_glm_grid@model[[1L]]@models[[1L]])
+
+###### Currently the `h2o` package does not contain any helper functions for extracting models of interest, so we have to explore the model object and choose the model we like best.
 
     top2_wagp_glm_grid@model[[1L]]@models[[1L]]@model$params$alpha # ridge
     top2_wagp_glm_grid@model[[2L]]@models[[1L]]@model$params$alpha
@@ -133,6 +159,8 @@
 
 ### Fit a gradient boosting machine regression model
 
+###### Given that not all relationships can be reduced to a linear combination or terms, we can compare the GLM results with that of a gradient (tree) boosting machine. As with the final GLM exploration, we will fit a grid of GBM models by varying the number of trees and the shrinkage rate and select the best model with respect to the test data set.
+
     top2_wagp_gbm_grid <- h2o.gbm(x = c("RELP", "SCHL", addpredset),
                                   y = "TOP2_WAGP",
                                   data = adult_2013_train,
@@ -153,9 +181,10 @@
                     actual_top2_wagp, measure = "F1")@model$error
     h2o.performance(h2o.predict(top2_wagp_gbm_best, adult_2013_test)[, 3L],
                     actual_top2_wagp, measure = "F1")@model$error
-    rmLastValues()
 
 ### Fit a random forest regression model
+
+###### Lastly we will fit a single random forest model with 200 trees of maximum depth 10 and compare the errors across the three model types.
 
     top2_wagp_forest <- h2o.randomForest(x = c("RELP", "SCHL", addpredset),
                                          y = "TOP2_WAGP",
@@ -173,4 +202,3 @@
                     actual_top2_wagp, measure = "F1")@model$error
     h2o.performance(h2o.predict(top2_wagp_forest,   adult_2013_test)[, 3L],
                     actual_top2_wagp, measure = "F1")@model$error
-    rmLastValues()

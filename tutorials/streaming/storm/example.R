@@ -23,7 +23,7 @@ h <- h2o.init(ip = myIP, port = myPort, startH2O = TRUE)
 cat("Building GBM model\n")
 df <- h2o.importFile(h, "training_data.csv");
 y <- "Label"
-x <- c("NumberOfLegs","CoatColor","HairLength","TailLength","EnjoysPlay","StairsOutWindow","HoursSpentNapping","RespondsToCommands","EasilyFrightened","Age", "Noise1", "Noise2", "Noise3", "Noise4", "Noise5")
+x <- c("Has4Legs","CoatColor","HairLength","TailLength","EnjoysPlay","StairsOutWindow","HoursSpentNapping","RespondsToCommands","EasilyFrightened","Age", "Noise1", "Noise2", "Noise3", "Noise4", "Noise5")
 gbm.h2o.fit <- h2o.gbm(data = df, y = y, x = x, n.trees = 10)
 
 cat("Downloading Java prediction model code from H2O\n")

@@ -8,6 +8,7 @@ Download [Tableau](http://www.tableausoftware.com/) in order to use notebooks av
 
 Tableau is the frontend visual organizer that utilizes all the available statistic tools from open source R and H2O. Tableau will connect to R via a socket server using a library package already built for R. The H2O client package available for installation allows R to connect and communicate to H2O via a REST API. So by connecting Tableau to R, Tableau essentially can launch or initiate H2O and run any of the features already available for R.
 
+![](workflow.png)
 
 ### R Component
 

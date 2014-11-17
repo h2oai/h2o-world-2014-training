@@ -372,7 +372,7 @@ To build storm navigate to the cloned repo and install via Maven:
 
 Once storm is built, open up your favorite IDE to start building the h2o streaming topology. In this tutorial, we will be using [IntelliJ](https://www.jetbrains.com/idea/).
 
-To import the storm project into your IntelliJ please follow these screenshots:
+To import the storm-starter project into your IntelliJ please follow these screenshots:
 
 Click on "Import Project" and find the storm repo. Select storm and click "OK"  
 ![](images/ij_1.png)
@@ -386,11 +386,17 @@ Ensure that "Import Maven projects automatically" check box is clicked (it's off
 
 That's it! Now click through the remaining prompts (Next -> Next -> Next -> Finish).
 
-Once inside the project, open up *examples/storm-starter/test/jvm/storm.starter*. Yes, we'll be working out of the test directory.
+Once inside the project, open up *storm-starter/test/jvm/storm.starter*. Yes, we'll be working out of the test directory.
 
 ### 5.2  Build the topology
 
-The topology we've prepared has one spout [TestH2ODataSpout]() and [two bolts]() (a "Score Bolt" and a "Classifier Bolt"). Please copy the pre-built bolts and spout into the *test* directory in IntelliJ. Your project should now look like this:
+The topology we've prepared has one spout TestH2ODataSpout and two bolts (a "Predict Bolt" and a "Classifier Bolt"). Please copy the pre-built bolts and spout into the *test* directory in IntelliJ. 
+
+`$ cp H2OStormStarter.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+
+`$ cp TestH2ODataSpout.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`    
+
+Your project should now look like this:
 
 ![](images/ij_4.png)
 
@@ -410,14 +416,22 @@ Click the "+" to add a new dependency
 Click on Jars or directories…  
 ![](images/ij_8.png)
 
-Find the h2o-model.jar that we previously downloaded with the R script in [section 4](#RPOJO)
+Find the h2o-model.jar that we previously downloaded with the R script in [section 4](#RPOJO)  
 ![](images/ij_9.png)
 
 Click "OK", then "Apply", then "OK".
 
 You now have the h2o-model.jar as a depencny in your project.
 
-We now copy over the POJO from [section 4](#RPOJO) into our storm project. Your project directory should look like this:
+We now copy over the POJO from [section 4](#RPOJO) into our storm project. 
+
+`$ cp ./generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+
+**_OR_** if you were not able to build the GBMPojo, copy over the pre-generated version:
+
+`$ cp ./premade_generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+
+Your storm-starter project directory should now look like this:
 
 ![](images/ij_10.png)
 

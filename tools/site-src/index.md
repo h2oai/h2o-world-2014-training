@@ -31,7 +31,10 @@
  * [Arno Candel](http://h2o.ai/team/arno-candel/): [Categorical Feature Engineering for Adult dataset](advanced/features/features.R.html)
  * [Arno Candel](http://h2o.ai/team/arno-candel/): [Other Useful Tools](advanced/tools/tools.R.html)
 
-### 4.6 Yan: Marketing Algorithms and Use-Cases
+### 4.6 Yan: Marketing/CRM Applications and Use-Cases
+  * [Yan Zou](http://h2o.ai/team/yan-zou/): [H2O for Marketing/CRM Applications - Presentation](marketing_usecases/h2o_training_yan_2014.pdf)
+  * [Yan Zou](http://h2o.ai/team/yan-zou/): [H2O for Marketing/CRM Applications - R Script](marketing_usecases/yanTrainingH2O.R.html)
+  * [Vinod Iyengar](http://0xdata.com/h2o-world/#vinod/): [Lead Scoring For Real Time Bidding - Presentation](marketing_usecases/h2o_world_Vinod.pdf)
 
 ## 5. Demos
 

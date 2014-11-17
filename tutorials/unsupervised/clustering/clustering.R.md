@@ -39,18 +39,18 @@
 
     ?h2o.kmeans
     
-### Use the Gap Statistic To Find the Optimal Number of Clusters
+### Use the Gap Statistic (Beta) To Find the Optimal Number of Clusters
 ###### This is essentially a grid search over KMeans.
 
 ###### You can get the R documentation help here:
 
-    ?h2o.kmeans
+    ?h2o.gapStatistic
     
 ###### The idea is that, for each 'k', generate WCSS from a reference distribution and examine the gap between the expected WCSS and the observed WCSS. To obtain the W_k from the reference distribution, 'B' Monte Carlo replicates are drawn from the reference distribution. For each replicate, a KMeans is constructed and the WCSS reported back.
 
-    gap_stat <- h2o.gapStatistic(data = iris.h2o, K = 20, B = 500, boot_frac = .1, cols=1:4)
+    gap_stat <- h2o.gapStatistic(data = iris.h2o, K = 10, B = 100, boot_frac = .1, cols=1:4)
                                 
-###### Let's take a look at the output. The default output display will show the number of KMeans that were run and the optimal value of k:
+###### Let's take a look at the output. The default output display will show the number of KMeans models that were run and the optimal value of k:
 
     gap_stat
     

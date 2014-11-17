@@ -1,32 +1,17 @@
 # H2O World Training
 
-## 1. H<sub>2</sub>O World Training Sandbox
- - [Step-by-step Installation Guide](setup/install.html)
- - [Screencast]
+## 1. H2O World Training Sandbox
+ * [Step-by-step Guide](setup/install.html)
+ * [Screencast]
 
-## 2. Sri: Introduction to H2O - TODO: provide a document - SLIDES here
+## 2. [SriSatish Ambati](http://0xdata.com/team/srisatish-ambati/): Introduction to H2O - TODO: provide a document - SLIDES here
 
-## 3. Tom: H2O in Big Data environments - TODO: provide a document - SLIDES here
+## 3. [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): H2O in Big Data environments - TODO: provide a document - SLIDES here
 
 ## 4. Hands-On
 
-### 4.1 Amy: H2O with Web UI - screencast 10min/talk 30min - H2O basics
- - [Video Tutorial](https://www.youtube.com/watch?v=DL00ZSSTjOM)
-	* cloud status
-	* data load
-	* summary
-	* model build
-	  * jobs/water meter
-	* model inspect
-  	  * model representation .HTML/.JAVA/.JSON
-  	  * save model
-  	* model grid search
-	* steam 
-	  - prediction
-	    - save prediction
-	  - model comparison
-	* logs
-	* shutdown
+### 4.1 H2O with Web UI
+ * [Amy Wang](http://h2o.ai/team/amy-wang/): [Step-by-step Tutorial](web_ui/tutorial.html) ([Video Tutorial](https://www.youtube.com/watch?v=DL00ZSSTjOM))
 
 ### 4.2 H2O in R
  * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Basics and Exploratory Data Analysis (EDA)](basics/basics.R.html)
@@ -50,11 +35,13 @@
 
 ## 5. Demos
 
-### 5.1 [Amy Wang](http://h2o.ai/team/amy-wang/): Integration with Tableau and Excel
- - screencast already at webpage
- - needs screencast for Excel
+### 5.1 Integration with Tableau and Excel
+ * [Amy Wang](http://h2o.ai/team/amy-wang/): [Beauty and Big Data: Tableau](extab/tableau.html)
+   * [Video Screencast](https://www.youtube.com/watch?v=Mn8S0cTls9A)
+ * [Amy Wang](http://h2o.ai/team/amy-wang/): [Beauty and Big Data: Excel](extab/excel.html)
 
-### 5.2 [Spencer Aiello](http://h2o.ai/team/spencer-aiello/) & [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): [Real-time Prediction with H2O and Storm](streaming/storm/README.html)
+### 5.2 Streaming Data
+  * [Spencer Aiello](http://h2o.ai/team/spencer-aiello/) & [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): [Real-time Prediction with H2O and Storm](streaming/storm/README.html)
 
 ## 6. Hackers Station
 
@@ -64,13 +51,13 @@
   * [Cliff Click](http://h2o.ai/team/cliff-click/): [Hacking Algorithms into H2O: Quantiles](devel/hacking/Quantiles.html)
   
 ### 6.2 Build Application on Top of H2O
-  * [?Michal Malohlava?](http://h2o.ai/team/michal-malohlava/): [Start Developing Your Application with H2O Droplets](devel/droplets/tutorial.html)
+  * [Michal Malohlava](http://h2o.ai/team/michal-malohlava/): [Start Developing Your Application with H2O Droplets](devel/droplets/tutorial.html)
 
 ### 6.3 Start with Sparkling Water
   * [Michal Malohlava](http://h2o.ai/team/michal-malohlava/): [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 7. Troubleshooting
-  * [H2O Troubleshooting Page](http://0xdata.com/product/faq/)
+  * [H2O Troubleshooting](troubleshooting/index.html)
  
 ## 8. More information
   * [H2O Documentation](http://docs.h2o.ai)

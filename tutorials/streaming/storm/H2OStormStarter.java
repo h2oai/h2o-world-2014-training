@@ -95,7 +95,7 @@ public class H2OStormStarter {
       double dogProb = tuple.getFloat(1);
       String content = expected + "," + (dogProb <= _thresh ? "dog" : "cat");
       try {
-        File file = new File("/Users/spencer/h2o_storm/out");
+        File file = new File("/Users/spencer/0xdata/h2o-training/tutorials/streaming/storm/web/out");
         if (!file.exists())  file.createNewFile();
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);

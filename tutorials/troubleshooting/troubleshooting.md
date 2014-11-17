@@ -1,6 +1,4 @@
-
----
-#Frequently Asked Questions
+# Troubleshooting
 
 - [H2O](#H2O)
 	- [H2O: How Do I...?](#H2OHowDoI)

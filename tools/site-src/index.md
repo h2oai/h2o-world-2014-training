@@ -1,7 +1,7 @@
 # H2O World Training
 
-## 1. H<sub>2</sub>O World Training Sandbox
- * [Step-by-step Installation Guide](setup/install.html)
+## 1. H2O World Training Sandbox
+ * [Step-by-step Guide](setup/install.html)
  * [Screencast]
 
 ## 2. Sri: Introduction to H2O - TODO: provide a document - SLIDES here
@@ -55,7 +55,7 @@
   * [Michal Malohlava](http://h2o.ai/team/michal-malohlava/): [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 7. Troubleshooting
-  * [H2O Troubleshooting Page](troubleshooting/faq.html)
+  * [H2O Troubleshooting](troubleshooting/index.html)
  
 ## 8. More information
   * [H2O Documentation](http://docs.h2o.ai)

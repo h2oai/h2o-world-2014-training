@@ -1,5 +1,5 @@
-### Interaction Features on Synthetic Data
-###### Use `h2o.createFrame` to create some random data in H2O. This method can also be used to quickly create very large datasets for scaling tests. Note that there is no intrinsic structure in the data, so results from supervised learning algorithms will not be very meaningful.
+### Synthetic Data
+###### Use `h2o.createFrame` to synthetic random data in H2O. This method can also be used to quickly create very large datasets for scaling tests. Note that there is no intrinsic structure in the data (it's either constant or random), so results from many machine learning methods will not be very meaningful.
     
     myframe = h2o.createFrame(localH2O, 'framekey', rows = 20, cols = 5,
                               seed = -12301283, randomize = TRUE, value = 0,
@@ -40,20 +40,21 @@
     summary(myframe)
     head(myframe, 20)
 
-###### Create pairwise interactions
+###Interaction Features between Factors
+###### Create pairwise interactions for 2 groups of columns, keep only up to 10 (most common) factors per interaction.
     
     pairwise <- h2o.interaction(myframe, key = 'pairwise', factors = list(c(1,2),c(2,3,4)),
                                 pairwise=TRUE, max_factors = 10, min_occurrence = 1)
     head(pairwise, 20)
     levels(pairwise[,2])
 
-###### Create 5-th order interaction
+###### Create 5-th order interaction between the specified columns, and allow up to 10k resulting factors (per pair-wise interaction).
     
     higherorder <- h2o.interaction(myframe, key = 'higherorder', factors = c(1,2,3,4,5),
                                    pairwise=FALSE, max_factors = 10000, min_occurrence = 1)
     head(higherorder, 20)
 
-######Create a categorical variable out of integer column via self-interaction, and keep at most 3 factors, and only if they occur at least twice
+######Create a categorical variable out of the integer column via self-interaction, and keep at most 3 factors, and only if they occur at least twice
     
     summary(myframe$C3)
     head(myframe$C3, 20)
@@ -61,7 +62,7 @@
                                            pairwise = FALSE, max_factors = 3, min_occurrence = 2)
     head(trim_integer_levels, 20)
 
-###### Put all together and clean up temporaries
+###### Append all interactions to the original frame and clean up temporaries
     
     myframe <- cbind(myframe, pairwise, higherorder, trim_integer_levels)
     myframe <- h2o.assign(myframe, 'final.key')

@@ -1,6 +1,6 @@
 # Classification and Regression with H2O Deep Learning
 
-###### This tutorial shows how a [Deep Learning](http://en.wikipedia.org/wiki/DeepLearning) model can be used to do supervised classification and regression. This file is both valid R and markdown code.
+###### This tutorial shows how a [Deep Learning](http://en.wikipedia.org/wiki/Deep_learning) model can be used to do supervised classification and regression. This file is both valid R and markdown code.
 
 ###R Documentation
 ###### The `h2o.deeplearning` function fits H2O's Deep Learning models from within R.

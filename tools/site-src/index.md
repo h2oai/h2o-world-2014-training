@@ -17,6 +17,9 @@
  * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Basics and Exploratory Data Analysis (EDA)](basics/basics.R.html)
 
 ### 4.3 Supervised Learning - Regression and Classification
+ * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Introduction to Generalized Linear Models in H2O](supervised/glm/glm.R.html)
+ * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Introduction to Gradient Boosting Machines in H2O](supervised/gbm/gbm.R.html)
+ * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Introduction to Random Forests in H2O](supervised/randomforest/randomforest.R.html)
  * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Regression](supervised/regression/regression.R.html)
  * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Classification](supervised/classification/classification.R.html)
  * [Arno Candel](http://h2o.ai/team/arno-candel/): [Deep Learning](supervised/deeplearning/deeplearning.R.html)

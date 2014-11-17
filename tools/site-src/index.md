@@ -1,7 +1,7 @@
 # H2O World Training
 
-## 1. H<sub>2</sub>O World Training Sandbox
- * [Step-by-step Installation Guide](setup/install.html)
+## 1. H2O World Training Sandbox
+ * [Step-by-step Guide](setup/install.html)
  * [Screencast]
 
 ## 2. Sri: Introduction to H2O - TODO: provide a document - SLIDES here

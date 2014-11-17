@@ -58,6 +58,7 @@ And the following directories:
 
 * **_premade_generated_model_** (For those people who have trouble building the model but want to try running with Storm anyway; you can ignore this directory if you successfully build your own generated_model later in the tutorial)
 * **_images_** (Images for the tutorial documentation, you can ignore these)
+* **_web_** (Contains the html and image files for watching the real-time prediction output (c.f. [Section 8](#real_time)))
 
 
 
@@ -88,6 +89,12 @@ This tutorial was developed with the following software environment.  (Other env
 * Storm git hash (insert here)
 * curl 7.30.0 (x86_64-apple-darwin13.0) libcurl/7.30.0 SecureTransport zlib/1.2.5
 * Maven (Apache Maven 3.0.4)
+
+For viewing predictions in real-time ([Section 8](#real_time)) you will need the following:
+
+* npm (1.3.11)  (`$ brew install npm`)
+* http-server   (`$ npm install http-server -g`)
+* A modern web browser (animations depend on [D3](http://d3js.org/))
 
 
 ## 3.  A brief discussion of the data
@@ -516,9 +523,26 @@ Finally, we can run the topology by right-clicking on H2OStormStarter and runnin
 
 ![](images/ij_11.png)
 
+<a name="real_time"></a>
 ## 8.  Watching predictions in real-time
 ![](images/cats_n_dogs.png)
 
+To watch the predictions in real time, we start up an http-server on port 4040 and navigate to [http://localhost:4040](http://localhost:4040).
+
+In order to get http-server, install *npm* (you may need sudo):
+
+`$ brew install npm`  
+`$  npm install http-server -g`  
+
+Once these are installed, you may navigate to the *web* directory and start the server:
+
+
+`$ cd web`  
+`$ http-server -p 4040 -c-1`  
+
+Now open up your browser and navigate to [http://localhost:4040](http://localhost:4040). Requires a modern browser (depends on [D3](http://d3js.org/) for animation).  
+
+Enjoy!
 
 ## References
 

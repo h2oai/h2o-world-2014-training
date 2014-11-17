@@ -19,12 +19,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
-* This is a basic example of embedding an H2O scoring POJO into a Storm topology.
-*/
+ * This is a basic example of embedding an H2O scoring POJO into a Storm topology.
+ */
 public class H2OStormStarter {
 
 
@@ -32,7 +31,7 @@ public class H2OStormStarter {
    * The ScoreBolt is responsible for obtaining class probabilities from the score pojo.
    * It emits these probabilities to a ClassifierBolt, which classifies the observation as "cat" or "dog".
    */
-  public static class ScoreBolt extends BaseRichBolt {
+  public static class PredictionBolt extends BaseRichBolt {
     OutputCollector _collector;
 
     @Override
@@ -50,28 +49,29 @@ public class H2OStormStarter {
 
       // the score pojo requires a single double[] of input.
       // We handle all of the categorical mapping ourselves
-      double data[] = new double[raw_data.length-2]; //drop the Label and ID
+      double data[] = new double[raw_data.length-1]; //drop the Label
 
-      String[] colnames = GBMPojo.NAMES;
+      String[] colnames = tuple.getFields().toList().toArray(new String[tuple.size()]);
 
       // if the column is a factor column, then look up the value, otherwise put the double
-      for (int i = 2; i < raw_data.length; ++i) {
-        data[i-2] = p.getDomainValues(colnames[i]) == null
+      for (int i = 1; i < raw_data.length; ++i) {
+        data[i-1] = p.getDomainValues(colnames[i]) == null
                 ? Double.valueOf(raw_data[i])
                 : p.mapEnum(p.getColIdx(colnames[i]), raw_data[i]);
       }
 
       // get the predictions
-      float[] preds = p.predict(data, new float[GBMPojo.NCLASSES+1]);
+      float[] preds = new float[GBMPojo.NCLASSES+1];
+      p.predict(data, preds);
 
       // emit the results
-      _collector.emit(tuple, new Values(raw_data[0], raw_data[1], preds[1]));
+      _collector.emit(tuple, new Values(raw_data[0], preds[1]));
       _collector.ack(tuple);
     }
 
     @Override
     public void declareOutputFields(OutputFieldsDeclarer declarer) {
-      declarer.declare(new Fields("id", "expected_class", "dogProbability"));
+      declarer.declare(new Fields("expected_class", "dogProbability"));
     }
   }
 
@@ -82,7 +82,7 @@ public class H2OStormStarter {
    */
   public static class ClassifierBolt extends BaseRichBolt {
     OutputCollector _collector;
-    final double _thresh = 0.5;
+    final double _thresh = 0.54;
 
     @Override
     public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
@@ -91,10 +91,9 @@ public class H2OStormStarter {
 
     @Override
     public void execute(Tuple tuple) {
-      String id = tuple.getString(0);
-      String expected=tuple.getString(1);
-      double dogProb = tuple.getFloat(2);
-      String content = id + "," + expected + "," + (dogProb <= _thresh ? "dog" : "cat");
+      String expected=tuple.getString(0);
+      double dogProb = tuple.getFloat(1);
+      String content = expected + "," + (dogProb <= _thresh ? "dog" : "cat");
       try {
         File file = new File("/Users/spencer/h2o_storm/out");
         if (!file.exists())  file.createNewFile();
@@ -120,7 +119,7 @@ public class H2OStormStarter {
     TopologyBuilder builder = new TopologyBuilder();
 
     builder.setSpout("input_row", new TestH2ODataSpout(), 10);
-    builder.setBolt("score_probabilities", new ScoreBolt(), 3).shuffleGrouping("input_row");
+    builder.setBolt("score_probabilities", new PredictionBolt(), 3).shuffleGrouping("input_row");
     builder.setBolt("classify", new ClassifierBolt(), 3).shuffleGrouping("score_probabilities");
 
     Config conf = new Config();

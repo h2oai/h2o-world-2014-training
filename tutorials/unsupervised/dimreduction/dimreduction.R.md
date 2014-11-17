@@ -30,7 +30,7 @@
 
 #####![](images/mnist_pca_sdev.png)
 
-###### We see that the first 50 or 100 principle components cover the majority of the variance of this dataset.
+###### We see that the first 50 or 100 principal components cover the majority of the variance of this dataset.
     
 ###### To reduce the dimensionality of MNIST to its 50 principal components, we use the h2o.predict() function with an extra argument `num_pc`:
 

@@ -11,6 +11,7 @@
 ## 4. Hands-On
 
 ### 4.1 Amy: H2O with Web UI - screencast 10min/talk 30min - H2O basics
+ - [Video Tutorial](https://www.youtube.com/watch?v=DL00ZSSTjOM)
 	* cloud status
 	* data load
 	* summary

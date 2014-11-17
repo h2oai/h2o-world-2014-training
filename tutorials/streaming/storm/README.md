@@ -384,7 +384,7 @@ Import the project from extrenal model using Maven, click "Next"
 Ensure that "Import Maven projects automatically" check box is clicked (it's off by default), click "Next"  
 ![](images/ij_3.png)
 
-That's it! Now click through the remaining prompts (Next -> Next -> Finish).
+That's it! Now click through the remaining prompts (Next -> Next -> Next -> Finish).
 
 Once inside the project, open up *examples/storm-starter/test/jvm/storm.starter*. Yes, we'll be working out of the test directory.
 

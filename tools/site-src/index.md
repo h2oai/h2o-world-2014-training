@@ -4,9 +4,9 @@
  * [Step-by-step Guide](setup/install.html)
  * [Screencast]
 
-## 2. Sri: Introduction to H2O - TODO: provide a document - SLIDES here
+## 2. [SriSatish Ambati](http://0xdata.com/team/srisatish-ambati/): Introduction to H2O - TODO: provide a document - SLIDES here
 
-## 3. Tom: H2O in Big Data environments - TODO: provide a document - SLIDES here
+## 3. [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): H2O in Big Data environments - TODO: provide a document - SLIDES here
 
 ## 4. Hands-On
 
@@ -36,7 +36,8 @@
 ## 5. Demos
 
 ### 5.1 Integration with Tableau and Excel
- * [Amy Wang](http://h2o.ai/team/amy-wang/): [Video Screencast](https://www.youtube.com/watch?v=Mn8S0cTls9A)
+ * [Amy Wang](http://h2o.ai/team/amy-wang/): [Tableau and Excel](extab/tutorial.html)
+   * [Video Screencast](https://www.youtube.com/watch?v=Mn8S0cTls9A)
 
 ### 5.2 Streaming Data
   * [Spencer Aiello](http://h2o.ai/team/spencer-aiello/) & [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): [Real-time Prediction with H2O and Storm](streaming/storm/README.html)

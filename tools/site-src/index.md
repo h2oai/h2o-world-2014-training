@@ -36,7 +36,7 @@
 ## 5. Demos
 
 ### 5.1 Integration with Tableau and Excel
- * [Amy Wang](http://h2o.ai/team/amy-wang/): [Tableau and Excel](extab/tutorial.html)
+ * [Amy Wang](http://h2o.ai/team/amy-wang/): [Beauty and Big Data](extab/tutorial.html)
    * [Video Screencast](https://www.youtube.com/watch?v=Mn8S0cTls9A)
 
 ### 5.2 Streaming Data

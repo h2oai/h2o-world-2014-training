@@ -9,12 +9,6 @@
     library(h2o)
     h2oServer  <- h2o.init(nthreads=-1)
     homedir    <- "/data/h2o-training/clustering/"
-    census1990 <- "Census1990.csv.gz"
-    bigcross   <- "BigCross.data.gz"
-
-    # only if there is time for these:
-    # census.1990 <- h2o.importFile(h2oServer, path = paste0(homedir,census.1990), header = F, sep = ',', key = 'census.1990.hex')
-    # big.cross   <- h2o.importFile(h2oServer, path = paste0(homedir,big.cross), header = F, sep = ',', key = 'big.cross.hex')
     iris.h2o    <- as.h2o(h2oServer, iris)
     
 
@@ -62,32 +56,42 @@
 
     plot(gap_stat)
     
-### Comparing against streaming kmeans implementations.
-###### Let's compare first against the [Census 1990](https://archive.ics.uci.edu/ml/datasets/US+Census+Data+(1990), which has 2.5 million data points with 68 integer features.
+### Comparison against other KMeans implementations.
+###### Let's use the [Census 1990 dataset](https://archive.ics.uci.edu/ml/datasets/US+Census+Data+%281990%29), which has 2.5 million data points with 68 integer features.
 
-    # dim(census.1990)                                                            # NOT RUN: Too long on VM
+    # census1990 <- "Census1990.csv.gz"
+    # census.1990 <- h2o.importFile(h2oServer, path = paste0(homedir,census1990), header = F, sep = ',', key = 'census.1990.hex')
+
+    # dim(census.1990)                                                            
     # km.census <- h2o.kmeans(data = census.1990, centers = 24, init="furthest")  # NOT RUN: Too long on VM
-    # km.census@model$tot.withinss                                                # NOT RUN: Too long on VM
+    # km.census@model$tot.withinss                                                
 
-###### We can compare the result with the published result from [Fast and Accurate KMeans on Large Datasets](http://papers.nips.cc/paper/4362-fast-and-accurate-k-means-for-large-datasets.pdf). The cost for k = 24 and ~2GB of RAM came out at approximately 3.50E+18. This paper implements a streaming KMeans, so of course accuracy in the streaming case will not be as good as a batch job, but results are comparable within a few orders of magnitude. H2O gives the ability to work on datasets that don't fit in a single box's RAM without having to stream the data from cold storage: simply use distributed H2O.
-                                                                                                                                                                                                                                                                         
-
+###### We can compare the result with the published result from [Fast and Accurate KMeans on Large Datasets](http://papers.nips.cc/paper/4362-fast-and-accurate-k-means-for-large-datasets.pdf) where the cost for k = 24 and ~2GB of RAM was approximately 3.50E+18. This paper implements a streaming KMeans, so of course accuracy in the streaming case will not be as good as a batch job, but results are comparable within a few orders of magnitude. H2O gives the ability to work on datasets that don't fit in a single box's RAM without having to stream the data from cold storage: simply use distributed H2O.                                                                                                                                                                                                                                                                 
 
 ###### We can also compare with [StreamKM++: A Clustering Algorithm for Data Streams](http://www.cs.uni-paderborn.de/uploads/tx_sibibtex/2012_AckermannMRSLS_StreamKMpp.pdf). For various k, we can compare our implementation, but we only do k = 30 here.
 
     # km.census <- h2o.kmeans(data = census.1990, centers = 30, init="furthest")  # NOT RUN: Too long on VM
     # km.census@model$tot.withinss                                                # NOT RUN: Too long on VM
+
+##### We can also compare with the kmeans package:
+
+    # census.1990.r <- read.csv(file.path(homedir,census1990)) 
+    # km.census.r <- kmeans(census.1990.r, centers = 24)         # NOT RUN: Quick-TRANSfer stage steps exceeded maximum (= 122914250) 
+    # km.census.r$tot.withinss
 
 ###### Let's compare now on the big dataset BigCross [Big Cross](http://www.cs.uni-paderborn.de/en/fachgebiete/ag-bloemer/research/clustering/streamkmpp/), which has 11.6 million data points with 57 integer features.
 
-    # dim(big.cross)                                                              # NOT RUN: Too long on VM
-    # km.census <- h2o.kmeans(data = big.cross, centers = 24, init="furthest")    # NOT RUN: Too long on VM
-    # km.census@model$tot.withinss                                                # NOT RUN: Too long on VM
+    # bigcross   <- "BigCross.data.gz"
+    # big.cross   <- h2o.importFile(h2oServer, path = paste0(homedir,bigcross), header = F, sep = ',', key = 'big.cross.hex')
+    
+    # dim(big.cross)                                                                # NOT RUN: Too long on VM
+    # km.bigcross <- h2o.kmeans(data = big.cross, centers = 24, init="furthest")    # NOT RUN: Too long on VM
+    # km.bigcross@model$tot.withinss                                                # NOT RUN: Too long on VM
 
-###### We can compare the result with the published result from [Fast and Accurate KMeans on Large Datasets](http://papers.nips.cc/paper/4362-fast-and-accurate-k-means-for-large-datasets.pdf). The cost for k = 24 and ~2GB of RAM came out at approximately 1.50E+14.
+###### We can compare the result with the published result from [Fast and Accurate KMeans on Large Datasets](http://papers.nips.cc/paper/4362-fast-and-accurate-k-means-for-large-datasets.pdf), where the cost for k = 24 and ~2GB of RAM was approximately 1.50E+14.
 
 ###### We can also compare with [StreamKM++: A Clustering Algorithm for Data Streams](http://www.cs.uni-paderborn.de/uploads/tx_sibibtex/2012_AckermannMRSLS_StreamKMpp.pdf). For various k, we can compare our implementation, but we only do k = 30 here.
 
-    # km.census <- h2o.kmeans(data = census.1990, centers = 30, init="furthest")  # NOT RUN: Too long on VM
-    # km.census@model$tot.withinss                                                # NOT RUN: Too long on VM
+    # km.bigcross <- h2o.kmeans(data = big.cross, centers = 30, init="furthest")    # NOT RUN: Too long on VM
+    # km.bigcross@model$tot.withinss                                                # NOT RUN: Too long on VM
 

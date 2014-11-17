@@ -23,12 +23,14 @@
 
 ### PCA - Principle Components Analysis
 
-###### Let's compute at the principal components of the MNIST data, and plot the standard deviations of the principal components (i.e., the square roots of the eigenvalues of the covariance/correlation matrix).
+###### Let's use [PCA](http://en.wikipedia.org/wiki/Principal_component_analysis) to compute the principal components of the MNIST data, and plot the standard deviations of the principal components (i.e., the square roots of the eigenvalues of the covariance/correlation matrix).
 
     pca_model <- h2o.prcomp(data_hex)
     plot(pca_model@model$sdev)
 
 #####![](images/mnist_pca_sdev.png)
+
+###### We see that the first 50 or 100 principal components cover the majority of the variance of this dataset.
     
 ###### To reduce the dimensionality of MNIST to its 50 principal components, we use the h2o.predict() function with an extra argument `num_pc`:
 

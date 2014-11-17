@@ -497,7 +497,7 @@ The **_ClassifierBolt_** then looks like:
       double dogProb = tuple.getFloat(1);
       String content = expected + "," + (dogProb <= _thresh ? "dog" : "cat");
       try {
-        File file = new File("/Users/spencer/h2o_storm/out");
+        File file = new File("/Users/spencer/0xdata/h2o-training/tutorials/streaming/storm/web/out");  // EDIT ME! PUT YOUR PATH TO /web HERE
         if (!file.exists())  file.createNewFile();
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
@@ -541,6 +541,8 @@ Once these are installed, you may navigate to the *web* directory and start the 
 `$ http-server -p 4040 -c-1`  
 
 Now open up your browser and navigate to [http://localhost:4040](http://localhost:4040). Requires a modern browser (depends on [D3](http://d3js.org/) for animation).  
+
+Here's a [short video](https://www.youtube.com/watch?v=-DEbBlwBsdI) showing what it looks like all together.
 
 Enjoy!
 

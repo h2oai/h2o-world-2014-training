@@ -1,6 +1,12 @@
 # Anomaly Detection on MNIST with H2O Deep Learning
 
-######This tutorial shows how a Deep Learning [Auto-Encoder](http://en.wikipedia.org/wiki/Autoencoder) model can be used to find outliers in a dataset. This file is both valid R and markdown code. We use the well-known [MNIST](http://yann.lecun.com/exdb/mnist/) dataset of hand-written digits, where each row contains the 28^2=784 raw gray-scale pixel values from 0 to 255 of the digitized digits (0 to 9). 
+######This tutorial shows how a Deep Learning [Auto-Encoder](http://en.wikipedia.org/wiki/Autoencoder) model can be used to find outliers in a dataset. This file is both valid R and markdown code.
+
+######Consider the following diagram of a three-layer neural network with one hidden layer. If we treat our input data as labeled with the same input values, then the network is forced to learn the identity via a nonlinear, reduced representation of the original data. Such an algorithm is called a deep autoencoder; these models have been used extensively for unsupervised, layer-wise pretraining of supervised deep learning tasks, but here we consider the autoencoder's application for discovering anomalies in data.
+
+#####![](images/autoencoder.png)
+
+######We use the well-known [MNIST](http://yann.lecun.com/exdb/mnist/) dataset of hand-written digits, where each row contains the 28^2=784 raw gray-scale pixel values from 0 to 255 of the digitized digits (0 to 9). 
 
 ### Start H2O and load the MNIST data
 

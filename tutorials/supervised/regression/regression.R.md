@@ -2,39 +2,6 @@
 
 ###### This tutorial demonstrates regression modeling in H2O using generalized linear models (GLM), gradient boosting machines (GBM), and random forests. It requires an installation of the h2o R package and its dependencies.
 
-### Brief overview of regression modeling
-
-#### Generalized Linear Models (GLM)
-
-##### Intuition: A linear combination of predictors is sufficient for determining an outcome.
-
-##### Important components:
-###### 1. Exponential family for error distribution (Gaussian/Normal, Poisson, Gamma, Tweedie, etc.)
-###### 2. Link function, whose inverse is used to generate predictions
-###### 3. (Elastic Net) Mixing parameter between the L1 and L2 penalties on the coefficient estimates.
-###### 4. (Elastic Net) Shrinkage parameter for the mixed penalty in 3.
-
-#### Gradient (Tree) Boosting Machines (GBM)
-
-##### Intuition: Average an ensemble of weakly predicting (small) trees where each tree "adjusts" to the "mistakes" of the preceding trees.
-
-##### Important components:
-###### 1. Number of trees
-###### 2. Maximum depth of tree
-###### 3. Learning rate ( *shrinkage* parameter)
-
-###### where smaller learning rates tend to require larger number of tree and vice versa.
-
-#### Random Forests
-
-##### Intuition: Average an ensemble of weakly predicting (larger) trees where each tree is *de-correlated* from all other trees.
-
-##### Important components:
-###### 1. Number of trees
-###### 2. Maximum depth of tree
-###### 3. Number of variables randomly sampled as candidates for splits
-###### 4. Sampling rate for constructing data set to use on each tree
-
 ### Load the h2o R package and start an local H2O cluster
 
 ###### We will begin this tutorial by starting a local H2O cluster using the default heap size and as much compute as the operating system will allow.

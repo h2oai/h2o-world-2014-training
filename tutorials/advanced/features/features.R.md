@@ -111,3 +111,19 @@
     best_model <- h2o.trainModels(data_hex)
     
 ######We see that the training AUC for GLM improves slightly, from `0.9269056070` to `0.9269586507`. Intuition: Money is often distributed exponentially, and the log transform brings it back to a linear space. Note that the validation AUC drops, likely due to small data statistical noise. We clearly got close to the limit of this dataset. Note that GBM didn't benefit from this transform, it seems to be able to better split up the original integer space.
+
+    frame <- data_hex
+    random <- h2o.runif(frame, seed = 123456789)
+    train_hex <- h2o.assign(frame[random < .8,], "train_hex")
+    valid_hex <- h2o.assign(frame[random >= .8 & random < .9,], "valid_hex")
+    test_hex  <- h2o.assign(frame[random >= .9,], "test_hex")
+    
+    predictors <- colnames(frame)[-match(response,colnames(frame))]
+    
+    # multi-model comparison with N-fold cross-validation
+    data = list(x=predictors, y=response, train=train_hex, valid=valid_hex, nfolds=N_FOLDS)
+    models <- c(
+      h2o.fit(h2o.deeplearning, data, list())
+    )
+    best_model <- h2o.leaderBoard(models, test_hex, match(response,colnames(frame)))
+  

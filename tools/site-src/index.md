@@ -1,4 +1,4 @@
-# H<sub>2</sub>O World Training
+# H2O World Training
 
 ## 0. Michal: VM Setup 
  - needs a document (paper)
@@ -58,19 +58,19 @@
 
 ## 5. Cliff: Hackers station
 
-### Contribute to H<sub>2</sub>
+### Contribute to H2
 
-### Start developing with H<sub>2</sub>O
+### Start developing with H2O
 
 ### Start with Sparkling Water
   * [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 6. Troubleshooting
- * [H<sub>2</sub>O Troubleshooting Page](http://0xdata.com/product/faq/)
+ * [H2O Troubleshooting Page](http://0xdata.com/product/faq/)
  
 ## 7. More information
-  * [H<sub>2</sub>O Documentation](http://docs.h2o.ai)
-  * [H<sub>2</sub>O YouTube Channel](https://www.youtube.com/user/0xdata)
-  * [H<sub>2</sub>O SlideShare](http://www.slideshare.net/0xdata)
-  * [H<sub>2</sub>O Blog](http://h2o.ai/blog)
-  * [H<sub>2</sub>O GitHub](http://github.com/0xdata)
+  * [H2O Documentation](http://docs.h2o.ai)
+  * [H2O YouTube Channel](https://www.youtube.com/user/0xdata)
+  * [H2O SlideShare](http://www.slideshare.net/0xdata/presentations)
+  * [H2O Blog](http://h2o.ai/blog)
+  * [H2O GitHub](http://github.com/0xdata)

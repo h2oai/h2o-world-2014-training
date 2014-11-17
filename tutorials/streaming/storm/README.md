@@ -434,12 +434,12 @@ Your storm-starter project directory should now look like this:
 
 ![](images/ij_10.png)
 
-In order to use the GBMPojo class, we add a bolt to our H2OStormStarter which has the following code:
+In order to use the GBMPojo class, our PredictionBolt in H2OStormStarter has the following "execute" block:
 
 
 ```
-@Override public void execute(Tuple tuple) {
-      GBMPojo p = new GBMPojo();  // instantiate a new GBMPojo object
+    @Override public void execute(Tuple tuple) {
+      GBMPojo p = new GBMPojo();
 
       // get the input tuple as a String[]
       ArrayList<String> vals_string = new ArrayList<String>();
@@ -448,23 +448,23 @@ In order to use the GBMPojo class, we add a bolt to our H2OStormStarter which ha
 
       // the score pojo requires a single double[] of input.
       // We handle all of the categorical mapping ourselves
-      double data[] = new double[raw_data.length-2];         //drop the Label and ID
+      double data[] = new double[raw_data.length-1]; //drop the Label
 
-      String[] colnames = GBMPojo.NAMES;
+      String[] colnames = tuple.getFields().toList().toArray(new String[tuple.size()]);
 
       // if the column is a factor column, then look up the value, otherwise put the double
-      for (int i = 2; i < raw_data.length; ++i) {
-        data[i-2] = p.getDomainValues(colnames[i]) == null
+      for (int i = 1; i < raw_data.length; ++i) {
+        data[i-1] = p.getDomainValues(colnames[i]) == null
                 ? Double.valueOf(raw_data[i])
                 : p.mapEnum(p.getColIdx(colnames[i]), raw_data[i]);
       }
 
       // get the predictions
-      float[] preds = new float[GBMPojo.NCLASSES+1]);
+      float[] preds = new float[GBMPojo.NCLASSES+1];
       p.predict(data, preds);
 
-      // emit the results: observation ID, expected label, probability of observation being 'dog'
-      _collector.emit(tuple, new Values(raw_data[0], raw_data[1], preds[1])); 
+      // emit the results
+      _collector.emit(tuple, new Values(raw_data[0], preds[1]));
       _collector.ack(tuple);
     }
 ```

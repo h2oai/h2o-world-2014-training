@@ -1,17 +1,26 @@
 # Classification and Regression with H2O Deep Learning
 
-######This tutorial shows how a [Deep Learning](http://en.wikipedia.org/wiki/DeepLearning) model can be used to do supervised classification and regression. This file is both valid R and markdown code.
+###### This tutorial shows how a [Deep Learning](http://en.wikipedia.org/wiki/DeepLearning) model can be used to do supervised classification and regression. This file is both valid R and markdown code.
 
 ###R Documentation
-###### First, we look at the R Documentation (man page) for H2O Deep Learning:
-  
-    ?h2o.deeplearning
+###### The `h2o.deeplearning` function fits H2O's Deep Learning models from within R.
 
-######As you can see, there are a lot of parameters!  Luckily, as you'll see later, you only need to know a few to get the most out of Deep Learning.  To get started, we'll run the built-in demo (which downloads the prostate dataset from github, so you'll need an internet connection):
+    library(h2o)
+    args(h2o.deeplearning)
+
+###### The R documentation (man page) for H2O's Deep Learning can be opened from within R using the `help` or `?` functions:
+  
+    help(h2o.deeplearning)
+
+######As you can see, there are a lot of parameters!  Luckily, as you'll see later, you only need to know a few to get the most out of Deep Learning. More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).   
+
+###### We can run the example from the man page using the `example` function:
+
+    example(h2o.deeplearning)
+
+###### And run a longer demonstration from the `h2o` package using the `demo` function (requires an internet connetion):
 
     demo(h2o.deeplearning)
-
-######More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).   
 
 ### Start H2O and load the MNIST data
 ###### For the rest of this tutorial, we will use the well-known [MNIST](http://yann.lecun.com/exdb/mnist/) dataset of hand-written digits, where each row contains the 28^2=784 raw gray-scale pixel values from 0 to 255 of the digitized digits (0 to 9). 

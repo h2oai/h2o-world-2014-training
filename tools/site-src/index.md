@@ -59,9 +59,14 @@
 ## 5. Hackers Station
 
 ### 5.1 Start Developing with H2O
-  * [Start Developing Your Application with H<sub>2</sub>O-droplets](devel/droplets/tutorial.html)
+  * [Hacking Algorithms into H2O: KMeans](devel/hacking/KMeans.html) 
+  * [Hacking Algorithms into H2O: Grep](devel/hacking/Grep.html)
+  * [Hacking Algorithms into H2O: Quantiles](devel/hacking/Quantiles.html)
+  
+### 5.2 Build Application on Top of H2O
+  * [Start Developing Your Application with H2O Droplets](devel/droplets/tutorial.html)
 
-### 5.2 Start with Sparkling Water
+### 5.3 Start with Sparkling Water
   * [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 6. Troubleshooting

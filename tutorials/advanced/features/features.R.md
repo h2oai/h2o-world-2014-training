@@ -16,7 +16,6 @@
     
     colnames(data_hex) <- c("age","workclass","fnlwgt","education","education-num","marital-status","occupation","relationship","race","sex","capital-gain","capital-loss","hours-per-week","native-country","income")
     summary(data_hex)
- 
 
 ######We will try to predict whether `income` is `<=50K` or `>50K`.
     summary(data_hex$income)
@@ -26,7 +25,6 @@
 
     source("~/h2o-training/tutorials/advanced/binaryClassificationHelper.R.md")
 
-    
 ###### We then add this simple helper function to split a frame into train/valid/test pieces, train a GLM and a GBM model with 2-fold cross-validation and obtaining the best model after printing a leaderbaord. For more accurate
 
     N_FOLDS = 2
@@ -83,10 +81,12 @@
 ###### GLM clearly benefited from this. We see that ages 18,19 and 20 are among the most important predictors for income and we get the following validation AUC values: `GLM: 0.9066634 GBM: 0.9009924`
 
 ###### For fun, let's look at the largest positively and negatively correlated coefficients:
+
     head(sort(best_model@model$normalized_coefficients,decreasing=T),5)
     head(sort(best_model@model$normalized_coefficients,decreasing=F),5)
 
 ####2. Same for capital-gain/loss and work hours per week
+  
     data_hex <- h2o.append(data_hex, as.factor(data_hex$'hours-per-week'))
     data_hex <- h2o.append(data_hex, as.factor(data_hex$'capital-gain'))
     data_hex <- h2o.append(data_hex, as.factor(data_hex$'capital-loss'))
@@ -97,24 +97,17 @@
 ###### With all these new factor levels as predictors, GLM now got a nice boost: `GLM: 0.9285384 GBM: 0.9021225`
 
 ###### Let's give GBM a shot at beating GLM by using better parameters:
+
     gbmparams <- list(importance=TRUE, n.tree=50, interaction.depth=10)
     best_model <- h2o.trainModels(data_hex)
 
 ###### Ok, now both algorithms reach similar validation AUC values: `GLM: 0.9285384 GBM: 0.9286973`
 
-####3. Add pair-wise interactions between selected factors
-######Since GBM was able to pick up higher accuracy by creating more interactions in its trees, we try to manually add such interaction features to the dataset to boost GLM's performance further.
- 
-    factor_interactions <- h2o.interaction(data_hex, factors = c("marital-status","relationship","education"), pairwise = TRUE, max_factors = 1000, min_occurrence = 1)
-    summary(factor_interactions)
-    data_hex <- h2o.append(data_hex, factor_interactions)
-    colnames(data_hex)
-    summary(data_hex)
-    best_model <- h2o.trainModels(data_hex)    
+### Replace money-related integer columns by their Log-Transform
     
-######Tune model parameters for higher accuracy
-    glmparams <- list(family="binomial", variable_importances=F, lambda_min_ratio=1e-5, alpha=c(0.01,0.25,0.5,0.75,0.99), nlambda=500, lambda_search=T, higher_accuracy=T, use_all_factor_levels=T)
-    
-    glmparams <- list(family="binomial", variable_importances=F, lambda=1e-5, alpha=c(0.01,0.25,0.5,0.75,0.99), higher_accuracy=T, use_all_factor_levels=T)
-    gbmparams <- list(importance=T, n.tree=2, balance.classes=T)
+    data_hex$'capital-gain'   <- log(1+data_hex$'capital-gain')
+    data_hex$'capital-loss'   <- log(1+data_hex$'capital-loss')
+    data_hex
     best_model <- h2o.trainModels(data_hex)
+    
+######We see that the training AUC for GLM improves slightly, from `0.9269056070` to `0.9269586507`. Intuition: Money is often distributed exponentially, and the log transform brings it back to a linear space. Note that the validation AUC drops, likely due to small data statistical noise. We clearly got close to the limit of this dataset. Note that GBM didn't benefit from this transform, it seems to be able to better split up the original integer space.

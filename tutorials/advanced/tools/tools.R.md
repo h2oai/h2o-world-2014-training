@@ -125,7 +125,7 @@
     head(hex,20)
     
     
-### Splitting Large Frames
+### Splitting H2O Frames into Consecutive Subsets
 ###### First, we create a large frame
 
     myframe = h2o.createFrame(localH2O, 'large', rows = 1000000, cols = 10,
@@ -143,3 +143,13 @@
     dim(splits[[3]])
     dim(splits[[4]])
 
+### Splitting H2O Frames into Random Subsets
+###### We create a 1D vector with uniform values sampled from the interval 0...1 and use that to assign rows to the splits.
+
+    random <- h2o.runif(myframe, seed = 123456789)
+    train <- myframe[random < .8,]
+    valid <- myframe[random >= .8 & random < 0.9,]
+    test  <- myframe[random >= .9,]
+    dim(train)
+    dim(valid)
+    dim(test)

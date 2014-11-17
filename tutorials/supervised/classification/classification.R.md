@@ -146,7 +146,7 @@
        class_top2_wagp_glm_relp)
     rmLastValues()
 
-### Fit an elastic net regression model across a grid of parameter settings
+### Fit an elastic net logistic regression model across a grid of parameter settings
 
 ###### Now that we are familiar with H2O model fitting in R, we can fit more sophisticated models involving a larger set of predictors.
 
@@ -224,7 +224,7 @@
     nzcoefs <- unique(sub("\\..*$", "", nzcoefs))
     setdiff(c("RELP_SCHL", addpredset), nzcoefs) # all preds had non-zero coefs
 
-### Fit a gradient boosting machine regression model
+### Fit a gradient boosting machine binomial regression model
 
 ###### Given that not all relationships can be reduced to a linear combination or terms, we can compare the GLM results with that of a gradient (tree) boosting machine. As with the final GLM exploration, we will fit a grid of GBM models by varying the number of trees and the shrinkage rate and select the best model with respect to the test data set.
 
@@ -252,7 +252,7 @@
     h2o.performance(h2o.predict(top2_wagp_gbm_best, adult_2013_test)[, 3L],
                     actual_top2_wagp, measure = "F1")@model$error
 
-### Fit a random forest regression model
+### Fit a random forest classifier
 
 ###### Lastly we will fit a single random forest model with 200 trees of maximum depth 10 and compare the errors across the three model types.
 

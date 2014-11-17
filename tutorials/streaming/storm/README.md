@@ -469,6 +469,47 @@ In order to use the GBMPojo class, our PredictionBolt in H2OStormStarter has the
     }
 ```
 
+
+The probability emitted is the probability of being a 'dog'. We use this probability to decide wether the observation is of type 'cat' or 'dog' depending on some threshold. This threshold was chosen such that the F1 score was maximized for the testing data (please see AUC and/or h2o.preformance() from R). 
+
+The Classifier Bolt then looks like:
+
+```
+  public static class ClassifierBolt extends BaseRichBolt {
+    OutputCollector _collector;
+    final double _thresh = 0.54;
+
+    @Override
+    public void prepare(Map conf, TopologyContext context, OutputCollector collector) {
+      _collector = collector;
+    }
+
+    @Override
+    public void execute(Tuple tuple) {
+      String expected=tuple.getString(0);
+      double dogProb = tuple.getFloat(1);
+      String content = expected + "," + (dogProb <= _thresh ? "dog" : "cat");
+      try {
+        File file = new File("/Users/spencer/h2o_storm/out");
+        if (!file.exists())  file.createNewFile();
+        FileWriter fw = new FileWriter(file.getAbsoluteFile());
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(content);
+        bw.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      _collector.emit(tuple, new Values(expected, dogProb <= _thresh ? "dog" : "cat"));
+      _collector.ack(tuple);
+    }
+
+    @Override
+    public void declareOutputFields(OutputFieldsDeclarer declarer) {
+      declarer.declare(new Fields("expected_class", "class"));
+    }
+  }
+  ```
+
 ## 7.  Running a Storm topology with your model deployed
 
 Finally, we can run the topology by right-clicking on H2OStormStarter and running. Here's a screen shot of what that looks like:

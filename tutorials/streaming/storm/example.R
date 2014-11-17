@@ -37,7 +37,7 @@ cmd <- sprintf("curl -o %s/GBMPojo.java http://%s:%d/2/GBMModelView.java?_modelK
 safeSystem(cmd)
 cmd <- sprintf("curl -o %s/h2o-model.jar http://127.0.0.1:54321/h2o-model.jar", tmpdir_name)
 safeSystem(cmd)
-cmd <- sprintf("sed -i '' 's/class %s/class GBM_generated_model/' %s/GBMPojo.java", model_key, tmpdir_name)
+cmd <- sprintf("sed -i '' 's/class %s/class GBMPojo/' %s/GBMPojo.java", model_key, tmpdir_name)
 safeSystem(cmd)
 
 cat("Note: H2O will shut down automatically if it was started by this R script and the script exits\n")

@@ -18,7 +18,7 @@
 
     example(h2o.deeplearning)
 
-###### And run a longer demonstration from the `h2o` package using the `demo` function (requires an internet connetion):
+###### And run a longer demonstration from the `h2o` package using the `demo` function (requires an internet connection):
 
     demo(h2o.deeplearning)
 

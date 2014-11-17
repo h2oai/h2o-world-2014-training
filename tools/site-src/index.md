@@ -53,8 +53,7 @@
  - screencast already at webpage
  - needs screencast for Excel
 
-### 4.2 [Spencer Aiello](http://h2o.ai/team/spencer-aiello/) & [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): Real-time prediction with H2O and Storm
- - needs screencast
+### 4.2 [Spencer Aiello](http://h2o.ai/team/spencer-aiello/) & [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): [Real-time Prediction with H2O and Storm](streaming/storm/README.html)
 
 ## 5. Hackers Station
 

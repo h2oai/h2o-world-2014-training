@@ -36,8 +36,9 @@
 ## 5. Demos
 
 ### 5.1 Integration with Tableau and Excel
- * [Amy Wang](http://h2o.ai/team/amy-wang/): [Beauty and Big Data](extab/tutorial.html)
+ * [Amy Wang](http://h2o.ai/team/amy-wang/): [Beauty and Big Data: Tableau](extab/tableau.html)
    * [Video Screencast](https://www.youtube.com/watch?v=Mn8S0cTls9A)
+ * [Amy Wang](http://h2o.ai/team/amy-wang/): [Beauty and Big Data: Excel](extab/excel.html)
 
 ### 5.2 Streaming Data
   * [Spencer Aiello](http://h2o.ai/team/spencer-aiello/) & [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): [Real-time Prediction with H2O and Storm](streaming/storm/README.html)

@@ -17,48 +17,6 @@ SITEMAP_XML = '''
 </urlset>
 '''
 
-RSS_XML = '''
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0"
-	xmlns:content="http://purl.org/rss/1.0/modules/content/"
-	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
-	xmlns:dc="http://purl.org/dc/elements/1.1/"
-	xmlns:atom="http://www.w3.org/2005/Atom"
-	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
-	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
-	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:media="http://search.yahoo.com/mrss/"
-  >
-<channel>
-  <title>0xdata Blog</title>
-  <atom:link href="http://0xdata.com/blog/feed-{{category}}.xml" rel="self" type="application/rss+xml" />
-  <link>http://0xdata.com/blog/</link>
-  <description>The blog about H2O - The Open Source In-Memory Prediction Engine for Big Data Science</description>
-  <lastBuildDate>{{date}}</lastBuildDate>
-  <language>en</language>
-  <sy:updatePeriod>daily</sy:updatePeriod>
-  <sy:updateFrequency>1</sy:updateFrequency>
-  <generator>http://0xdata.com/</generator>
-  <image>
-    <url>http://0xdata.com/assets/images/h2o.png</url>
-		<title>0xdata Blog</title>
-    <link>http://0xdata.com/blog/</link>
-	</image>
-  {{items}}
-</channel>
-</rss>
-'''
-
-RSS_XML_ITEM = '''
-<item>
-  <title><![CDATA[{{title}}]]></title>
-  <link>{{permalink}}</link>
-  <pubDate>{{date}}</pubDate>
-  <guid isPermaLink="true">{{permalink}}</guid>
-  <description><![CDATA[{{content}}]]></description>
-  <content:encoded><![CDATA[{{content}}]]></content:encoded>
-</item>
-'''
-
 marked.setOptions
   smartypants: yes
   highlight: (code, lang) ->
@@ -251,7 +209,7 @@ fuse = (context, sourceDir, targetDir) ->
   urls = []
   forEachPage tree, (parent, page) ->
     if isContent page.src.ext
-      urls.push 'http://0xdata.com' + page.url
+      urls.push 'http://train.h2o.ai' + page.url
 
   console.log 'Creating sitemaps...'
   createSitemapTxt targetDir, urls

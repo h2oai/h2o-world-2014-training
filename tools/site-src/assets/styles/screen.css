@@ -374,7 +374,7 @@ html.canvas.svg:not(.touch) #Wave-background {
 /* ------------------------------------------------------- [Site Logo] ----- */
 .site-logo {
     width: 70px;
-    height: 43px;
+    height: 48px;
 
     margin: 0px;
 
@@ -383,7 +383,6 @@ html.canvas.svg:not(.touch) #Wave-background {
     background-position: center;
 
     text-indent: -9999px;
-    float: right;
 }
 
 .h2o-world-logo {

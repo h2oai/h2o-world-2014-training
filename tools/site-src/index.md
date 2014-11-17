@@ -1,4 +1,4 @@
-# H<sub>2</sub>O World Training
+# H2O World Training
 
 ## 0. Michal: VM Setup 
  - needs a document (paper)
@@ -56,21 +56,21 @@
 ### 4.2 Spencer/Tom[DEMO]: Real-time prediction with H2O and Storm
  - needs screencast
 
-## 5. Cliff: Hackers station
+## 5. Hackers Station
 
-### Contribute to H<sub>2</sub>
+### 5.1 Start Developing with H2O
+  * [Start Developing Your Application with H<sub>2</sub>O-droplets](devel/droplets/tutorial.html)
 
-### Start developing with H<sub>2</sub>O
-
-### Start with Sparkling Water
+### 5.2 Start with Sparkling Water
   * [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 6. Troubleshooting
- * [H<sub>2</sub>O Troubleshooting Page](http://0xdata.com/product/faq/)
+  * [H2O Troubleshooting Page](http://0xdata.com/product/faq/)
  
 ## 7. More information
-  * [H<sub>2</sub>O Documentation](http://docs.h2o.ai)
-  * [H<sub>2</sub>O YouTube Channel](https://www.youtube.com/user/0xdata)
-  * [H<sub>2</sub>O SlideShare](http://www.slideshare.net/0xdata)
-  * [H<sub>2</sub>O Blog](http://h2o.ai/blog)
-  * [H<sub>2</sub>O GitHub](http://github.com/0xdata)
+  * [H2O Documentation](http://docs.h2o.ai)
+  * [H2O YouTube Channel](https://www.youtube.com/user/0xdata)
+  * [H2O SlideShare](http://www.slideshare.net/0xdata/presentations)
+  * [H2O Blog](http://h2o.ai/blog)
+  * [H2O GitHub](http://github.com/0xdata)
+

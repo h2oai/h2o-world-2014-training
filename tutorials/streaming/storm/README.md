@@ -47,10 +47,17 @@ Navigate to the directory for this tutorial inside the h2o-training repository:
 
 You should see the following files in this directory:
 
-* storm.md (This document)
-* example.R (The R script that builds the GBM model and exports it as a Java POJO)
-* training_data.csv (The data used to build the GBM model)
-* live_data.csv (The data that predictions are made on; used to feed the spout in the Storm topology)
+* **_README.md_** (This document)
+* **_example.R_** (The R script that builds the GBM model and exports it as a Java POJO)
+* **_training_data.csv_** (The data used to build the GBM model)
+* **_live_data.csv_** (The data that predictions are made on; used to feed the spout in the Storm topology)
+* **_H2OStormStarter.java_** (The Storm topology with two bolts:  a prediction bolt and a classifying bolt)
+* **_TestH2ODataSpout.java_** (The Storm spout which reads data from the live_data.csv file and passes each observation to the prediction bolt one observation at a time; this simulates the arrival of data in real-time)
+
+And the following directories:
+
+* **_premade_generated_model_** (For those people who have trouble building the model but want to try running with Storm anyway; you can ignore this directory if you successfully build your own generated_model later in the tutorial)
+* **_images_** (Images for the tutorial documentation, you can ignore these)
 
 
 
@@ -68,17 +75,19 @@ Step 1:  Start R
 Step 2:  Install H2O from CRAN  
 `> install.packages("h2o")`  
 
-> Note:  For convenience, this tutorial was created with the [Markov](http://h2o-release.s3.amazonaws.com/h2o/rel-markov/1/index.html) stable release of H2O (2.8.1.1) from CRAN, as shown above.  Later versions of H2O should also work.
+> Note:  For convenience, this tutorial was created with the [Markov](http://h2o-release.s3.amazonaws.com/h2o/rel-markov/1/index.html) stable release of H2O (2.8.1.1) from CRAN, as shown above.  Later versions of H2O will also work.
 
 ### 2.4.  Development environment
 
 This tutorial was developed with the following software environment.  (Other environments will work, but this is what we used to develop and test this tutorial.)
 
+* H2O 2.8.1.1 (Markov)
 * MacOS X (Mavericks)
 * java version "1.7.0_51" (JDK)
 * R 3.1.2
 * Storm git hash (insert here)
 * curl 7.30.0 (x86_64-apple-darwin13.0) libcurl/7.30.0 SecureTransport zlib/1.2.5
+* Maven (Apache Maven 3.0.4)
 
 
 ## 3.  A brief discussion of the data
@@ -98,11 +107,21 @@ dog,1,Brown,0,2,1,1,10,1,1,5,0.602213507518172,0.369238587561995,0.0173729541711
 dog,1,Brown,0,6,1,1,2,1,1,5,0.518676368519664,0.12482417980209,0.948365441989154,0.177089381730184,0.587333778617904
 dog,1,Brown,1,5,1,1,2,1,1,18,0.809266310418025,0.170960413524881,0.753230679314584,0.104151085484773,0.0647049802355468
 dog,1,Spotted,0,2,1,1,2,1,1,7,0.710338631412014,0.0687884974759072,0.504301907494664,0.0846393911633641,0.359005510108545
+dog,1,Brown,0,1,1,1,2,1,1,17,0.342766472371295,0.884941282914951,0.422552276169881,0.98327452223748,0.404992172960192
+dog,1,White,1,4,1,0,2,1,0,19,0.249732303665951,0.277358161052689,0.223825711291283,0.0802569903898984,0.591158070135862
+dog,1,Grey,0,4,1,0,2,0,1,20,0.389572456944734,0.698214392643422,0.332286109682173,0.886769098695368,0.716584908310324
+cat,1,Grey,1,6,1,0,3,0,1,2,0.861996191786602,0.626286354614422,0.711238550487906,0.31065424811095,0.680626459419727
+dog,1,Grey,1,3,1,1,5,1,1,6,0.0947414578404278,0.307525489013642,0.3870523867663,0.0149383852258325,0.616309800418094
+dog,1,Grey,0,5,0,0,2,1,1,3,0.0874599132221192,0.575714471051469,0.216811016667634,0.0647775735706091,0.130991096142679
+dog,1,White,0,3,1,1,2,1,1,18,0.279881740454584,0.585583951324224,0.534608190879226,0.64373282995075,0.404094075784087
+dog,1,Grey,0,2,1,1,3,0,1,10,0.106425800360739,0.967414655257016,0.947062057210132,0.91980566107668,0.376893693814054
+cat,1,Black,1,8,1,1,10,0,1,8,0.173088351264596,0.620857149129733,0.712241176981479,0.645036307629198,0.280326501233503
+dog,1,Brown,0,5,1,1,2,1,1,19,0.143437932711095,0.666965456213802,0.450479933293536,0.84895522124134,0.69107131101191
 ```
 
-Note that the first row in the trailing data set is a header row specifying the column names.
+Note that the first row in the training data set is a header row specifying the column names.
 
-The response column (i.e. the "y" column) we want to make predictions for is Label.  It's a binary column, so we want to build a classification model.  The response column is categorical, and contains two levels, 'cat' and 'dog'.
+The response column (i.e. the "y" column) we want to make predictions for is Label.  It's a binary column, so we want to build a classification model.  The response column is categorical, and contains two levels, 'cat' and 'dog'.  Note that the ratio of cats to dogs is 1:5.
 
 The remaining columns are all input features (i.e. the "x" columns) we use to predict whether each new observation is a 'cat' or a 'dog'.  The input features are a mix of integer, real, and categorical columns.
 
@@ -237,9 +256,9 @@ Downloading Java prediction model code from H2O
 > safeSystem(cmd)
 [1] "+ CMD: mkdir generated_model"
 [1] 0
-> cmd <- sprintf("curl -o %s/GBM_generated_model.java http://%s:%d/2/GBMModelView.java?_modelKey=%s", tmpdir_name, myIP, myPort, model_key)
+> cmd <- sprintf("curl -o %s/GBMPojo.java http://%s:%d/2/GBMModelView.java?_modelKey=%s", tmpdir_name, myIP, myPort, model_key)
 > safeSystem(cmd)
-[1] "+ CMD: curl -o generated_model/GBM_generated_model.java http://localhost:54321/2/GBMModelView.java?_modelKey=GBM_9d538f637ef85c78d6e2fea88ad54bc9"
+[1] "+ CMD: curl -o generated_model/GBMPojo.java http://localhost:54321/2/GBMModelView.java?_modelKey=GBM_9d538f637ef85c78d6e2fea88ad54bc9"
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 ^M  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0^M100 27041    0 27041    0     0  2253k      0 --:--:-- --:--:-- --:--:-- 2400k
@@ -251,9 +270,9 @@ Downloading Java prediction model code from H2O
                                  Dload  Upload   Total   Spent    Left  Speed
 ^M  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0^M100  8085  100  8085    0     0  3206k      0 --:--:-- --:--:-- --:--:-- 3947k
 [1] 0
-> cmd <- sprintf("sed -i '' 's/class %s/class GBM_generated_model/' %s/GBM_generated_model.java", model_key, tmpdir_name)
+> cmd <- sprintf("sed -i '' 's/class %s/class GBMPojo/' %s/GBMPojo.java", model_key, tmpdir_name)
 > safeSystem(cmd)
-[1] "+ CMD: sed -i '' 's/class GBM_9d538f637ef85c78d6e2fea88ad54bc9/class GBM_generated_model/' generated_model/GBM_generated_model.java"
+[1] "+ CMD: sed -i '' 's/class GBM_9d538f637ef85c78d6e2fea88ad54bc9/class GBMPojo/' generated_model/GBMPojo.java"
 [1] 0
 > 
 > cat("Note: H2O will shut down automatically if it was started by this R script and the script exits\n")
@@ -270,18 +289,18 @@ The generated_model directory is created and now contains two files:
 ```
 mbp2:storm tomk$ ls -l generated_model/
 total 72
--rw-r--r--  1 tomk  staff  27024 Nov 15 16:49 GBM_generated_model.java
+-rw-r--r--  1 tomk  staff  27024 Nov 15 16:49 GBMPojo.java
 -rw-r--r--  1 tomk  staff   8085 Nov 15 16:49 h2o-model.jar
 ```
 
-The h2o-model.jar file contains the interface definition, and the GBM_generated_model.java file contains the Java code for the POJO model.
+The h2o-model.jar file contains the interface definition, and the GBMPojo.java file contains the Java code for the POJO model.
 
 The following three sections from the generated model are of special importance.
 
 ####  4.2.1.  Class name
 
 ```
-public class GBM_generated_model extends water.genmodel.GeneratedModel {
+public class GBMPojo extends water.genmodel.GeneratedModel {
 ```
 
 This is the class to instantiate in the Storm bolt to make predictions.  (Note that we simplified the class name using sed as part of the R script that exported the model.  By default, the class name has a long UUID-style name.)
@@ -394,7 +413,7 @@ Click on Jars or directories…
 Find the h2o-model.jar that we previously downloaded with the R script in [section 4](#RPOJO)
 ![](images/ij_9.png)
 
-Click "OK"", then "Apply", then "OK".
+Click "OK", then "Apply", then "OK".
 
 You now have the h2o-model.jar as a depencny in your project.
 
@@ -402,7 +421,7 @@ We now copy over the POJO from [section 4](#RPOJO) into our storm project. Your 
 
 ![](images/ij_10.png)
 
-In order to use the GBMPojo class, we add a bolt to our H2OStormStarter wich has the following code:
+In order to use the GBMPojo class, we add a bolt to our H2OStormStarter which has the following code:
 
 
 ```

@@ -166,6 +166,7 @@
                                   min_occurrence = 10)
     adult_2013 <- cbind(adult_2013, inter_2013)
     adult_2013 <- h2o.assign(adult_2013, key = "adult_2013")
+    colnames(adult_2013)
 
 ###### Now that we have derived a few sets of variables, we can examine the H2O key-value store to ensure we have the expected objects.
 

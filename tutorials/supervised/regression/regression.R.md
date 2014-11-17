@@ -11,7 +11,7 @@
 ##### Important components:
 ###### 1. Exponential family for error distribution (Gaussian/Normal, Poisson, Gamma, Tweedie, etc.)
 ###### 2. Link function, whose inverse is used to generate predictions
-###### 3. (Elastic Net) Mixing parameter between the $L_1$ and $L_2$ penalties on the coefficient estimates.
+###### 3. (Elastic Net) Mixing parameter between the L1 and L2 penalties on the coefficient estimates.
 ###### 4. (Elastic Net) Shrinkage parameter for the mixed penalty in 3.
 
 #### Gradient (Tree) Boosting Machines (GBM)
@@ -147,9 +147,11 @@
     points(1:99, coef(log_wagp_glm_0_cv@model)[-100L], pch = "X", col = "red")
     abline(h = 0, col = "blue")
 
+#####![](images/rand_glm_coef.png)
+
 ### Explore categorical predictors
 
-###### In generalized linear models, a categorical variable with $k$ categories is expanded into $k - 1$ model coefficients. This expansion can occur in many different forms, with the most common being *dummy variable* encodings consisting of indicator columns for all but the first or last category, depending on the convention.
+###### In generalized linear models, a categorical variable with k categories is expanded into k - 1 model coefficients. This expansion can occur in many different forms, with the most common being *dummy variable* encodings consisting of indicator columns for all but the first or last category, depending on the convention.
 
 ###### We will begin our modeling of the data by examining the regression of the natural logarithm of wages (`LOG_WAGP`) against three sets of predictors: relationship (`RELP`), educational attainment (`SCHL`), and combination of those two variables (`RELP_SCHL`).
 
@@ -258,6 +260,7 @@
                                  shrinkage = c(0.05, 0.1, 0.2),
                                  validation = adult_2013_test,
                                  importance = TRUE)
+    log_wagp_gbm_grid
 
     class(log_wagp_gbm_grid)
     getClassDef("H2OGBMGrid")
@@ -265,6 +268,7 @@
     length(log_wagp_gbm_grid@model)
     class(log_wagp_gbm_grid@model[[1L]])
     log_wagp_gbm_best <- log_wagp_gbm_grid@model[[1L]]
+    log_wagp_gbm_best
 
 ###### A comparison of mean squared errors against the test set suggests our GBM fit outperforms our GLM fit.
 
@@ -287,6 +291,8 @@
                                         validation = adult_2013_test,
                                         seed = 8675309,
                                         type = "BigData")
+    log_wagp_forest
+
     h2o.mse(h2o.predict(log_wagp_glm_best, adult_2013_test),
             actual_log_wagp)
     h2o.mse(h2o.predict(log_wagp_gbm_best, adult_2013_test),

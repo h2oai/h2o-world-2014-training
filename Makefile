@@ -26,4 +26,10 @@ install:
 	rm -rf /opt/h2o-training
 	cp -r build/site/ /opt/h2o-training
 
-.PHONY: build run clean test push build/site-src
+test:
+	s3cmd sync --dry-run --delete-removed --acl-public --exclude-from s3.exclude build/site/ s3://train.h2o.ai/
+
+push:
+	s3cmd sync --delete-removed --acl-public --exclude-from s3.exclude build/site/ s3://train.h2o.ai/
+
+.PHONY: build run clean test push build/site-src test

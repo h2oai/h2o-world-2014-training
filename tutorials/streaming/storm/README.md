@@ -434,7 +434,7 @@ Your storm-starter project directory should now look like this:
 
 ![](images/ij_10.png)
 
-In order to use the GBMPojo class, our PredictionBolt in H2OStormStarter has the following "execute" block:
+In order to use the GBMPojo class, our **_PredictionBolt_** in H2OStormStarter has the following "execute" block:
 
 
 ```
@@ -472,7 +472,7 @@ In order to use the GBMPojo class, our PredictionBolt in H2OStormStarter has the
 
 The probability emitted is the probability of being a 'dog'. We use this probability to decide wether the observation is of type 'cat' or 'dog' depending on some threshold. This threshold was chosen such that the F1 score was maximized for the testing data (please see AUC and/or h2o.preformance() from R). 
 
-The Classifier Bolt then looks like:
+The **_ClassifierBolt_** then looks like:
 
 ```
   public static class ClassifierBolt extends BaseRichBolt {

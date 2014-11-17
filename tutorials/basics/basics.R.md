@@ -192,7 +192,7 @@
     h2o.addFunction(h2oServer, wagpSummary)
     statsByGroup <- as.data.frame(h2o.ddply(adult_2013, "RELP", wagpSummary))
     colnames(statsByGroup)[-1L] <- c("N", "Min", "Median", "Mean", "Max", "StdDev")
-    statsByGroup <- statsByGroup[order(statsByGroup$median, decreasing = TRUE), ]
+    statsByGroup <- statsByGroup[order(statsByGroup$Median, decreasing = TRUE), ]
     rownames(statsByGroup) <- NULL
     statsByGroup
 

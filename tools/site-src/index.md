@@ -55,7 +55,7 @@
   * [Michal Malohlava](http://h2o.ai/team/michal-malohlava/): [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 7. Troubleshooting
-  * [H2O Troubleshooting Page](http://0xdata.com/product/faq/)
+  * [H2O Troubleshooting Page](troubleshooting/faq.html)
  
 ## 8. More information
   * [H2O Documentation](http://docs.h2o.ai)

@@ -4,9 +4,9 @@
  * [Step-by-step Guide](setup/install.html)
  * [Screencast]
 
-## 2. [SriSatish Ambati](http://0xdata.com/team/srisatish-ambati/): Introduction to H2O - TODO: provide a document - SLIDES here
+## 2. [SriSatish Ambati](http://0xdata.com/team/srisatish-ambati/): Introduction to H2O
 
-## 3. [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): H2O in Big Data environments - TODO: provide a document - SLIDES here
+## 3. [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): H2O in Big Data environments
 
 ## 4. Hands-On
 
@@ -59,7 +59,7 @@
 ## 7. Troubleshooting
   * [H2O Troubleshooting](troubleshooting/index.html)
  
-## 8. More information
+## 8. More Information
   * [H2O Documentation](http://docs.h2o.ai)
   * [H2O YouTube Channel](https://www.youtube.com/user/0xdata)
   * [H2O SlideShare](http://www.slideshare.net/0xdata/presentations)

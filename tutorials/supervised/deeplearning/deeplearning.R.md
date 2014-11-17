@@ -1,8 +1,20 @@
 # Classification and Regression with H2O Deep Learning
 
-######This tutorial shows how a [Deep Learning](http://en.wikipedia.org/wiki/DeepLearning) model can be used to do supervised classification and regression. This file is both valid R and markdown code. We use the well-known [MNIST](http://yann.lecun.com/exdb/mnist/) dataset of hand-written digits, where each row contains the 28^2=784 raw gray-scale pixel values from 0 to 255 of the digitized digits (0 to 9). 
+######This tutorial shows how a [Deep Learning](http://en.wikipedia.org/wiki/DeepLearning) model can be used to do supervised classification and regression. This file is both valid R and markdown code.
+
+###R Documentation
+###### First, we look at the R Documentation (man page) for H2O Deep Learning:
+  
+    ?h2o.deeplearning
+
+######As you can see, there are a lot of parameters!  Luckily, as you'll see later, you only need to know a few to get the most out of Deep Learning.  To get started, we'll run the built-in demo (which downloads the prostate dataset from github, so you'll need an internet connection):
+
+    demo(h2o.deeplearning)
+
+######More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).   
 
 ### Start H2O and load the MNIST data
+###### For the rest of this tutorial, we will use the well-known [MNIST](http://yann.lecun.com/exdb/mnist/) dataset of hand-written digits, where each row contains the 28^2=784 raw gray-scale pixel values from 0 to 255 of the digitized digits (0 to 9). 
 
 ######Initialize the H2O server and import the MNIST training/testing datasets.
 
@@ -13,10 +25,9 @@
     TEST = "test.csv.gz"
     train_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TRAIN), header = F, sep = ',', key = 'train.hex')
     test_hex <- h2o.importFile(h2oServer, path = paste0(homedir,TEST), header = F, sep = ',', key = 'test.hex')
- 
-###Our first Deep Learning classification model
 
-######While H2O Deep Learning has the most parameters, it was designed to be just as easy to use as the other supervised training methods in H2O. Automatic data standardization and handling of categorical variables and missing values and per-neuron adaptive learning rates reduce the amount of parameters the user has to specify. Often, it's just the number and sizes of hidden layers, the number of epochs and the activation function and maybe some regularization techniques.
+
+######While H2O Deep Learning has many parameters, it was designed to be just as easy to use as the other supervised training methods in H2O. Automatic data standardization and handling of categorical variables and missing values and per-neuron adaptive learning rates reduce the amount of parameters the user has to specify. Often, it's just the number and sizes of hidden layers, the number of epochs and the activation function and maybe some regularization techniques.
 
     dlmodel <- h2o.deeplearning(x=1:784, y=785, data=train_hex, validation=test_hex,
                                 hidden=c(50,50), epochs=0.1, activation="Tanh")
@@ -38,13 +49,7 @@
 
 ######To see the model parameters again:
     
-    dlmodel@model$params
-
-######As you can see, there are a lot of parameters!  Luckily, you only need to know a few to get the most out of Deep Learning.  You can get the R documentation help here:
-
-    ?h2o.deeplearning
-    
-######More information can be found in the [H2O Deep Learning booklet](https://t.co/kWzyFMGJ2S) and in our [slides](http://www.slideshare.net/0xdata/presentations).    
+    dlmodel@model$params 
 
     
 ### Hyper-parameter Tuning with Grid Search

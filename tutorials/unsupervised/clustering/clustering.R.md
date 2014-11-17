@@ -8,8 +8,9 @@
 
     library(h2o)
     h2oServer  <- h2o.init(nthreads=-1)
-    homedir    <- "/data/h2o-training/clustering/"
-    iris.h2o    <- as.h2o(h2oServer, iris)
+    datadir <- "/data"
+    homedir <- file.path(datadir, "h2o-training", "clustering")
+    iris.h2o <- as.h2o(h2oServer, iris)
     
 
 ### Our first KMeans model
@@ -60,7 +61,7 @@
 ###### Let's use the [Census 1990 dataset](https://archive.ics.uci.edu/ml/datasets/US+Census+Data+%281990%29), which has 2.5 million data points with 68 integer features.
 
     # census1990 <- "Census1990.csv.gz"
-    # census.1990 <- h2o.importFile(h2oServer, path = paste0(homedir,census1990), header = F, sep = ',', key = 'census.1990.hex')
+    # census.1990 <- h2o.importFile(h2oServer, path = file.path(homedir,census1990), header = F, sep = ',', key = 'census.1990.hex')
 
     # dim(census.1990)                                                            
     # km.census <- h2o.kmeans(data = census.1990, centers = 24, init="furthest")  # NOT RUN: Too long on VM
@@ -82,7 +83,7 @@
 ###### Let's compare now on the big dataset BigCross [Big Cross](http://www.cs.uni-paderborn.de/en/fachgebiete/ag-bloemer/research/clustering/streamkmpp/), which has 11.6 million data points with 57 integer features.
 
     # bigcross   <- "BigCross.data.gz"
-    # big.cross   <- h2o.importFile(h2oServer, path = paste0(homedir,bigcross), header = F, sep = ',', key = 'big.cross.hex')
+    # big.cross   <- h2o.importFile(h2oServer, path = file.path(homedir,bigcross), header = F, sep = ',', key = 'big.cross.hex')
     
     # dim(big.cross)                                                                # NOT RUN: Too long on VM
     # km.bigcross <- h2o.kmeans(data = big.cross, centers = 24, init="furthest")    # NOT RUN: Too long on VM

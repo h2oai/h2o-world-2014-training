@@ -259,13 +259,15 @@
     if (! "nnet" %in% rownames(installed.packages())) { install.packages("nnet") }
     library("nnet")
     train.R <- as.data.frame(train_hex)
+    train.R <- train.R[,c(seq(1, 784, by = 20), 785)]
     test.R <- as.data.frame(test_hex)
-    nn <- nnet(x=train.R[,seq(1,784,by=20)], y=train.R[,785], size=5, linout=T)
+    
+    nn <- nnet(x=train.R[,-ncol(train.R)], y=train.R$C785, size=10, linout=T)
     nn_pred <- predict(nn, test.R)
     nn_mse <- mean((nn_pred-test.R[,785])^2)
     nn_mse
     
-    h2o_nn <- h2o.deeplearning(x=seq(1,784,by=20),y=785,data=train_hex,hidden=5,classification=F,activation="Tanh")
+    h2o_nn <- h2o.deeplearning(x=seq(1,784,by=20),y=785,data=train_hex,hidden=10,classification=F,activation="Tanh")
     h2o_pred <- h2o.predict(h2o_nn, test_hex)
     h2o_mse <- mean((as.data.frame(h2o_pred)-test.R[,785])^2)
     h2o_mse

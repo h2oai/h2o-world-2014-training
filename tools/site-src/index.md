@@ -28,46 +28,46 @@
 	* shutdown
 
 ### 3.2 H2O in R
- * [Patrick - Basics and Exploratory Data Analysis (EDA)](basics/basics.R.html)
+ * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Basics and Exploratory Data Analysis (EDA)](basics/basics.R.html)
 
 ### 3.3 Supervised Learning - Regression and Classification
- * [Patrick - Regression](supervised/regression/regression.R.html)
- * [Patrick - Classification](supervised/classification/classification.R.html)
- * [Arno - Deep Learning](supervised/deeplearning/deeplearning.R.html)
+ * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Regression](supervised/regression/regression.R.html)
+ * [Patrick Aboyoun](http://h2o.ai/team/patrick-aboyoun/): [Classification](supervised/classification/classification.R.html)
+ * [Arno Candel](http://h2o.ai/team/arno-candel/): [Deep Learning](supervised/deeplearning/deeplearning.R.html)
 
 ### 3.4 Unsupervised Learning
- * [Arno/Spencer - K-Means clustering](unsupervised/clustering/clustering.R.html)
- * [Arno - Dimensionality Reduction on MNIST](unsupervised/dimreduction/dimreduction.R.html)
- * [Arno - Anomaly detection on MNIST with H2O Deep Learning](unsupervised/anomaly/anomaly.R.html)
+ * [Arno Candel](http://h2o.ai/team/arno-candel/) & [Spencer Aiello](http://h2o.ai/team/spencer-aiello/): [K-Means Clustering](unsupervised/clustering/clustering.R.html)
+ * [Arno Candel](http://h2o.ai/team/arno-candel/): [Dimensionality Reduction on MNIST](unsupervised/dimreduction/dimreduction.R.html)
+ * [Arno Candel](http://h2o.ai/team/arno-candel/): [Anomaly Detection on MNIST with H2O Deep Learning](unsupervised/anomaly/anomaly.R.html)
 
 ### 3.5 Advanced Topics
- * [Arno - Multi-model parameter tuning for Higgs dataset](advanced/higgs/higgs.R.html)
- * [Arno - Categorical feature engineering for Adult dataset](advanced/features/features.R.html)
- * [Arno - Other useful tools](advanced/tools/tools.R.html)
+ * [Arno Candel](http://h2o.ai/team/arno-candel/): [Multi-model Parameter Tuning for Higgs Dataset](advanced/higgs/higgs.R.html)
+ * [Arno Candel](http://h2o.ai/team/arno-candel/): [Categorical Feature Engineering for Adult dataset](advanced/features/features.R.html)
+ * [Arno Candel](http://h2o.ai/team/arno-candel/): [Other Useful Tools](advanced/tools/tools.R.html)
 
 ### 3.6 Yan: Marketing Algorithms and Use-Cases
 
 ## 4. Demos
 
-### 4.1 Amy[DEMO]: Integration with Tableau and Excel
+### 4.1 [Amy Wang](http://h2o.ai/team/amy-wang/): Integration with Tableau and Excel
  - screencast already at webpage
  - needs screencast for Excel
 
-### 4.2 Spencer/Tom[DEMO]: Real-time prediction with H2O and Storm
+### 4.2 [Spencer Aiello](http://h2o.ai/team/spencer-aiello/) & [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): Real-time prediction with H2O and Storm
  - needs screencast
 
 ## 5. Hackers Station
 
 ### 5.1 Start Developing with H2O
-  * [Hacking Algorithms into H2O: KMeans](devel/hacking/KMeans.html) 
-  * [Hacking Algorithms into H2O: Grep](devel/hacking/Grep.html)
-  * [Hacking Algorithms into H2O: Quantiles](devel/hacking/Quantiles.html)
+  * [Cliff Click](http://h2o.ai/team/cliff-click/): [Hacking Algorithms into H2O: KMeans](devel/hacking/KMeans.html) 
+  * [Cliff Click](http://h2o.ai/team/cliff-click/): [Hacking Algorithms into H2O: Grep](devel/hacking/Grep.html)
+  * [Cliff Click](http://h2o.ai/team/cliff-click/): [Hacking Algorithms into H2O: Quantiles](devel/hacking/Quantiles.html)
   
 ### 5.2 Build Application on Top of H2O
-  * [Start Developing Your Application with H2O Droplets](devel/droplets/tutorial.html)
+  * [?Michal Malohlava?](http://h2o.ai/team/michal-malohlava/): [Start Developing Your Application with H2O Droplets](devel/droplets/tutorial.html)
 
 ### 5.3 Start with Sparkling Water
-  * [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
+  * [Michal Malohlava](http://h2o.ai/team/michal-malohlava/): [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 6. Troubleshooting
   * [H2O Troubleshooting Page](http://0xdata.com/product/faq/)

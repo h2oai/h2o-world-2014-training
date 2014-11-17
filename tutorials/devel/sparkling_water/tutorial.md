@@ -186,3 +186,10 @@ bin/sparkling-shell
 
   > Note: RStudio has to contain the newest H2O-DEV client library.
 
+
+## More information
+  * [_Sparkling Water_ GitHub](http://github.com/0xdata/sparkling-water)
+  * [H<sub>2</sub>O YouTube Channel](https://www.youtube.com/user/0xdata)
+  * [H<sub>2</sub>O SlideShare](http://www.slideshare.net/0xdata)
+  * [H<sub>2</sub>O Blog](http://h2o.ai/blog)
+  

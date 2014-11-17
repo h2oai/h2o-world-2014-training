@@ -66,5 +66,11 @@
   * [Sparkling Water Tutorial](devel/sparkling_water/tutorial.html)
 
 ## 6. Troubleshooting
- * link to 0xdata FAQ (include it here)
+ * [H<sub>2</sub>O Troubleshooting Page](http://0xdata.com/product/faq/)
  
+## 7. More information
+  * [H<sub>2</sub>O Documentation](http://docs.h2o.ai)
+  * [H<sub>2</sub>O YouTube Channel](https://www.youtube.com/user/0xdata)
+  * [H<sub>2</sub>O SlideShare](http://www.slideshare.net/0xdata)
+  * [H<sub>2</sub>O Blog](http://h2o.ai/blog)
+  * [H<sub>2</sub>O GitHub](http://github.com/0xdata)

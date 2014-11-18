@@ -1,6 +1,6 @@
-# Regression using Generalized Linear Models, Gradient Boosting Machines, and Random Forests in H2O
+# Regression using Generalized Linear Models, Gradient Boosting Machines, Random Forests and Deep Learning in H2O
 
-###### This tutorial demonstrates regression modeling in H2O using generalized linear models (GLM), gradient boosting machines (GBM), and random forests. It requires an installation of the h2o R package and its dependencies.
+###### This tutorial demonstrates regression modeling in H2O using generalized linear models (GLM), gradient boosting machines (GBM), random forests and Deep Learning. It requires an installation of the h2o R package and its dependencies.
 
 ### Load the h2o R package and start an local H2O cluster
 
@@ -213,6 +213,9 @@
                              return_all_lambda = TRUE,
                              alpha = c(0, 0.25, 0.5, 0.75, 1))
     wagp_glm_grid
+    log_wagp_glm_best_alpha <- wagp_glm_grid@model[[5]]
+    log_wagp_glm_best_alpha
+    log_wagp_glm_best <- log_wagp_glm_best_alpha@models[[log_wagp_glm_best_alpha@best_model]]
 
 ### Fit a gradient boosting machine regression model
 
@@ -235,7 +238,6 @@
     length(log_wagp_gbm_grid@model)
     class(log_wagp_gbm_grid@model[[1L]])
     log_wagp_gbm_best <- log_wagp_gbm_grid@model[[1L]]
-    log_wagp_gbm_best
 
 ###### A comparison of mean squared errors against the test set suggests our GBM fit outperforms our GLM fit.
 
@@ -246,7 +248,7 @@
 
 ### Fit a random forest regression model
 
-###### Lastly we will fit a single random forest model with 200 trees of maximum depth 10 and compare the mean squared errors across the three model types.
+###### We will fit a single random forest model with 200 trees of maximum depth 10.
 
     log_wagp_forest <- h2o.randomForest(x = c("RELP", "SCHL", addpredset),
                                         y = "LOG_WAGP",
@@ -260,9 +262,23 @@
                                         type = "BigData")
     log_wagp_forest
 
+### Fit a deep learning regression model
+
+###### Lastly we will fit a single Deep Learning model with default settings (more details about Deep Learning follow later) and compare the mean squared errors across the four model types.
+
+    log_wagp_dl <- h2o.deeplearning(x = c("RELP", "SCHL", addpredset),
+                                    y = "LOG_WAGP",
+                                    data = adult_2013_train,
+                                    key  = "log_wagp_dl",
+                                    classification = FALSE,
+                                    validation = adult_2013_test)
+    log_wagp_dl
+
     h2o.mse(h2o.predict(log_wagp_glm_best, adult_2013_test),
             actual_log_wagp)
     h2o.mse(h2o.predict(log_wagp_gbm_best, adult_2013_test),
             actual_log_wagp)
     h2o.mse(h2o.predict(log_wagp_forest,   adult_2013_test),
+            actual_log_wagp)
+    h2o.mse(h2o.predict(log_wagp_dl,       adult_2013_test),
             actual_log_wagp)

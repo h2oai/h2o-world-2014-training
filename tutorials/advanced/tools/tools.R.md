@@ -1,7 +1,10 @@
 ### Synthetic Data
 ###### Use `h2o.createFrame` to synthetic random data in H2O. This method can also be used to quickly create very large datasets for scaling tests. Note that there is no intrinsic structure in the data (it's either constant or random), so results from many machine learning methods will not be very meaningful.
-    
-    myframe = h2o.createFrame(localH2O, 'framekey', rows = 20, cols = 5,
+
+    library(h2o)
+    h2oServer <- h2o.init(nthreads=-1)
+
+    myframe = h2o.createFrame(h2oServer, 'framekey', rows = 20, cols = 5,
                               seed = -12301283, randomize = TRUE, value = 0,
                               categorical_fraction = 0.8, factors = 10, real_range = 1,
                               integer_fraction = 0.2, integer_range = 10, missing_fraction = 0.2,
@@ -129,7 +132,7 @@
 ### Splitting H2O Frames into Consecutive Subsets
 ###### First, we create a large frame
 
-    myframe = h2o.createFrame(localH2O, 'large', rows = 1000000, cols = 10,
+    myframe = h2o.createFrame(h2oServer, 'large', rows = 1000000, cols = 10,
                               seed = -12301283, randomize = TRUE, value = 0,
                               categorical_fraction = 0.8, factors = 10, real_range = 1,
                               integer_fraction = 0.2, integer_range = 10, missing_fraction = 0.2,

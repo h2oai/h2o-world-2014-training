@@ -40,9 +40,39 @@
         #cur {
             position: relative;
             top:45px;
-            left:40%;
+            left:10%;
             width: 400px;
             height:200px;
+            z-index:900;
+        }
+
+        #cat_cnt {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            z-index:900;
+        }
+
+        #ccnt {
+            position: absolute;
+            top: 15px;
+            left: 100%;
+            z-index:900;
+            font-size: 90px;
+        }
+
+        #dcnt {
+            position: absolute;
+            top: 15px;
+            left: 200%;
+            z-index:900;
+            font-size: 90px;
+        }
+
+        #dog_cnt {
+            position: absolute;
+            top: 10px;
+            left: 160%;
             z-index:900;
         }
 
@@ -60,7 +90,11 @@
       <div id="old" style="display:none;"></div>
   </div>
   <div id="cur">
-      <img id="cur_pic" src="./cat.png">
+      <img id="cur_pic" src="./cat.png" style="display:none;">
+      <img id="cat_cnt" src="./cat.png">
+      <div id="ccnt" style="color: #ffffff;">0</div>
+      <img id="dog_cnt" src="./dog.png">
+      <div id="dcnt" style="color: #ffffff;">0</div>
   </div>
   <script>
       var w = innerWidth;
@@ -70,13 +104,18 @@
       function gogogo() {
           var xmlhttp = new XMLHttpRequest();
           xmlhttp.onreadystatechange = function () {
-              $("#old").text($("#cur_val").text());
               var txt = xmlhttp.responseText;
               txt = txt.split(',');
               var predict  = txt[1];
+              if (predict === undefined) return;
+              if ($("#cur_val").text() == predict) return;
+              var isCat = predict == "cat";
+              var dogObs = isCat ? 0 : 1;
+              var catObs = isCat ? 1 : 0;
+              $('#dcnt').text(function(i, txt) { return parseInt($("#dcnt").text(), 10) + dogObs});
+              $('#ccnt').text(function(i, txt) { return parseInt($("#ccnt").text(), 10) + catObs});
               $('#cur_val').text(predict);
               document.getElementById("cur_pic").src="./".concat(predict).concat(".png");
-
           };
           xmlhttp.open("GET", "./out", true);
           xmlhttp.send();

@@ -64,10 +64,10 @@
     # census.1990 <- h2o.importFile(h2oServer, path = file.path(homedir,census1990), header = F, sep = ',', key = 'census.1990.hex')
 
     # dim(census.1990)                                                            
-    # km.census <- h2o.kmeans(data = census.1990, centers = 24, init="furthest")  # NOT RUN: Too long on VM
+    # km.census <- h2o.kmeans(data = census.1990, centers = 12, init="furthest")  # NOT RUN: Too long on VM
     # km.census@model$tot.withinss                                                
 
-###### We can compare the result with the published result from [Fast and Accurate KMeans on Large Datasets](http://papers.nips.cc/paper/4362-fast-and-accurate-k-means-for-large-datasets.pdf) where the cost for k = 24 and ~2GB of RAM was approximately 3.50E+18. This paper implements a streaming KMeans, so of course accuracy in the streaming case will not be as good as a batch job, but results are comparable within a few orders of magnitude. H2O gives the ability to work on datasets that don't fit in a single box's RAM without having to stream the data from cold storage: simply use distributed H2O.                                                                                                                                                                                                                                                                 
+###### We can compare the result with the published result from [Fast and Accurate KMeans on Large Datasets](http://papers.nips.cc/paper/4362-fast-and-accurate-k-means-for-large-datasets.pdf) where the cost for k = 12 and ~2GB of RAM was approximately 3.50E+18. This paper implements a streaming KMeans, so of course accuracy in the streaming case will not be as good as a batch job, but results are comparable within a few orders of magnitude. H2O gives the ability to work on datasets that don't fit in a single box's RAM without having to stream the data from cold storage: simply use distributed H2O.                                                                                                                                                                                                                                                                 
 
 ###### We can also compare with [StreamKM++: A Clustering Algorithm for Data Streams](http://www.cs.uni-paderborn.de/uploads/tx_sibibtex/2012_AckermannMRSLS_StreamKMpp.pdf). For various k, we can compare our implementation, but we only do k = 30 here.
 

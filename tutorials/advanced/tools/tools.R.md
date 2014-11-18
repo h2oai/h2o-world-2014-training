@@ -69,7 +69,7 @@
     
     myframe <- cbind(myframe, pairwise, higherorder, trim_integer_levels)
     myframe <- h2o.assign(myframe, 'final.key')
-    h2o.rm(localH2O, grep(pattern = "Last.value", x = h2o.ls(localH2O)$Key, value = TRUE))
+    h2o.rm(h2oServer, grep(pattern = "Last.value", x = h2o.ls(h2oServer)$Key, value = TRUE))
     myframe
     head(myframe,20)
     summary(myframe)
@@ -110,7 +110,7 @@
 
 ###### upload the NA'ed dataset to H2O
     
-    hex <- as.h2o(localH2O, ds)
+    hex <- as.h2o(h2oServer, ds)
     head(hex,20)
 
 ###### Impute the NAs in the first column in place with "median"

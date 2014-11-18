@@ -61,26 +61,8 @@
 
 ###### We can create detailed performance metrics using the `h2o.performance` function that was inspired by the `performance` function from Tobias Sing's [ROCR](http://cran.r-project.org/web/packages/ROCR/index.html) package, which is hosted on the Comprehensive R Archive Network (CRAN).
 
-##### Binary classifier performance metrics
-###### $P$ is the total number of Positive values, $1$, in the binary target
-###### $N$ is the total number of Negative values, $-1$ or $0$, in the binary target
-###### $TP$ is the number of True Positives, i.e. predict positive when actually positive
-###### $TN$ is the number of True Negatives, i.e. predict negative when actually negative
-###### $FP$ is the number of False Positives, i.e. predict positive when acutally negative; also known as the Type I error
-###### $FN$ is the number of False Negatives, i.e. predict negative when acutally positive; also known as the Type II error
-
-###### $Recall\ (or\ Sensitivity\ or\ True\ Positive\ Rate) = \frac{TP}{P} = \frac{TP}{TP + FN}$
-###### $Specificity\ (or\ True\ Negative\ Rate) = \frac{TN}{N} = \frac{TN}{FP + TN}$
-###### $Precision\ (or\ Positive\ Predictive\ Value) = \frac{TP}{TP + FP}$
-###### $False\ Discovery\ Rate\ = \frac{FP}{TP + FP} = 1 - Precision$
-###### $Negative\ Predictive\ Value = \frac{TN}{TN + FN}$
-###### $Fall-out\ (or\ False\ Positive\ Rate) = \frac{FP}{N} = \frac{FP}{FP + TN}$
-###### $False\ Negative\ Rate = \frac{FN}{P} = \frac{FN}{TP + FN}$
-
-###### $Accuracy = \frac{TP + TN}{P + N}$
-###### $Misclassification\ Error = \frac{FP + FN}{P + N} = 1 - Accuracy$
-###### $F1 = \frac{2}{\frac{1}{Precision} + \frac{1}{Recall}} = 2\frac{Precision * Recall}{Precision + Recall} = \frac{2TP}{2TP + FP + FN}$ (harmonic mean)
-###### $Matthews\ Correlation\ Coefficient\ (MCC) = \frac{TP * TN - FP * FN}{\sqrt{(TP + FP)(TP + FN)(TN + FP)(TN + FN)}}$
+#### Binary classifier performance metrics
+#####![](images/metrics.png)
 
     pred_top2_wagp_glm_relp <- h2o.predict(top2_wagp_glm_relp, adult_2013_test)
     pred_top2_wagp_glm_relp

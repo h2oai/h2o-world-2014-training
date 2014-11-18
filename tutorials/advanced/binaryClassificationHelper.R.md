@@ -86,9 +86,6 @@
                 "Best model AUC on test: ", round(test_auc,6), "\n",
                 "Top", TOP_FEATURES, "important features: ", models.sort.by.auc[1,]$important_feat, "\n",
                 "Model training time (incl. tuning, grid search): ", round(models.sort.by.auc[1,]$tuning_time_s,6), "seconds \n",
-                "Training data rows: ", nrow(train_hex), "\n",
-                "Training data cols: ", ncol(train_hex), "\n",
-                "Validation data rows: ", nrow(valid_hex), "\n",
                 "=----------------------------=\n"))
       best_model
     }

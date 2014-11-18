@@ -6,7 +6,7 @@
 
 ## 2. [SriSatish Ambati](http://0xdata.com/team/srisatish-ambati/): Introduction to H2O
 
-## 3. [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): H2O in Big Data environments
+## 3. [Tom Kraljevic](http://h2o.ai/team/tom-kraljevic/): [H2O in Big Data environments](bigdataenv/H2OinBigDataEnvironments.pdf)
 
 ## 4. Hands-On
 

@@ -213,6 +213,9 @@
                              return_all_lambda = TRUE,
                              alpha = c(0, 0.25, 0.5, 0.75, 1))
     wagp_glm_grid
+    log_wagp_glm_best_alpha <- wagp_glm_grid@model[[5]]
+    log_wagp_glm_best_alpha
+    log_wagp_glm_best <- log_wagp_glm_best_alpha@models[[log_wagp_glm_best_alpha@best_model]]
 
 ### Fit a gradient boosting machine regression model
 
@@ -235,7 +238,6 @@
     length(log_wagp_gbm_grid@model)
     class(log_wagp_gbm_grid@model[[1L]])
     log_wagp_gbm_best <- log_wagp_gbm_grid@model[[1L]]
-    log_wagp_gbm_best
 
 ###### A comparison of mean squared errors against the test set suggests our GBM fit outperforms our GLM fit.
 

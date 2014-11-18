@@ -275,7 +275,7 @@
     top2_wagp_dl <- h2o.deeplearning(x = c("RELP", "SCHL", addpredset),
                                      y = "TOP2_WAGP",
                                      data = adult_2013_train,
-                                     key  = "top2_wagp_forest",
+                                     key  = "top2_wagp_dl,
                                      classification = TRUE,
                                      validation = adult_2013_test)
     top2_wagp_dl

@@ -1,15 +1,17 @@
 #H2O Web UI
 ----
-
-- #####Statistical learning is key to many areas: business, technology, health, finance 
-- #####Designed to accurately predict quantitative or categorical outcomes for unknown scenarios based on measured data
-- #####Supervised learning uses training data to determine a result and improve the accuracy of the model over successive incremental iterations
-- #####Unsupervised learning: goal is to describe data organization, not measure outcome 
-- #####Some examples of machine learning challenges: 
-	- #####Recognizing handwritten text
-	- #####Predicting if an email is spam 
-	- #####Examining gene expressions
-	- #####Assessing the likelihood of a specific disease
+<ul>
+<li><H5>Statistical learning is key to many areas: business, technology, health, finance</H5></li> 
+<li><H5>Designed to accurately predict quantitative or categorical outcomes for unknown scenarios based on measured data</li></H5>
+<li><H5>Supervised learning uses training data to determine a result and improve the accuracy of the model over successive incremental iterations</li></H5>
+<li><H5>Unsupervised learning: goal is to describe data organization, not measure outcome </li></H5>
+<li><H5>Some examples of machine learning challenges:</li></H5> 
+<ul>
+	<li><H5>Recognizing handwritten text</li></H5>
+	<li><H5>Predicting if an email is spam</li></H5> 
+	<li><H5>Examining gene expressions</li></H5>
+	<li><H5>Assessing the likelihood of a specific disease</li></H5>
+	</ul></ul>
 	
 	
 

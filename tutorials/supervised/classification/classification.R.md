@@ -1,6 +1,6 @@
-# Classification using Generalized Linear Models, Gradient Boosting Machines, and Random Forests in H2O
+# Classification using Generalized Linear Models, Gradient Boosting Machines, Random Forests and Deep Learning in H2O
 
-###### This tutorial demonstrates classification modeling in H2O using generalized linear models (GLM), gradient boosting machines (GBM), and random forests. It requires an installation of the h2o R package and its dependencies.
+###### This tutorial demonstrates classification modeling in H2O using generalized linear models (GLM), gradient boosting machines (GBM), random forests and Deep Learning. It requires an installation of the h2o R package and its dependencies.
 
 ### Load the h2o R package and start an local H2O cluster
 
@@ -254,7 +254,7 @@
 
 ### Fit a random forest classifier
 
-###### Lastly we will fit a single random forest model with 200 trees of maximum depth 10 and compare the errors across the three model types.
+###### We will fit a single random forest model with 200 trees of maximum depth 10.
 
     top2_wagp_forest <- h2o.randomForest(x = c("RELP", "SCHL", addpredset),
                                          y = "TOP2_WAGP",
@@ -268,9 +268,24 @@
                                          type = "BigData")
     top2_wagp_forest
 
+### Fit a deep learning classifier
+
+###### Lastly we will fit a single Deep Learning model with default settings (more details about Deep Learning follow later) and compare the errors across the four model types.
+
+    top2_wagp_dl <- h2o.deeplearning(x = c("RELP", "SCHL", addpredset),
+                                     y = "TOP2_WAGP",
+                                     data = adult_2013_train,
+                                     key  = "top2_wagp_forest",
+                                     classification = TRUE,
+                                     validation = adult_2013_test)
+    top2_wagp_dl
+
+
     h2o.performance(h2o.predict(top2_wagp_glm_best, adult_2013_test)[, 3L],
                     actual_top2_wagp, measure = "F1")@model$error
     h2o.performance(h2o.predict(top2_wagp_gbm_best, adult_2013_test)[, 3L],
                     actual_top2_wagp, measure = "F1")@model$error
     h2o.performance(h2o.predict(top2_wagp_forest,   adult_2013_test)[, 3L],
+                    actual_top2_wagp, measure = "F1")@model$error
+    h2o.performance(h2o.predict(top2_wagp_dl,       adult_2013_test)[, 3L],
                     actual_top2_wagp, measure = "F1")@model$error

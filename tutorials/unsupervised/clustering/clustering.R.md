@@ -34,7 +34,7 @@
 
     ?h2o.kmeans
     
-### Use the Gap Statistic (Beta) To Find the Optimal Number of Clusters
+### Use the [Gap Statistic (Beta)](http://web.stanford.edu/~hastie/Papers/gap.pdf) To Find the Optimal Number of Clusters
 ###### This is essentially a grid search over KMeans.
 
 ###### You can get the R documentation help here:

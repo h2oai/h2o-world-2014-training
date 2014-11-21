@@ -143,7 +143,7 @@
 
     #   > record_model <- h2o.deeplearning(x = 1:784, y = 785, data = train_hex, validation = test_hex,
     #                                      activation = "RectifierWithDropout", hidden = c(1024,1024,2048),
-    #                                      epochs = 2000, l1 = 1e-5, input_dropout_ratio = 0.2,
+    #                                      epochs = 8000, l1 = 1e-5, input_dropout_ratio = 0.2,
     #                                      train_samples_per_iteration = -1, classification_stop = -1)
     #   > record_model@model$confusion
     #              Predicted

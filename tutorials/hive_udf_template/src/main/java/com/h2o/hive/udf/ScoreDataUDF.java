@@ -1,6 +1,7 @@
 
 package com.h2o.hive.udf;
 import java.util.Arrays;
+import java.util.ArrayList;
 import org.apache.hadoop.hive.ql.udf.UDFType;
 import org.apache.hadoop.hive.ql.exec.Description;
 import org.apache.hadoop.hive.ql.exec.UDFArgumentException;
@@ -29,7 +30,7 @@ class ScoreDataUDF extends GenericUDF {
     // Expects one less argument than model used; results column is dropped
     if (args.length != GBMPojo.NAMES.length-1) {
       throw new UDFArgumentLengthException("Incorrect number of arguments." +
-              "  scoredata() requires: "+Arrays.asList(GBMPojo.NAMES).remove(GBMPojo.NAMES.length-1)
+              "  scoredata() requires: "+ Arrays.asList(GBMPojo.NAMES).subList(0,GBMPojo.NAMES.length-1)
               +", in the listed order.");
     }
 
@@ -63,36 +64,42 @@ class ScoreDataUDF extends GenericUDF {
       //Thus this UDF must depend solely on the arguments maintaining the same
       // field order seen by the original H2O model creation.
       for (int i = 0; i < record.length; i++) {
-        Object o = inFieldOI[i].getPrimitiveJavaObject(record[i].get());
-        if (o instanceof java.lang.String) {
-          // Hive wraps strings in double quotes, remove
-          data[i] = p.mapEnum(i,((String) o).replace("\"",""));
-          if (data[i] == -1)
-            throw new UDFArgumentException("scoredata(...): Negative enum val from : "
-                    + o +" for argument # "+i+".");
-        } else if (o instanceof Double) {
-          data[i] = ((Double)o);
-        } else if (o instanceof Float) {
-          data[i] = ((Float)o).doubleValue();
-        } else if (o instanceof Long) {
-          data[i] = ((Long)o).doubleValue();
-        } else if (o instanceof Integer) {
-          data[i] = ((Integer)o).doubleValue();
-        } else if (o instanceof Short) {
-          data[i] = ((Short)o).doubleValue();
-        } else {
-          throw new UDFArgumentException("scoredata(...): Cannot accept type: "
-                  + o.getClass().toString()+" for argument # "+i+".");
-        }
+	try {
+          Object o = inFieldOI[i].getPrimitiveJavaObject(record[i].get());
+          if (o instanceof java.lang.String) {
+            // Hive wraps strings in double quotes, remove
+            data[i] = p.mapEnum(i,((String) o).replace("\"",""));
+            if (data[i] == -1)
+              throw new UDFArgumentException("scoredata(...): Negative enum val from : "
+                      + o +" for argument # "+i+".");
+          } else if (o instanceof Double) {
+            data[i] = ((Double)o).doubleValue();
+          } else if (o instanceof Float) {
+            data[i] = ((Float)o).doubleValue();
+          } else if (o instanceof Long) {
+            data[i] = ((Long)o).doubleValue();
+          } else if (o instanceof Integer) {
+            data[i] = ((Integer)o).doubleValue();
+          } else if (o instanceof Short) {
+            data[i] = ((Short)o).doubleValue();
+          } else if (o == null) {
+            return null;
+          } else {
+            throw new UDFArgumentException("scoredata(...): Cannot accept type: "
+                    + o.getClass().toString()+" for argument # "+i+".");
+          }
+	} catch (Throwable e) { throw new UDFArgumentException("Unexpected exception on argument # " + i + ". " + e.toString()); }
       }
       // get the predictions
-      float[] preds = new float[p.getPredsSize()];
-      p.predict(data, preds);
-      return preds[0];
+      try {
+        float[] preds = new float[p.getPredsSize()];
+        p.predict(data, preds);
+        return preds[0];
+      } catch ( Throwable e) { throw new UDFArgumentException("H2O predict function threw exception: " + e.toString()); }
     } else {
       if (record == null) return null; //throw new UDFArgumentException("scoredata() received a NULL row.");
-      else return null; // throw new UDFArgumentException("Incorrect number of arguments." +
-      //"  scoredata() requires: "+Arrays.asList(GBMPojo.NAMES).remove(GBMPojo.NAMES.length-1)+", in order.");
+      else throw new UDFArgumentException("Incorrect number of arguments." +
+              "  scoredata() requires: "+ Arrays.asList(GBMPojo.NAMES).subList(0,GBMPojo.NAMES.length-1)+", in order.");
     }
   }
 }

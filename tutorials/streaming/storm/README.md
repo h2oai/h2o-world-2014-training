@@ -5,7 +5,7 @@ This tutorial shows how to create a [Storm](https://storm.apache.org/) topology 
 
 ## Where to find the latest version of this tutorial
 
-* <https://github.com/0xdata/h2o-training/tree/master/tutorials/streaming/storm/README.md>
+* <https://github.com/h2oai/h2o-training/tree/master/tutorials/streaming/storm/README.md>
 
 
 ## 1.  What this tutorial covers
@@ -36,14 +36,18 @@ This tutorial walks you through the following sequence:
 
 ### 2.1.  Clone the required repositories from Github
 
-`$ git clone https://github.com/apache/storm.git`  
-`$ git clone https://github.com/0xdata/h2o-training.git`  
+```
+git clone https://github.com/apache/storm.git 
+git clone https://github.com/h2oai/h2o-training.git
+``` 
 
 * *NOTE*: Building storm (c.f. [Section 5](#BuildStorm)) requires [Maven](http://maven.apache.org/). You can install Maven (version 3.x) by following the [Maven installation instructions](http://maven.apache.org/download.cgi).
 
 Navigate to the directory for this tutorial inside the h2o-training repository:
 
-`$ cd h2o-training/tutorials/streaming/storm`  
+```
+cd h2o-training/tutorials/streaming/storm
+```  
 
 You should see the following files in this directory:
 
@@ -70,30 +74,31 @@ Get the [latest version of R from CRAN](http://www.r-project.org/index.html) and
 
 > Note:  The H2O package for R includes both the R code as well as the main H2O jar file.  This is all you need to run H2O locally on your laptop.
 
-Step 1:  Start R  
-`$ R`  
+Step 1:  Start R (at the command line or via RStudio)   
 
 Step 2:  Install H2O from CRAN  
-`> install.packages("h2o")`  
+```
+install.packages("h2o")
+``` 
 
-> Note:  For convenience, this tutorial was created with the [Markov](http://h2o-release.s3.amazonaws.com/h2o/rel-markov/1/index.html) stable release of H2O (2.8.1.1) from CRAN, as shown above.  Later versions of H2O will also work.
+Note:  For convenience, this tutorial was created with the [Slater](http://h2o-release.s3.amazonaws.com/h2o/rel-slater/3/index.html) stable release of H2O (3.2.0.3) from CRAN, as shown above.  Later versions of H2O will also work.
 
 ### 2.4.  Development environment
 
 This tutorial was developed with the following software environment.  (Other environments will work, but this is what we used to develop and test this tutorial.)
 
-* H2O 2.8.1.1 (Markov)
-* MacOS X (Mavericks)
-* java version "1.7.0_51" (JDK)
-* R 3.1.2
-* Storm git hash (insert here)
-* curl 7.30.0 (x86_64-apple-darwin13.0) libcurl/7.30.0 SecureTransport zlib/1.2.5
+* H2O 3.2.0.3 (Slater)
+* MacOS X (Yosemite)
+* java version "1.8.0_45" (JDK)
+* R 3.2.2
+* Storm git hash: 397d2d8a7bcca79aa3f9c7b33482ced897e074f9
+* curl 7.37.1 (x86_64-apple-darwin14.0) libcurl/7.37.1 SecureTransport zlib/1.2.5
 * Maven (Apache Maven 3.0.4)
 
 For viewing predictions in real-time ([Section 8](#real_time)) you will need the following:
 
-* npm (1.3.11)  (`$ brew install npm`)
-* http-server   (`$ npm install http-server -g`)
+* npm (1.3.11)  (`brew install npm`)
+* http-server   (`npm install http-server -g`)
 * A modern web browser (animations depend on [D3](http://d3js.org/))
 
 
@@ -101,7 +106,9 @@ For viewing predictions in real-time ([Section 8](#real_time)) you will need the
 
 Let's take a look at a small piece of the training_data.csv file for a moment.  This is a synthetic data set created for this tutorial.
 
-`$ head -n 20 training_data.csv`  
+```
+head -n 20 training_data.csv
+```  
 
 | Label | Has4Legs | CoatColor | HairLength | TailLength | EnjoysPlay | StairsOutWindow | HoursSpentNapping | RespondsToCommands | EasilyFrightened | Age | Noise1             | Noise2             | Noise3              | Noise4             | Noise5             |
 |-------|----------|-----------|------------|------------|------------|-----------------|-------------------|--------------------|------------------|-----|--------------------|--------------------|---------------------|--------------------|--------------------|
@@ -137,13 +144,15 @@ The remaining columns are all input features (i.e. the "x" columns) we use to pr
 <a name="RPOJO"></a>
 ###  4.1.  Build and export the model
 
-The example.R script builds the model and exports the Java POJO to the generated_model temporary directory.  Run example.R as follows:
+The `example.R` script builds the model and exports the Java POJO to the generated_model temporary directory.  Run `example.R` at the command line as follows:
 
-`$ R -f example.R`  
-
+```{bash}
+R -f example.R  
 ```
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+You will see the following output:
+```{r}
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -194,7 +203,7 @@ For H2O package documentation, ask for help:
     > ??h2o
 
 After starting H2O, you can use the Web UI at http://localhost:54321
-For more information visit http://docs.0xdata.com
+For more information visit http://docs.h2o.ai
 
 ----------------------------------------------------------------------
 

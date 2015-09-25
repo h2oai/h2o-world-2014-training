@@ -40,6 +40,7 @@ public class H2OStormStarter {
     }
 
     @Override public void execute(Tuple tuple) {
+
       GBMPojo p = new GBMPojo();
 
       // get the input tuple as a String[]
@@ -61,8 +62,9 @@ public class H2OStormStarter {
       }
 
       // get the predictions
-      float[] preds = new float[GBMPojo.NCLASSES+1];
-      p.predict(data, preds);
+      double[] preds = new double [GBMPojo.NCLASSES+1];
+      //p.predict(data, preds);
+      p.score0(data, preds);
 
       // emit the results
       _collector.emit(tuple, new Values(raw_data[0], preds[1]));
@@ -92,10 +94,10 @@ public class H2OStormStarter {
     @Override
     public void execute(Tuple tuple) {
       String expected=tuple.getString(0);
-      double dogProb = tuple.getFloat(1);
+      double dogProb = tuple.getDouble(1);
       String content = expected + "," + (dogProb <= _thresh ? "dog" : "cat");
       try {
-        File file = new File("/Users/spencer/0xdata/h2o-training/tutorials/streaming/storm/web/out");
+        File file = new File("/Users/ludirehak/apache/h2o-training/tutorials/streaming/storm/web/out"); // EDIT ME TO YOUR PATH!
         if (!file.exists())  file.createNewFile();
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);

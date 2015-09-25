@@ -87,13 +87,13 @@ Note:  For convenience, this tutorial was created with the [Slater](http://h2o-r
 
 This tutorial was developed with the following software environment.  (Other environments will work, but this is what we used to develop and test this tutorial.)
 
-* H2O 3.2.0.3 (Slater)
-* MacOS X (Yosemite)
-* java version "1.8.0_45" (JDK)
+* H2O 3.3.0.99999 (Slater)
+* MacOS X (Mavericks)
+* java version "1.7.0_79"
 * R 3.2.2
-* Storm git hash: 397d2d8a7bcca79aa3f9c7b33482ced897e074f9
-* curl 7.37.1 (x86_64-apple-darwin14.0) libcurl/7.37.1 SecureTransport zlib/1.2.5
-* Maven (Apache Maven 3.0.4)
+* Storm git hash: 99285bb719357760f572d6f4f0fb4cd02a8fd389
+* curl 7.30.0 (x86_64-apple-darwin13.0) libcurl/7.30.0 SecureTransport zlib/1.2.5
+* Maven (Apache Maven 3.3.3)
 
 For viewing predictions in real-time ([Section 8](#real_time)) you will need the following:
 
@@ -151,6 +151,7 @@ R -f example.R
 ```
 You will see the following output:
 ```{r}
+
 R version 3.2.2 (2015-08-14) -- "Fire Safety"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
@@ -185,19 +186,12 @@ Type 'q()' to quit R.
 + }
 > 
 > library(h2o)
-Loading required package: RCurl
-Loading required package: bitops
-Loading required package: rjson
 Loading required package: statmod
-Loading required package: survival
-Loading required package: splines
-Loading required package: tools
 
 ----------------------------------------------------------------------
 
-Your next step is to start H2O and get a connection object (named
-'localH2O', for example):
-    > localH2O = h2o.init()
+Your next step is to start H2O:
+    > h2o.init()
 
 For H2O package documentation, ask for help:
     > ??h2o
@@ -210,9 +204,14 @@ For more information visit http://docs.h2o.ai
 
 Attaching package: ‘h2o’
 
+The following objects are masked from ‘package:stats’:
+
+    sd, var
+
 The following objects are masked from ‘package:base’:
 
-    ifelse, max, min, strsplit, sum, tolower, toupper
+    %*%, %in%, apply, as.factor, as.numeric, colnames, colnames<-,
+    ifelse, is.factor, is.numeric, log, range, trunc
 
 > 
 > cat("Starting H2O\n")
@@ -224,20 +223,19 @@ Starting H2O
 H2O is not running yet, starting it now...
 
 Note:  In case of errors look at the following log files:
-    /var/folders/tt/g5d7cr8d3fg84jmb5jr9dlrc0000gn/T//Rtmps9bRj4/h2o_tomk_started_from_r.out
-    /var/folders/tt/g5d7cr8d3fg84jmb5jr9dlrc0000gn/T//Rtmps9bRj4/h2o_tomk_started_from_r.err
+    /var/folders/ct/mv0lk53d5lq6bkvm_2snjgm00000gn/T//RtmpkEUbAR/h2o_ludirehak_started_from_r.out
+    /var/folders/ct/mv0lk53d5lq6bkvm_2snjgm00000gn/T//RtmpkEUbAR/h2o_ludirehak_started_from_r.err
 
-java version "1.7.0_51"
-Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
-Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
+java version "1.7.0_79"
+Java(TM) SE Runtime Environment (build 1.7.0_79-b15)
+Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
 
+..Successfully connected to http://localhost:54321/ 
 
-Successfully connected to http://localhost:54321 
-
-R is connected to H2O cluster:
-    H2O cluster uptime:         1 seconds 587 milliseconds 
-    H2O cluster version:        2.8.1.1 
-    H2O cluster name:           H2O_started_from_R 
+R is connected to the H2O cluster: 
+    H2O cluster uptime:         1 seconds 738 milliseconds 
+    H2O cluster version:        3.3.0.99999 
+    H2O cluster name:           H2O_started_from_R_ludirehak_dwh703 
     H2O cluster total nodes:    1 
     H2O cluster total memory:   3.56 GB 
     H2O cluster total cores:    8 
@@ -246,22 +244,23 @@ R is connected to H2O cluster:
 
 Note:  As started, H2O is limited to the CRAN default of 2 CPUs.
        Shut down and restart H2O as shown below to use all your CPUs.
-           > h2o.shutdown(localH2O)
-           > localH2O = h2o.init(nthreads = -1)
+           > h2o.shutdown()
+           > h2o.init(nthreads = -1)
 
 > 
 > cat("Building GBM model\n")
 Building GBM model
-> df <- h2o.importFile(h, "training_data.csv");
-^M  |                                                                            ^M  |                                                                      |   0%^M  |                                                                            ^M  |======================================================================| 100%
+> df <- h2o.importFile(path = normalizePath("./training_data.csv"));
+  |======================================================================| 100%
 > y <- "Label"
-> x <- c("NumberOfLegs","CoatColor","HairLength","TailLength","EnjoysPlay","StairsOutWindow","HoursSpentNapping","RespondsToCommands","EasilyFrightened","Age", "Noise1", "Noise2", "Noise3", "Noise4", "Noise5")
-> gbm.h2o.fit <- h2o.gbm(data = df, y = y, x = x, n.trees = 10)
-^M  |                                                                            ^M  |                                                                      |   0%^M  |                                                                            ^M  |======================================================================| 100%
+> x <- c("Has4Legs","CoatColor","HairLength","TailLength","EnjoysPlay","StairsOutWindow","HoursSpentNapping","RespondsToCommands","EasilyFrightened","Age", "Noise1", "Noise2", "Noise3", "Noise4", "Noise5")
+> gbm.h2o.fit <- h2o.gbm(training_frame = df, y = y, x = x, model_id = "GBMPojo", ntrees = 10)
+  |======================================================================| 100%
 > 
 > cat("Downloading Java prediction model code from H2O\n")
 Downloading Java prediction model code from H2O
-> model_key <- gbm.h2o.fit@key
+> model_id <- gbm.h2o.fit@model_id
+> 
 > tmpdir_name <- "generated_model"
 > cmd <- sprintf("rm -fr %s", tmpdir_name)
 > safeSystem(cmd)
@@ -271,24 +270,9 @@ Downloading Java prediction model code from H2O
 > safeSystem(cmd)
 [1] "+ CMD: mkdir generated_model"
 [1] 0
-> cmd <- sprintf("curl -o %s/GBMPojo.java http://%s:%d/2/GBMModelView.java?_modelKey=%s", tmpdir_name, myIP, myPort, model_key)
-> safeSystem(cmd)
-[1] "+ CMD: curl -o generated_model/GBMPojo.java http://localhost:54321/2/GBMModelView.java?_modelKey=GBM_9d538f637ef85c78d6e2fea88ad54bc9"
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-^M  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0^M100 27041    0 27041    0     0  2253k      0 --:--:-- --:--:-- --:--:-- 2400k
-[1] 0
-> cmd <- sprintf("curl -o %s/h2o-model.jar http://127.0.0.1:54321/h2o-model.jar", tmpdir_name)
-> safeSystem(cmd)
-[1] "+ CMD: curl -o generated_model/h2o-model.jar http://127.0.0.1:54321/h2o-model.jar"
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-^M  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0^M100  8085  100  8085    0     0  3206k      0 --:--:-- --:--:-- --:--:-- 3947k
-[1] 0
-> cmd <- sprintf("sed -i '' 's/class %s/class GBMPojo/' %s/GBMPojo.java", model_key, tmpdir_name)
-> safeSystem(cmd)
-[1] "+ CMD: sed -i '' 's/class GBM_9d538f637ef85c78d6e2fea88ad54bc9/class GBMPojo/' generated_model/GBMPojo.java"
-[1] 0
+> 
+> h2o.download_pojo(gbm.h2o.fit, "./generated_model/")
+[1] "POJO written to: ./generated_model//GBMPojo.java"
 > 
 > cat("Note: H2O will shut down automatically if it was started by this R script and the script exits\n")
 Note: H2O will shut down automatically if it was started by this R script and the script exits
@@ -299,35 +283,35 @@ Note: H2O will shut down automatically if it was started by this R script and th
 
 The generated_model directory is created and now contains two files:
 
-`$ ls -l generated_model`  
+`ls -l generated_model`  
 
 ```
-mbp2:storm tomk$ ls -l generated_model/
+ls -l generated_model/
 total 72
--rw-r--r--  1 tomk  staff  27024 Nov 15 16:49 GBMPojo.java
--rw-r--r--  1 tomk  staff   8085 Nov 15 16:49 h2o-model.jar
+-rw-r--r--  1 ludirehak  staff  19764 Sep 25 12:36 GBMPojo.java
+-rw-r--r--  1 ludirehak  staff  23655 Sep 25 12:36 h2o-genmodel.jar
 ```
 
-The h2o-model.jar file contains the interface definition, and the GBMPojo.java file contains the Java code for the POJO model.
+The h2o-genmodel.jar file contains the interface definition, and the GBMPojo.java file contains the Java code for the POJO model.
 
 The following three sections from the generated model are of special importance.
 
 ####  4.2.1.  Class name
 
 ```
-public class GBMPojo extends water.genmodel.GeneratedModel {
+public class GBMPojo extends GenModel {
 ```
 
-This is the class to instantiate in the Storm bolt to make predictions.  (Note that we simplified the class name using sed as part of the R script that exported the model.  By default, the class name has a long UUID-style name.)
+This is the class to instantiate in the Storm bolt to make predictions. 
 
 
 ####  4.2.2.  Predict method
 
 ```
-public final float[] predict( double[] data, float[] preds)
+public final double[] score0( double[] data, double[] preds )
 ```
 
-predict() is the method to call to make a single prediction for a new observation.  **_data_** is the input, and **_preds_** is the output.  The return value is just **_preds_**, and can be ignored.
+score0() is the method to call to make a single prediction for a new observation.  **_data_** is the input, and **_preds_** is the output.  The return value is just **_preds_**, and can be ignored.
 
 Inputs and Outputs must be numerical.  Categorical columns must be translated into numerical values using the DOMAINS mapping on the way in.  Even if the response is categorical, the result will be numerical.  It can be mapped back to a level string using DOMAINS, if desired.  When the response is categorical, the preds response is structured as follows:
 
@@ -356,22 +340,22 @@ preds[2] contains the probability that the observation is ColInfo_15.VALUES[1]
 ```
   // Column domains. The last array contains domain of response column.
   public static final String[][] DOMAINS = new String[][] {
-    /* NumberOfLegs */ ColInfo_0.VALUES,
-    /* CoatColor */ ColInfo_1.VALUES,
-    /* HairLength */ ColInfo_2.VALUES,
-    /* TailLength */ ColInfo_3.VALUES,
-    /* EnjoysPlay */ ColInfo_4.VALUES,
-    /* StairsOutWindow */ ColInfo_5.VALUES,
-    /* HoursSpentNapping */ ColInfo_6.VALUES,
-    /* RespondsToCommands */ ColInfo_7.VALUES,
-    /* EasilyFrightened */ ColInfo_8.VALUES,
-    /* Age */ ColInfo_9.VALUES,
-    /* Noise1 */ ColInfo_10.VALUES,
-    /* Noise2 */ ColInfo_11.VALUES,
-    /* Noise3 */ ColInfo_12.VALUES,
-    /* Noise4 */ ColInfo_13.VALUES,
-    /* Noise5 */ ColInfo_14.VALUES,
-    /* Label */ ColInfo_15.VALUES
+    /* Has4Legs */ null,
+    /* CoatColor */ GBMPojo_ColInfo_1.VALUES,
+    /* HairLength */ null,
+    /* TailLength */ null,
+    /* EnjoysPlay */ null,
+    /* StairsOutWindow */ null,
+    /* HoursSpentNapping */ null,
+    /* RespondsToCommands */ null,
+    /* EasilyFrightened */ null,
+    /* Age */ null,
+    /* Noise1 */ null,
+    /* Noise2 */ null,
+    /* Noise3 */ null,
+    /* Noise4 */ null,
+    /* Noise5 */ null,
+    /* Label */ GBMPojo_ColInfo_15.VALUES
   };
 ```
 
@@ -383,13 +367,13 @@ The DOMAINS array contains information about the level names of categorical colu
 ### 5.1 Build storm and import into IntelliJ
 To build storm navigate to the cloned repo and install via Maven:
 
-`$ cd storm && mvn clean install -DskipTests=true`  
+`cd storm && mvn clean install -DskipTests=true`  
 
 Once storm is built, open up your favorite IDE to start building the h2o streaming topology. In this tutorial, we will be using [IntelliJ](https://www.jetbrains.com/idea/).
 
 To import the storm-starter project into your IntelliJ please follow these screenshots:
 
-Click on "Import Project" and find the storm repo. Select storm and click "OK"  
+Click on "Import Project" and find the storm repo. Select storm-starter and click "OK"  
 ![](images/ij_1.png)
 
 Import the project from extrenal model using Maven, click "Next"  
@@ -407,9 +391,14 @@ Once inside the project, open up *storm-starter/test/jvm/storm.starter*. Yes, we
 
 The topology we've prepared has one spout TestH2ODataSpout and two bolts (a "Predict Bolt" and a "Classifier Bolt"). Please copy the pre-built bolts and spout into the *test* directory in IntelliJ. 
 
-`$ cp H2OStormStarter.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+Edit L100 of H2OStormStarter.java so that the file path is: `PATH_TO_H2O_TRAINING/h2o-training/tutorials/streaming/storm/web/out`
+Likewise, edit L46 of TestH2ODataSpout.java so that the file path is: `PATH_TO_H2O_TRAINING/h2o-training/tutorials/streaming/storm/live_data.csv`
 
-`$ cp TestH2ODataSpout.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+Now copy.
+
+`cp H2OStormStarter.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+
+`cp TestH2ODataSpout.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
 
 Your project should now look like this:
 
@@ -418,9 +407,9 @@ Your project should now look like this:
 
 ## 6.  Copying the generated POJO files into a Storm bolt build environment
 
-We are now ready to import the H2O pieces into the IntelliJ project. We'll need to add the *h2o-model.jar* and the scoring POJO.
+We are now ready to import the H2O pieces into the IntelliJ project. We'll need to add the *h2o-genmodel.jar* and the scoring POJO.
 
-To import the *h2o-model.jar* into your IntelliJ project, please follow these screenshots:
+To import the *h2o-genmodel.jar* into your IntelliJ project, please follow these screenshots:
 
 File > Project Structure…  
 ![](images/ij_6.png)
@@ -431,20 +420,26 @@ Click the "+" to add a new dependency
 Click on Jars or directories…  
 ![](images/ij_8.png)
 
-Find the h2o-model.jar that we previously downloaded with the R script in [section 4](#RPOJO)  
+Find the h2o-genmodel.jar that we previously downloaded with the R script in [section 4](#RPOJO)  
 ![](images/ij_9.png)
 
 Click "OK", then "Apply", then "OK".
 
-You now have the h2o-model.jar as a depencny in your project.
+You now have the h2o-genmodel.jar as a dependency in your project.
 
-We now copy over the POJO from [section 4](#RPOJO) into our storm project. 
+Modify GBMPojo.java to add `package storm.starter;` as the first line.
 
-`$ cp ./generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+`sed -i -e '1i\'$'\n''package storm.starter;'$'\n' ./generated_model/GBMPojo.java`
+ 
+We now copy over the POJO from [section 4](#RPOJO) into our storm project.
 
-**_OR_** if you were not able to build the GBMPojo, copy over the pre-generated version:
+`cp ./generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
 
-`$ cp ./premade_generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+**_OR_** if you were not able to build the GBMPojo, copy over the pre-made version:
+
+`cp ./premade_generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`
+
+If copying over the pre-made version of GBMPojo, also repeat the above steps in this section to import the pre-made *h2o-genmodel.jar* from the *premade_generated_model* directory.
 
 Your storm-starter project directory should now look like this:
 
@@ -455,6 +450,7 @@ In order to use the GBMPojo class, our **_PredictionBolt_** in H2OStormStarter h
 
 ```
     @Override public void execute(Tuple tuple) {
+
       GBMPojo p = new GBMPojo();
 
       // get the input tuple as a String[]
@@ -476,8 +472,9 @@ In order to use the GBMPojo class, our **_PredictionBolt_** in H2OStormStarter h
       }
 
       // get the predictions
-      float[] preds = new float[GBMPojo.NCLASSES+1];
-      p.predict(data, preds);
+      double[] preds = new double [GBMPojo.NCLASSES+1];
+      //p.predict(data, preds);
+      p.score0(data, preds);
 
       // emit the results
       _collector.emit(tuple, new Values(raw_data[0], preds[1]));
@@ -486,7 +483,7 @@ In order to use the GBMPojo class, our **_PredictionBolt_** in H2OStormStarter h
 ```
 
 
-The probability emitted is the probability of being a 'dog'. We use this probability to decide wether the observation is of type 'cat' or 'dog' depending on some threshold. This threshold was chosen such that the F1 score was maximized for the testing data (please see AUC and/or h2o.preformance() from R). 
+The probability emitted is the probability of being a 'dog'. We use this probability to decide whether the observation is of type 'cat' or 'dog' depending on some threshold. This threshold was chosen such that the F1 score was maximized for the testing data (please see AUC and/or h2o.performance() from R). 
 
 The **_ClassifierBolt_** then looks like:
 
@@ -503,10 +500,10 @@ The **_ClassifierBolt_** then looks like:
     @Override
     public void execute(Tuple tuple) {
       String expected=tuple.getString(0);
-      double dogProb = tuple.getFloat(1);
+      double dogProb = tuple.getDouble(1);
       String content = expected + "," + (dogProb <= _thresh ? "dog" : "cat");
       try {
-        File file = new File("/Users/spencer/0xdata/h2o-training/tutorials/streaming/storm/web/out");  // EDIT ME! PUT YOUR PATH TO /web HERE
+        File file = new File("/Users/ludirehak/apache/h2o-training/tutorials/streaming/storm/web/out");
         if (!file.exists())  file.createNewFile();
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
@@ -540,14 +537,14 @@ To watch the predictions in real time, we start up an http-server on port 4040 a
 
 In order to get http-server, install *npm* (you may need sudo):
 
-`$ brew install npm`  
-`$  npm install http-server -g`  
+`brew install npm`  
+` npm install http-server -g`  
 
 Once these are installed, you may navigate to the *web* directory and start the server:
 
 
-`$ cd web`  
-`$ http-server -p 4040 -c-1`  
+`cd web`  
+`http-server -p 4040 -c-1`  
 
 Now open up your browser and navigate to [http://localhost:4040](http://localhost:4040). Requires a modern browser (depends on [D3](http://d3js.org/) for animation).  
 

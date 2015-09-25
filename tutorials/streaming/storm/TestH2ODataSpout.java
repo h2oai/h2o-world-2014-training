@@ -43,7 +43,7 @@ public class TestH2ODataSpout extends BaseRichSpout {
 
   public void nextTuple() {
     Utils.sleep(1000);
-    File file = new File("/Users/spencer/0xdata/h2o-training/tutorials/streaming/storm/live_data.csv");  // EDIT ME FOR YOUR PATH!
+    File file = new File("/Users/ludirehak/apache/h2o-training/tutorials/streaming/storm/live_data.csv");  // EDIT ME TO YOUR PATH!
     String[] observation=null;
     int i = 0;
     try {
@@ -69,8 +69,8 @@ public class TestH2ODataSpout extends BaseRichSpout {
   }
 
   public void declareOutputFields(OutputFieldsDeclarer declarer) {
-    LinkedList<String> fields_list = new LinkedList<String>(Arrays.asList(GBMPojo.NAMES));  // "Label" is last, switch to first...
-    fields_list.add(0,fields_list.remove(fields_list.size()-1));                            // put label, shift right
+    LinkedList<String> fields_list = new LinkedList<String>(Arrays.asList(GBMPojo.NAMES));
+    fields_list.add(0,"Label");                            // put label, shift right
 
     String[] fields = fields_list.toArray(new String[fields_list.size()]); // emit these fields
     declarer.declare(new Fields(fields));

@@ -1,3 +1,9 @@
+# Please go to the h2o-world-2015-training repository instead!
+
+## This repository is now outdated, and contains material for H2O World 2014 training using H2O 2.8.
+
+---
+
 H<sub>2</sub>O Training
 ============
 

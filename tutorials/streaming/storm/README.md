@@ -2,11 +2,9 @@
 
 This tutorial shows how to create a [Storm](https://storm.apache.org/) topology can be used to make real-time predictions with [H2O](http://h2o.ai).
 
-
 ## Where to find the latest version of this tutorial
 
 * <https://github.com/h2oai/h2o-training/tree/master/tutorials/streaming/storm/README.md>
-
 
 ## 1.  What this tutorial covers
 
@@ -64,8 +62,6 @@ And the following directories:
 * **_images_** (Images for the tutorial documentation, you can ignore these)
 * **_web_** (Contains the html and image files for watching the real-time prediction output (c.f. [Section 8](#real_time)))
 
-
-
 ### 2.2.  Install R
 
 Get the [latest version of R from CRAN](http://www.r-project.org/index.html) and install it on your computer.
@@ -100,7 +96,6 @@ For viewing predictions in real-time ([Section 8](#real_time)) you will need the
 * npm (1.3.11)  (`brew install npm`)
 * http-server   (`npm install http-server -g`)
 * A modern web browser (animations depend on [D3](http://d3js.org/))
-
 
 ## 3.  A brief discussion of the data
 
@@ -137,7 +132,6 @@ Note that the first row in the training data set is a header row specifying the 
 The response column (i.e. the "y" column) we want to make predictions for is Label.  It's a binary column, so we want to build a classification model.  The response column is categorical, and contains two levels, 'cat' and 'dog'.  Note that the ratio of dogs to cats is 3:1.
 
 The remaining columns are all input features (i.e. the "x" columns) we use to predict whether each new observation is a 'cat' or a 'dog'.  The input features are a mix of integer, real, and categorical columns.
-
 
 ## 4.  Using R to build a gbm model in H2O and export it as a Java POJO
 
@@ -379,7 +373,6 @@ Click on "Import Project" and find the storm repo. Select storm-starter and clic
 Import the project from extrenal model using Maven, click "Next"  
 ![](images/ij_2.png)
 
-
 Ensure that "Import Maven projects automatically" check box is clicked (it's off by default), click "Next"  
 ![](images/ij_3.png)
 
@@ -396,9 +389,9 @@ Likewise, edit L46 of TestH2ODataSpout.java so that the file path is: `PATH_TO_H
 
 Now copy.
 
-`cp H2OStormStarter.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+`cp H2OStormStarter.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/org/apache/storm/starter/`  
 
-`cp TestH2ODataSpout.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+`cp TestH2ODataSpout.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/org/apache/storm/starter/`  
 
 Your project should now look like this:
 
@@ -429,15 +422,15 @@ You now have the h2o-genmodel.jar as a dependency in your project.
 
 Modify GBMPojo.java to add `package storm.starter;` as the first line.
 
-`sed -i -e '1i\'$'\n''package storm.starter;'$'\n' ./generated_model/GBMPojo.java`
+`sed -i -e '1i\'$'\n''package org.apache.storm.starter;'$'\n' ./generated_model/GBMPojo.java`
  
 We now copy over the POJO from [section 4](#RPOJO) into our storm project.
 
-`cp ./generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`  
+`cp ./generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/org/apache/storm/starter/`  
 
 **_OR_** if you were not able to build the GBMPojo, copy over the pre-made version:
 
-`cp ./premade_generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/storm/starter/`
+`cp ./premade_generated_model/GBMPojo.java /PATH_TO_STORM/storm/examples/storm-starter/test/jvm/org/apache/storm/starter/`
 
 If copying over the pre-made version of GBMPojo, also repeat the above steps in this section to import the pre-made *h2o-genmodel.jar* from the *premade_generated_model* directory.
 

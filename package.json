@@ -26,7 +26,7 @@
   "dependencies": {
     "escape-html": "~1.0.1",
     "twit": "~1.1.18",
-    "coffee-script": "~1.7.1",
+    "coffee-script": "~1.12.7",
     "jade": "~1.5.0",
     "js-yaml": "~3.1.0",
     "marked": "~0.3.2",
